@@ -20,6 +20,12 @@ public class TeleBot extends Thread {
 	private final String							token;
 	private HashMap<String, AbstractCommandAction>	actionConnector;
 
+	/**
+	 * <p>Creates a new TeleBot</p>
+	 * @param endpoint The api endpoint, defaults to "https://api.telegram.org/bot"
+	 * @param token The bot's token
+	 * @since 0.0.1
+	 */
 	public TeleBot(String endpoint, String token) {
 
 		this.endpoint = endpoint;
@@ -27,11 +33,22 @@ public class TeleBot extends Thread {
 		actionConnector = new HashMap<String, AbstractCommandAction>();
 	}
 
+	/**
+	 * @param token
+	 * @since 0.0.1
+	 */
 	public TeleBot(String token) {
 
 		this("https://api.telegram.org/bot", token);
 	}
 
+	/**
+	 * <p>Registers a new action to be executed on receiving the given command.</p>
+	 * @param command The command to link to the action
+	 * @param action The action
+	 * @throws InvalidAttributesException
+	 * @since 0.0.1
+	 */
 	public void registerCommandAction(String command, AbstractCommandAction action) throws InvalidAttributesException {
 
 		if (actionConnector.containsKey(command)) {
@@ -41,19 +58,38 @@ public class TeleBot extends Thread {
 		actionConnector.put(command, action);
 	}
 
+	/**
+	 * <p>Unregisters a command.</p>
+	 * @param command The command to delete
+	 * @since 0.0.1
+	 */
 	public void unregisterCommandAction(String command) {
 
 		if (actionConnector.containsKey(command)) {
-
 			actionConnector.remove(command);
 		}
 	}
 
+	/**
+	 * <p>Sends a message to the given chat.</p>
+	 * @param chatId The chat's id
+	 * @param text The message to send
+	 * @return The servers response
+	 * @throws UnirestException
+	 * @since 0.0.1
+	 */
 	public HttpResponse<JsonNode> sendMessage(Integer chatId, String text) throws UnirestException {
 
 		return Unirest.post(endpoint + token + "/sendMessage").field("chat_id", chatId).field("text", text).asJson();
 	}
 
+	/**
+	 * <p>Returns all unprocessed messages.</p>
+	 * @param offset 
+	 * @return
+	 * @throws UnirestException
+	 * @since 0.0.1
+	 */
 	public HttpResponse<JsonNode> getUpdates(Integer offset) throws UnirestException {
 
 		return Unirest.post(endpoint + token + "/getUpdates").field("offset", offset).asJson();
