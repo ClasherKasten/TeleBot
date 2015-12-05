@@ -12,13 +12,14 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import exh3y.telebot.actions.AbstractCommandAction;
+import exh3y.telebot.actions.TelegramActionHandler;
 
 public class TeleBot extends Thread {
 
 	private final String							endpoint;
 	private final String							token;
-	private HashMap<String, AbstractCommandAction>	actionConnector;
+	private HashMap<String, TelegramActionHandler>	actionConnector;
+	private TelegramActionHandler					defaultAction	= null;
 
 	/**
 	 * <p>
@@ -35,7 +36,7 @@ public class TeleBot extends Thread {
 
 		this.endpoint = endpoint;
 		this.token = token;
-		actionConnector = new HashMap<String, AbstractCommandAction>();
+		actionConnector = new HashMap<String, TelegramActionHandler>();
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class TeleBot extends Thread {
 	 * @throws InvalidAttributesException
 	 * @since 0.0.1
 	 */
-	public void registerCommandAction(String command, AbstractCommandAction action) throws InvalidAttributesException {
+	public void registerCommandAction(String command, TelegramActionHandler action) throws InvalidAttributesException {
 
 		if (actionConnector.containsKey(command)) {
 			throw new InvalidAttributesException("Command already registered!");
@@ -82,6 +83,20 @@ public class TeleBot extends Thread {
 		if (actionConnector.containsKey(command)) {
 			actionConnector.remove(command);
 		}
+	}
+
+	/**
+	 * <p>
+	 * Registers a action handler to handle all unknown text messages.
+	 * </p>
+	 * 
+	 * @param action
+	 *            The action to register
+	 * @since 0.0.1
+	 */
+	public void registerDefaultTextAction(TelegramActionHandler action) {
+
+		defaultAction = action;
 	}
 
 	/**
@@ -148,8 +163,10 @@ public class TeleBot extends Thread {
 							String command[] = message.getString("text").split(" ");
 
 							if (actionConnector.containsKey(command[0])) {
-								AbstractCommandAction action = actionConnector.get(command[0]);
+								TelegramActionHandler action = actionConnector.get(command[0]);
 								action.onCommandReceive(message);
+							} else if (defaultAction != null) {
+								defaultAction.onCommandReceive(message);
 							}
 						}
 
