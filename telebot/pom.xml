@@ -4,11 +4,11 @@
 
   <groupId>exh3y</groupId>
   <artifactId>telebot</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <packaging>jar</packaging>
 
-  <name>telebot</name>
-  <url>http://maven.apache.org</url>
+  <name>TeleBot</name>
+  <url>https://github.com/EXH3Y/TeleBot</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,4 +29,9 @@
     	<version>1.4.7</version>
     </dependency>
   </dependencies>
+  <description>A simple library to create telegram bots.</description>
+  <issueManagement>
+  	<url>https://github.com/EXH3Y/TeleBot/issues</url>
+  	<system>GitHub Issues</system>
+  </issueManagement>
 </project>

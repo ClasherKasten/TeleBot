@@ -18,8 +18,11 @@ public class TeleBot extends Thread {
 
 	private final String							endpoint;
 	private final String							token;
+
+	private long									pollingIntervall	= 1000;
+
 	private HashMap<String, TelegramActionHandler>	actionConnector;
-	private TelegramActionHandler					defaultAction	= null;
+	private TelegramActionHandler					defaultAction		= null;
 
 	/**
 	 * <p>
@@ -132,6 +135,19 @@ public class TeleBot extends Thread {
 		return Unirest.post(endpoint + token + "/getUpdates").field("offset", offset).asJson();
 	}
 
+	/**
+	 * <p>
+	 * Sets the time to wait between update requests.
+	 * </p>
+	 * 
+	 * @param millis
+	 *            Milliseconds to wait.
+	 */
+	public void setPollingIntervall(long millis) {
+
+		this.pollingIntervall = millis;
+	}
+
 	@Override
 	public void run() {
 
@@ -155,7 +171,7 @@ public class TeleBot extends Thread {
 
 					for (int i = 0; i < jsonResponse.length(); i++) {
 
-						// Iterate through messages in the last update
+						// Iterate over the messages in the last update
 						JSONObject message = jsonResponse.getJSONObject(i).getJSONObject("message");
 
 						if (message.has("text")) {
@@ -176,7 +192,7 @@ public class TeleBot extends Thread {
 			} catch (UnirestException e) {
 
 				try {
-					sleep(1000);
+					sleep(this.pollingIntervall);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
