@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.naming.directory.InvalidAttributesException;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.mashape.unirest.http.HttpResponse;
@@ -133,6 +134,19 @@ public class TeleBot extends Thread {
 	public HttpResponse<JsonNode> getUpdates(Integer offset) throws UnirestException {
 
 		return Unirest.post(endpoint + token + "/getUpdates").field("offset", offset).asJson();
+	}
+
+	/**
+	 * <p>
+	 * Requests the getMe method.
+	 * </p>
+	 * 
+	 * @return
+	 * @throws UnirestException
+	 */
+	public HttpResponse<JsonNode> getMe() throws UnirestException {
+
+		return Unirest.post(endpoint + token + "/getMe").asJson();
 	}
 
 	/**
