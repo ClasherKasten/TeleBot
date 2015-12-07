@@ -19,7 +19,7 @@ public class TeleBot extends Thread {
 
 	private final String							endpoint;
 	private final String							token;
-	private final String botName;
+	private final String							botName;
 
 	private long									pollingIntervall	= 1000;
 
@@ -41,18 +41,16 @@ public class TeleBot extends Thread {
 
 		this.endpoint = endpoint;
 		this.token = token;
-		
+
 		String botName = "unknown";
 		try {
-			botName = getBotName();
+			botName = getMe().getBody().getObject().getJSONObject("result").getString("username");
 		} catch (JSONException | UnirestException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.botName = botName;
-		
-		System.out.println(this.botName);
-		
+
 		actionConnector = new HashMap<String, TelegramActionHandler>();
 	}
 
@@ -174,9 +172,17 @@ public class TeleBot extends Thread {
 
 		this.pollingIntervall = millis;
 	}
-	
-	private String getBotName() throws JSONException, UnirestException {
-		return getMe().getBody().getObject().getJSONObject("result").getString("username");
+
+	/**
+	 * <p>
+	 * Returns the bot's username.
+	 * </p>
+	 * 
+	 * @return
+	 */
+	public String getBotName() {
+
+		return this.botName;
 	}
 
 	@Override
@@ -213,18 +219,18 @@ public class TeleBot extends Thread {
 							boolean executeCommand = true;
 
 							if (command[0].contains("@")) {
-								
+
 								String[] commandList = command[0].split("@");
 								if (commandList[1].equals(botName)) {
 									cmd = commandList[0];
 								} else {
 									executeCommand = false;
 								}
-								
+
 							} else {
 								cmd = command[0];
 							}
-							
+
 							if (actionConnector.containsKey(cmd)) {
 								TelegramActionHandler action = actionConnector.get(cmd);
 								action.onCommandReceive(chatId, message);
