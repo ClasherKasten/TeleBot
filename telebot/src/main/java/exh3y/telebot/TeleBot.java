@@ -213,9 +213,9 @@ public class TeleBot extends Thread {
 
 							if (command[0].contains("@")) {
 								
-								command = command[0].split("@");
-								if (command[1] == botName) {
-									cmd = command[0];
+								String[] commandList = command[0].split("@");
+								if (commandList[1].equals(botName)) {
+									cmd = commandList[0];
 								}
 								
 							} else {
