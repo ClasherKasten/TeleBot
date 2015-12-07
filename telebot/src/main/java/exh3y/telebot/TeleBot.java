@@ -210,12 +210,15 @@ public class TeleBot extends Thread {
 
 							String command[] = message.getString("text").split(" ");
 							String cmd = "";
+							boolean executeCommand = true;
 
 							if (command[0].contains("@")) {
 								
 								String[] commandList = command[0].split("@");
 								if (commandList[1].equals(botName)) {
 									cmd = commandList[0];
+								} else {
+									executeCommand = false;
 								}
 								
 							} else {
@@ -225,7 +228,7 @@ public class TeleBot extends Thread {
 							if (actionConnector.containsKey(cmd)) {
 								TelegramActionHandler action = actionConnector.get(cmd);
 								action.onCommandReceive(chatId, message);
-							} else if (defaultAction != null) {
+							} else if (defaultAction != null && executeCommand) {
 								defaultAction.onCommandReceive(chatId, message);
 							}
 						}
