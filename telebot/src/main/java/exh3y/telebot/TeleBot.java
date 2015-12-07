@@ -51,6 +51,8 @@ public class TeleBot extends Thread {
 		
 		this.botName = botName;
 		
+		System.out.println(this.botName);
+		
 		actionConnector = new HashMap<String, TelegramActionHandler>();
 	}
 
@@ -174,7 +176,7 @@ public class TeleBot extends Thread {
 	}
 	
 	private String getBotName() throws JSONException, UnirestException {
-		return getMe().getBody().getObject().getJSONObject("result").getString("first_name");
+		return getMe().getBody().getObject().getJSONObject("result").getString("username");
 	}
 
 	@Override
@@ -207,9 +209,17 @@ public class TeleBot extends Thread {
 						if (message.has("text")) {
 
 							String command[] = message.getString("text").split(" ");
+							String cmd;
 
-							if (actionConnector.containsKey(command[0]) || actionConnector.containsKey(command[0] + "@" + botName)) {
-								TelegramActionHandler action = actionConnector.get(command[0]);
+							if (command[0].contains("@")) {
+								command = command[0].split("@");
+								cmd = command[0];
+							} else {
+								cmd = command[0];
+							}
+							
+							if (actionConnector.containsKey(cmd)) {
+								TelegramActionHandler action = actionConnector.get(cmd);
 								action.onCommandReceive(chatId, message);
 							} else if (defaultAction != null) {
 								defaultAction.onCommandReceive(chatId, message);
