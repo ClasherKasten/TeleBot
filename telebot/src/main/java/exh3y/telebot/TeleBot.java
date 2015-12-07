@@ -173,6 +173,7 @@ public class TeleBot extends Thread {
 
 						// Iterate over the messages in the last update
 						JSONObject message = jsonResponse.getJSONObject(i).getJSONObject("message");
+						int chatId = message.getJSONObject("chat").getInt("id");
 
 						if (message.has("text")) {
 
@@ -180,9 +181,9 @@ public class TeleBot extends Thread {
 
 							if (actionConnector.containsKey(command[0])) {
 								TelegramActionHandler action = actionConnector.get(command[0]);
-								action.onCommandReceive(message);
+								action.onCommandReceive(chatId, message);
 							} else if (defaultAction != null) {
-								defaultAction.onCommandReceive(message);
+								defaultAction.onCommandReceive(chatId, message);
 							}
 						}
 
