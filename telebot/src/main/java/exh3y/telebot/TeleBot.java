@@ -19,6 +19,7 @@ public class TeleBot extends Thread {
 
 	private final String							endpoint;
 	private final String							token;
+	private final String botName;
 
 	private long									pollingIntervall	= 1000;
 
@@ -40,6 +41,16 @@ public class TeleBot extends Thread {
 
 		this.endpoint = endpoint;
 		this.token = token;
+		
+		String botName = "unknown";
+		try {
+			botName = getBotName();
+		} catch (JSONException | UnirestException e) {
+			e.printStackTrace();
+		}
+		
+		this.botName = botName;
+		
 		actionConnector = new HashMap<String, TelegramActionHandler>();
 	}
 
@@ -161,6 +172,10 @@ public class TeleBot extends Thread {
 
 		this.pollingIntervall = millis;
 	}
+	
+	private String getBotName() throws JSONException, UnirestException {
+		return getMe().getBody().getObject().getJSONObject("result").getString("first_name");
+	}
 
 	@Override
 	public void run() {
@@ -193,7 +208,7 @@ public class TeleBot extends Thread {
 
 							String command[] = message.getString("text").split(" ");
 
-							if (actionConnector.containsKey(command[0])) {
+							if (actionConnector.containsKey(command[0]) || actionConnector.containsKey(command[0] + "@" + botName)) {
 								TelegramActionHandler action = actionConnector.get(command[0]);
 								action.onCommandReceive(chatId, message);
 							} else if (defaultAction != null) {
