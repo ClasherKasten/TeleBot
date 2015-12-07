@@ -13,6 +13,6 @@ public interface TelegramActionHandler {
 	 *            The 'message' part of the response object
 	 * @since 0.0.1
 	 */
-	public abstract void onCommandReceive(JSONObject responseObject);
+	public void onCommandReceive(int chatId, JSONObject responseObject);
 
 }
