@@ -209,11 +209,15 @@ public class TeleBot extends Thread {
 						if (message.has("text")) {
 
 							String command[] = message.getString("text").split(" ");
-							String cmd;
+							String cmd = "";
 
 							if (command[0].contains("@")) {
+								
 								command = command[0].split("@");
-								cmd = command[0];
+								if (command[1] == botName) {
+									cmd = command[0];
+								}
+								
 							} else {
 								cmd = command[0];
 							}
