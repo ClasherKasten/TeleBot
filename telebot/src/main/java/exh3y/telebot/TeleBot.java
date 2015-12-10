@@ -14,7 +14,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
-import exh3y.telebot.util.TelegramMessage;
+import exh3y.telebot.data.TelegramMessage;
 
 public class TeleBot extends Thread {
 
