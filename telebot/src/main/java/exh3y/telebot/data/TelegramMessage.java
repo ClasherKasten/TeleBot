@@ -34,7 +34,7 @@ public class TelegramMessage extends JSONObject {
 	 * Returns the message's text field.
 	 * </p>
 	 * 
-	 * @return The content in 'text'
+	 * @return The content of 'text'
 	 */
 	public String getText() {
 
