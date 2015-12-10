@@ -23,6 +23,7 @@ public class TelegramMessage extends JSONObject {
 	 * </p>
 	 * 
 	 * @return The chatID
+	 * @since 0.0.3
 	 */
 	public int getChatId() {
 
