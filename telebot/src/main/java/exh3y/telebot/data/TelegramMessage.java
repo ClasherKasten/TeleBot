@@ -31,6 +31,18 @@ public class TelegramMessage extends JSONObject {
 
 	/**
 	 * <p>
+	 * Returns the message's text field.
+	 * </p>
+	 * 
+	 * @return The content in 'text'
+	 */
+	public String getText() {
+
+		return this.getString("text");
+	}
+
+	/**
+	 * <p>
 	 * Returns the chatId of the current message.
 	 * </p>
 	 * 
