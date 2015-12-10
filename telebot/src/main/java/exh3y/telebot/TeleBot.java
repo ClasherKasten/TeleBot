@@ -143,7 +143,7 @@ public class TeleBot extends Thread {
 	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
-	public HttpResponse<JsonNode> getUpdates(Integer offset) throws UnirestException {
+	private HttpResponse<JsonNode> getUpdates(Integer offset) throws UnirestException {
 
 		return Unirest.post(endpoint + token + "/getUpdates").field("offset", offset).asJson();
 	}
