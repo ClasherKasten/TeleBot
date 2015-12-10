@@ -4,6 +4,13 @@ import org.json.JSONObject;
 
 public class TelegramMessage extends JSONObject {
 
+	/**
+	 * <p>
+	 * Creates a new TelegramMessage object from a given JSON-String
+	 * </p>
+	 * 
+	 * @param message
+	 */
 	public TelegramMessage(JSONObject message) {
 
 		super(message.toString());
