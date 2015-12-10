@@ -14,6 +14,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
+import exh3y.telebot.util.TelegramMessage;
 
 public class TeleBot extends Thread {
 
@@ -209,12 +210,12 @@ public class TeleBot extends Thread {
 					for (int i = 0; i < jsonResponse.length(); i++) {
 
 						// Iterate over the messages in the last update
-						JSONObject message = jsonResponse.getJSONObject(i).getJSONObject("message");
-						int chatId = message.getJSONObject("chat").getInt("id");
+						TelegramMessage message = (TelegramMessage) jsonResponse.getJSONObject(i).getJSONObject("message");
+						int chatId = message.getChatId();
 
 						if (message.has("text")) {
 
-							String command[] = message.getString("text").split(" ");
+							String command[] = message.toCommandArray();
 							String cmd = "";
 							boolean executeCommand = true;
 

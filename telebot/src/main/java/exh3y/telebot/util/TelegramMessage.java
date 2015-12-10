@@ -2,7 +2,7 @@ package exh3y.telebot.util;
 
 import org.json.JSONObject;
 
-public class TelegramMessage {
+public class TelegramMessage extends JSONObject {
 
 	/**
 	 * <p>
@@ -14,9 +14,14 @@ public class TelegramMessage {
 	 * @return The command as array
 	 * @since 0.0.3
 	 */
-	public static String[] messageToCommandArray(JSONObject message) {
+	public String[] toCommandArray() {
 
-		return message.getString("text").split(" ");
+		return this.getString("text").split(" ");
+	}
+	
+	public int getChatId() {
+		
+		return this.getJSONObject("chat").getInt("id");
 	}
 
 }
