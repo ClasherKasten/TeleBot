@@ -6,7 +6,6 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -210,7 +209,7 @@ public class TeleBot extends Thread {
 					for (int i = 0; i < jsonResponse.length(); i++) {
 
 						// Iterate over the messages in the last update
-						TelegramMessage message = (TelegramMessage) jsonResponse.getJSONObject(i).getJSONObject("message");
+						TelegramMessage message = new TelegramMessage(jsonResponse.getJSONObject(i).getJSONObject("message"));
 						int chatId = message.getChatId();
 
 						if (message.has("text")) {

@@ -4,6 +4,11 @@ import org.json.JSONObject;
 
 public class TelegramMessage extends JSONObject {
 
+	public TelegramMessage(JSONObject message) {
+
+		super(message.toString());
+	}
+
 	/**
 	 * <p>
 	 * Returns the command as array.
