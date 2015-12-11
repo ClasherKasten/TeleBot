@@ -10,6 +10,7 @@ public class TelegramMessage extends JSONObject {
 	 * </p>
 	 * 
 	 * @param message
+	 * @since 0.0.3
 	 */
 	public TelegramMessage(JSONObject message) {
 
@@ -35,6 +36,7 @@ public class TelegramMessage extends JSONObject {
 	 * </p>
 	 * 
 	 * @return The content of 'text'
+	 * @since 0.0.3
 	 */
 	public String getText() {
 

@@ -106,7 +106,7 @@ public class TeleBot extends Thread {
 	 * </p>
 	 * 
 	 * @param action
-	 *            The action to register
+	 *            The action to register or null to remove the registered action
 	 * @since 0.0.1
 	 */
 	public void registerDefaultTextAction(TelegramActionHandler action) {
@@ -209,7 +209,8 @@ public class TeleBot extends Thread {
 					for (int i = 0; i < jsonResponse.length(); i++) {
 
 						// Iterate over the messages in the last update
-						TelegramMessage message = new TelegramMessage(jsonResponse.getJSONObject(i).getJSONObject("message"));
+						TelegramMessage message = new TelegramMessage(
+								jsonResponse.getJSONObject(i).getJSONObject("message"));
 						int chatId = message.getChatId();
 
 						if (message.has("text")) {
