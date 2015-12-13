@@ -46,7 +46,7 @@ public class TeleBot extends Thread {
 		try {
 			botName = getMe().getBody().getObject().getJSONObject("result").getString("username");
 		} catch (JSONException | UnirestException e) {
-			e.printStackTrace();
+			System.out.println("Not able to receive the bot's name: " + e.getMessage());
 		}
 
 		this.botName = botName;
