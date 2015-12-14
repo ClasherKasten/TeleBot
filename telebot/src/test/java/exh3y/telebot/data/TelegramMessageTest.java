@@ -43,11 +43,7 @@ public class TelegramMessageTest {
 		System.out.println("Length of tested command: \t" + commandArray.length + " items");
 		System.out.println("Total length: \t\t\t" + commandString.length() + "");
 
-		System.out.println("Command string: " + commandString);
-
 		TelegramMessage message = new TelegramMessage(stringGenerator.randomJSONMessage(commandString));
-
-		System.out.println(message.toString());
 
 		String[] commands = message.toCommandArray();
 
