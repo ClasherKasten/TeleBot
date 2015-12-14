@@ -28,31 +28,29 @@ public class TelegramMessageTest {
 
 		Random rand = new Random();
 		StringGenerator stringGenerator = new StringGenerator();
-		
+
 		String[] commandArray = new String[rand.nextInt(24) + 1];
 		String commandString = "";
 		for (int i = 0; i < commandArray.length; i++) {
-			commandArray[i] = "str" + stringGenerator.randomString(7);
+			commandArray[i] = "str" + stringGenerator.randomString(rand.nextInt(24) + 1);
 			commandString += commandArray[i];
 
 			if (i < commandArray.length - 1) {
 				commandString += " ";
 			}
 		}
-		
+
 		System.out.println("Length of tested command: \t" + commandArray.length + " items");
 		System.out.println("Total length: \t\t\t" + commandString.length() + "");
 
-		JSONObject json = new JSONObject(
-				"{\"message_id\":42,\"from\":{\"id\":547885,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\"},\"chat\":{\"id\":1337,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\",\"type\":\"private\"},\"date\":1450006107,\"text\":\""
-						+ commandString + "\"}");
-		TelegramMessage message = new TelegramMessage(json);
+		TelegramMessage message = new TelegramMessage(stringGenerator.randomJSONMessage(commandString));
 
 		String[] commands = message.toCommandArray();
 
 		assertTrue(commands.length == commandArray.length);
 
 		for (int i = 0; i < commands.length; i++) {
+
 			assertTrue(commands[i].equals(commandArray[i]));
 		}
 
