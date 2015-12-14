@@ -29,7 +29,7 @@ public class TelegramMessageTest {
 		Random rand = new Random();
 		StringGenerator stringGenerator = new StringGenerator();
 		
-		String[] commandArray = new String[rand.nextInt(19) + 1];
+		String[] commandArray = new String[rand.nextInt(24) + 1];
 		String commandString = "";
 		for (int i = 0; i < commandArray.length; i++) {
 			commandArray[i] = "str" + stringGenerator.randomString(7);
@@ -40,7 +40,8 @@ public class TelegramMessageTest {
 			}
 		}
 		
-		System.out.println("Tested command: \"" + commandString + "\"");
+		System.out.println("Length of tested command: \t" + commandArray.length + " items");
+		System.out.println("Total length: \t\t\t" + commandString.length() + "");
 
 		JSONObject json = new JSONObject(
 				"{\"message_id\":42,\"from\":{\"id\":547885,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\"},\"chat\":{\"id\":1337,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\",\"type\":\"private\"},\"date\":1450006107,\"text\":\""
