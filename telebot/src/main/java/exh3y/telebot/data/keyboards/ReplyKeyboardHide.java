@@ -1,4 +1,4 @@
-package exh3y.telebot.data;
+package exh3y.telebot.data.keyboards;
 
 import org.json.JSONObject;
 import org.json.JSONString;

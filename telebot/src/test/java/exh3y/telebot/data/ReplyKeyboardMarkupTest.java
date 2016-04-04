@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import exh3y.telebot.data.keyboards.ReplyKeyboardMarkup;
 import exh3y.telebot.testutil.StringGenerator;
 
 public class ReplyKeyboardMarkupTest {
