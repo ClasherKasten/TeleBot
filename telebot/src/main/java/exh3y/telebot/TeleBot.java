@@ -6,6 +6,7 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONString;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -13,7 +14,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
-import exh3y.telebot.data.ReplyKeyboardMarkup;
 import exh3y.telebot.data.TelegramMessage;
 
 public class TeleBot extends Thread {
@@ -140,7 +140,7 @@ public class TeleBot extends Thread {
 	 */
 	public HttpResponse<JsonNode> sendMessage(Integer chatId, String text, String parseMode,
 			boolean disableWebPagePreview, boolean disableNotification, int replyToMessageID,
-			ReplyKeyboardMarkup replyMarkup) throws UnirestException {
+			JSONString replyMarkup) throws UnirestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
