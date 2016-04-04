@@ -136,7 +136,7 @@ public class TeleBot extends Thread {
 	 *            The keyboard markup to use for replies.
 	 * @return The servers response
 	 * @throws UnirestException
-	 * @since 0.0.1
+	 * @since 0.0.4
 	 */
 	public HttpResponse<JsonNode> sendMessage(Integer chatId, String text, String parseMode,
 			boolean disableWebPagePreview, boolean disableNotification, int replyToMessageID,
