@@ -55,7 +55,7 @@ public class TelegramMessage extends JSONObject {
 
 		return this.getJSONObject("chat").getInt("id");
 	}
-	
+
 	/**
 	 * <p>
 	 * Returns the messageId of the current message.

@@ -29,31 +29,40 @@ public class TelegramMessageTest {
 		Random rand = new Random();
 		StringGenerator stringGenerator = new StringGenerator();
 
-		String[] commandArray = new String[rand.nextInt(24) + 1];
-		String commandString = "";
-		for (int i = 0; i < commandArray.length; i++) {
-			commandArray[i] = "str" + stringGenerator.randomString(rand.nextInt(24) + 1);
-			commandString += commandArray[i];
+		for (int count = 1; count <= 20; count = count + 5) {
+			String[] commandArray = new String[count];
 
-			if (i < commandArray.length - 1) {
-				commandString += " ";
+			if (count == 1) {
+				count = 0;
+			}
+
+			String commandString = "";
+			for (int i = 0; i < commandArray.length; i++) {
+				commandArray[i] = "str" + stringGenerator.randomString(rand.nextInt(24) + 1);
+				commandString += commandArray[i];
+
+				if (i < commandArray.length - 1) {
+					commandString += " ";
+				}
+			}
+
+			System.out.println("Length of tested command: \t" + commandArray.length + " items");
+			System.out.println("Total length: \t\t\t" + commandString.length() + " characters");
+
+			for (int i = 0; i < 10; i++) {
+
+				TelegramMessage message = new TelegramMessage(stringGenerator.randomJSONMessage(commandString));
+
+				String[] commands = message.toCommandArray();
+
+				assertTrue(commands.length == commandArray.length);
+
+				for (int j = 0; j < commands.length; j++) {
+
+					assertTrue(commands[j].equals(commandArray[j]));
+				}
 			}
 		}
-
-		System.out.println("Length of tested command: \t" + commandArray.length + " items");
-		System.out.println("Total length: \t\t\t" + commandString.length() + "");
-
-		TelegramMessage message = new TelegramMessage(stringGenerator.randomJSONMessage(commandString));
-
-		String[] commands = message.toCommandArray();
-
-		assertTrue(commands.length == commandArray.length);
-
-		for (int i = 0; i < commands.length; i++) {
-
-			assertTrue(commands[i].equals(commandArray[i]));
-		}
-
 	}
 
 }

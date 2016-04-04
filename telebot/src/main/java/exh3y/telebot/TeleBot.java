@@ -78,9 +78,8 @@ public class TeleBot extends Thread {
 	 */
 	public void registerCommandAction(String command, TelegramActionHandler action) throws InvalidAttributesException {
 
-		if (actionConnector.containsKey(command)) {
-			throw new InvalidAttributesException("Command already registered!");
-		}
+		if (actionConnector
+				.containsKey(command)) { throw new InvalidAttributesException("Command already registered!"); }
 
 		actionConnector.put(command, action);
 	}
@@ -136,11 +135,11 @@ public class TeleBot extends Thread {
 	 *            The keyboard markup to use for replies.
 	 * @return The servers response
 	 * @throws UnirestException
-	 * @since 0.0.1
+	 * @since 0.0.4
 	 */
 	public HttpResponse<JsonNode> sendMessage(Integer chatId, String text, String parseMode,
-			boolean disableWebPagePreview, boolean disableNotification, int replyToMessageID,
-			JSONString replyMarkup) throws UnirestException {
+			boolean disableWebPagePreview, boolean disableNotification, int replyToMessageID, JSONString replyMarkup)
+					throws UnirestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
