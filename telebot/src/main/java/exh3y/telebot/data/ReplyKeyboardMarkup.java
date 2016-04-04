@@ -30,7 +30,7 @@ public class ReplyKeyboardMarkup implements JSONString {
 		JSONArray keyboard = new JSONArray(this.keyboard);
 		JSONObject object = new JSONObject();
 		
-		object.append("keyboard", keyboard.toString());
+		object.append("keyboard", keyboard);
 		
 		if (resizeKeyboard) {
 			object.put("resize_keyboard", true);
