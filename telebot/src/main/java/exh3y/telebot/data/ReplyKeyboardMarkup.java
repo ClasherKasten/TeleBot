@@ -33,15 +33,15 @@ public class ReplyKeyboardMarkup implements JSONString {
 		object.append("keyboard", keyboard.toString());
 		
 		if (resizeKeyboard) {
-			object.append("resize_keyboard", "true");
+			object.put("resize_keyboard", true);
 		}
 		
 		if (oneTimeKeyboard) {
-			object.append("one_time_keyboard", "true");
+			object.put("one_time_keyboard", true);
 		}
 		
 		if (selective) {
-			object.append("selective", "true");
+			object.put("selective", true);
 		}
 		
 		return object.toString();

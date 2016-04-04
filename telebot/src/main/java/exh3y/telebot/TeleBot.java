@@ -151,11 +151,11 @@ public class TeleBot extends Thread {
 		}
 
 		if (disableWebPagePreview) {
-			parameters.put("disable_web_page_preview", "true");
+			parameters.put("disable_web_page_preview", true);
 		}
 
 		if (disableNotification) {
-			parameters.put("disable_notification", "true");
+			parameters.put("disable_notification", true);
 		}
 
 		if (replyToMessageID != -1) {
