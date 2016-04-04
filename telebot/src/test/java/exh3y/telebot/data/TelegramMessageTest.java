@@ -47,7 +47,7 @@ public class TelegramMessageTest {
 			}
 
 			System.out.println("Length of tested command: \t" + commandArray.length + " items");
-			System.out.println("Total length: \t\t\t" + commandString.length() + "");
+			System.out.println("Total length: \t\t\t" + commandString.length() + " characters");
 
 			for (int i = 0; i < 10; i++) {
 
