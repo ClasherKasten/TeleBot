@@ -29,8 +29,13 @@ public class TelegramMessageTest {
 		Random rand = new Random();
 		StringGenerator stringGenerator = new StringGenerator();
 
-		for (int count = 1; count < 10; count = count + 2) {
+		for (int count = 1; count <= 20; count = count + 5) {
 			String[] commandArray = new String[count];
+			
+			if (count == 1) {
+				count = 0;
+			}
+			
 			String commandString = "";
 			for (int i = 0; i < commandArray.length; i++) {
 				commandArray[i] = "str" + stringGenerator.randomString(rand.nextInt(24) + 1);
