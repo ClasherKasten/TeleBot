@@ -13,6 +13,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
+import exh3y.telebot.data.ReplyKeyboardMarkup;
 import exh3y.telebot.data.TelegramMessage;
 
 public class TeleBot extends Thread {
@@ -123,13 +124,67 @@ public class TeleBot extends Thread {
 	 *            The chat's id
 	 * @param text
 	 *            The message to send
+	 * @param parseMode
+	 *            The parse mode to use
+	 * @param disableWebPagePreview
+	 *            Disables the web page preview in the chat
+	 * @param disableNotification
+	 *            Send the message silently
+	 * @param replyToMessageID
+	 *            The message id to reply to. '-1' if the message is not a reply
+	 * @param replyMarkup
+	 *            The keyboard markup to use for replies.
+	 * @return The servers response
+	 * @throws UnirestException
+	 * @since 0.0.1
+	 */
+	public HttpResponse<JsonNode> sendMessage(Integer chatId, String text, String parseMode,
+			boolean disableWebPagePreview, boolean disableNotification, int replyToMessageID,
+			ReplyKeyboardMarkup replyMarkup) throws UnirestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("text", text);
+
+		if (parseMode != null) {
+			parameters.put("parse_mode", parseMode);
+		}
+
+		if (disableWebPagePreview) {
+			parameters.put("disable_web_page_preview", true);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", true);
+		}
+
+		if (replyToMessageID != -1) {
+			parameters.put("reply_to_message_id", replyToMessageID);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup.toJSONString());
+		}
+
+		return Unirest.post(endpoint + token + "/sendMessage").fields(parameters).asJson();
+	}
+
+	/**
+	 * <p>
+	 * Sends a message to the given chat.
+	 * </p>
+	 * 
+	 * @param chatId
+	 *            The chat's id
+	 * @param text
+	 *            The message to send
 	 * @return The servers response
 	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
 	public HttpResponse<JsonNode> sendMessage(Integer chatId, String text) throws UnirestException {
 
-		return Unirest.post(endpoint + token + "/sendMessage").field("chat_id", chatId).field("text", text).asJson();
+		return sendMessage(chatId, text, null, false, false, -1, null);
 	}
 
 	/**
