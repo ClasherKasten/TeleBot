@@ -43,15 +43,18 @@ public class TelegramMessageTest {
 		System.out.println("Length of tested command: \t" + commandArray.length + " items");
 		System.out.println("Total length: \t\t\t" + commandString.length() + "");
 
-		TelegramMessage message = new TelegramMessage(stringGenerator.randomJSONMessage(commandString));
+		for (int i = 0; i < 10; i++) {
 
-		String[] commands = message.toCommandArray();
+			TelegramMessage message = new TelegramMessage(stringGenerator.randomJSONMessage(commandString));
 
-		assertTrue(commands.length == commandArray.length);
+			String[] commands = message.toCommandArray();
 
-		for (int i = 0; i < commands.length; i++) {
+			assertTrue(commands.length == commandArray.length);
 
-			assertTrue(commands[i].equals(commandArray[i]));
+			for (int j = 0; j < commands.length; j++) {
+
+				assertTrue(commands[j].equals(commandArray[j]));
+			}
 		}
 
 	}
