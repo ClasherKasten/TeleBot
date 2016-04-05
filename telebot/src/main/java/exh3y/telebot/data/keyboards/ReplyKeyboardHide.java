@@ -1,9 +1,8 @@
 package exh3y.telebot.data.keyboards;
 
 import org.json.JSONObject;
-import org.json.JSONString;
 
-public class ReplyKeyboardHide implements JSONString {
+public class ReplyKeyboardHide extends ReplyMarkup {
 
 	public boolean selective;
 
