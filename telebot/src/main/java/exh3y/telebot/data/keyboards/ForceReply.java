@@ -1,9 +1,8 @@
 package exh3y.telebot.data.keyboards;
 
 import org.json.JSONObject;
-import org.json.JSONString;
 
-public class ForceReply implements JSONString {
+public class ForceReply extends ReplyMarkup {
 
 	public boolean selective;
 

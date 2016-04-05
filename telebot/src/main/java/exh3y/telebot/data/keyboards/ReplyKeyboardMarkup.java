@@ -2,9 +2,8 @@ package exh3y.telebot.data.keyboards;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 
-public class ReplyKeyboardMarkup implements JSONString {
+public class ReplyKeyboardMarkup extends ReplyMarkup {
 
 	public String[][]	keyboard;
 	public boolean		resizeKeyboard;
