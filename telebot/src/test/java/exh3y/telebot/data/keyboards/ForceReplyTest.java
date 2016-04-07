@@ -1,6 +1,6 @@
 package exh3y.telebot.data.keyboards;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -16,10 +16,10 @@ public class ForceReplyTest {
 	@Test
 	public void testToJSONString() {
 		
-		ForceReply keyboard = new ForceReply(false);
+		ForceReply keyboard = new ForceReply(true);
 		
 		JSONObject json = new JSONObject(keyboard.toJSONString());
-		assertFalse(json.getBoolean("selective"));
+		assertTrue(json.getBoolean("selective"));
 	}
 	
 }

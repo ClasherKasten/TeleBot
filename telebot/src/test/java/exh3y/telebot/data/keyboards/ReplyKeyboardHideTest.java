@@ -16,10 +16,10 @@ public class ReplyKeyboardHideTest {
 	@Test
 	public void testToJSONString() {
 		
-		ReplyKeyboardHide keyboard = new ReplyKeyboardHide(false);
+		ReplyKeyboardHide keyboard = new ReplyKeyboardHide(true);
 		
 		JSONObject json = new JSONObject(keyboard.toJSONString());
-		assertFalse(json.getBoolean("selective"));
+		assertTrue(json.getBoolean("selective"));
 	}
 
 }
