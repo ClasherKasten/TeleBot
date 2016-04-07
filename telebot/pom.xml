@@ -4,7 +4,7 @@
 
   <groupId>exh3y</groupId>
   <artifactId>telebot</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
   <packaging>jar</packaging>
 
   <name>TeleBot</name>
