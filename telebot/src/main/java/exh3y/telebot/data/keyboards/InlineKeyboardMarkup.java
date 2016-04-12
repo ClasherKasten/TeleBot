@@ -37,6 +37,8 @@ public class InlineKeyboardMarkup extends ReplyMarkup {
 			}
 
 		}
+		
+		this.keyboard = keyboard;
 
 	}
 
