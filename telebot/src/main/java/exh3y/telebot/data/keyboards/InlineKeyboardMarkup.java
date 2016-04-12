@@ -52,7 +52,7 @@ public class InlineKeyboardMarkup extends ReplyMarkup {
 			
 			for (int j = 0; j < this.keyboard[i].length; j++) {
 				
-				innerArray.put(this.keyboard[i][j].toJSONString());
+				innerArray.put(this.keyboard[i][j]);
 				
 			}
 			
