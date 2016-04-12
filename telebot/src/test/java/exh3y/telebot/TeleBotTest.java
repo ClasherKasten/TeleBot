@@ -6,8 +6,10 @@ import org.json.JSONObject;
 import org.junit.Test;
 
 import exh3y.telebot.actions.TelegramActionHandler;
+import exh3y.telebot.actions.TelegramMessageHandler;
+import exh3y.telebot.data.TelegramMessage;
 
-public class TeleBotTest implements TelegramActionHandler {
+public class TeleBotTest implements TelegramMessageHandler {
 
 	@Test
 	public void testTeleBotCreation() {
@@ -23,9 +25,16 @@ public class TeleBotTest implements TelegramActionHandler {
 	}
 
 	@Override
-	public void onCommandReceive(int chatId, JSONObject message) {
+	public void onCommandReceive(int chatId, TelegramMessage message) {
 
 		return;
+	}
+
+	@Override
+	public void onCommandReceive(JSONObject response) {
+
+		// TODO Auto-generated method stub
+		
 	}
 
 }
