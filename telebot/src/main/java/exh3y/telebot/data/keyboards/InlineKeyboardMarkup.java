@@ -43,7 +43,21 @@ public class InlineKeyboardMarkup extends ReplyMarkup {
 	@Override
 	public String toJSONString() {
 
-		JSONArray keyboard = new JSONArray(this.keyboard);
+		JSONArray keyboard = new JSONArray();
+		for (int i = 0; i < this.keyboard.length; i++) {
+			
+			JSONArray innerArray = new JSONArray();
+			
+			for (int j = 0; j < this.keyboard[i].length; j++) {
+				
+				innerArray.put(this.keyboard[i][j].toJSONString());
+				
+			}
+			
+			keyboard.put(innerArray);
+			
+		}
+		
 		JSONObject object = new JSONObject();
 
 		object.put("inline_keyboard", keyboard);
