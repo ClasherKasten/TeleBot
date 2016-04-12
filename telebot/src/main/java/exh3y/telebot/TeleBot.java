@@ -6,13 +6,16 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import exh3y.telebot.actions.TelegramActionHandler;
+import exh3y.telebot.actions.TelegramCommonHandler;
+import exh3y.telebot.actions.TelegramMessageHandler;
+import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
 
@@ -24,8 +27,10 @@ public class TeleBot extends Thread {
 
 	private long									pollingIntervall	= 1000;
 
-	private HashMap<String, TelegramActionHandler>	actionConnector;
-	private TelegramActionHandler					defaultAction		= null;
+	private HashMap<String, TelegramCommonHandler>	responseHandlerConnector;
+	private HashMap<String, TelegramMessageHandler>	messageHandlerConnector;
+
+	private TelegramCommonHandler					defaultAction		= null;
 
 	/**
 	 * <p>
@@ -52,7 +57,8 @@ public class TeleBot extends Thread {
 
 		this.botName = botName;
 
-		actionConnector = new HashMap<String, TelegramActionHandler>();
+		responseHandlerConnector = new HashMap<String, TelegramCommonHandler>();
+		messageHandlerConnector = new HashMap<String, TelegramMessageHandler>();
 	}
 
 	/**
@@ -76,13 +82,12 @@ public class TeleBot extends Thread {
 	 * @throws InvalidAttributesException
 	 * @since 0.0.1
 	 */
-	public void registerCommandAction(String command, TelegramActionHandler action) throws InvalidAttributesException {
+	public void registerCommandAction(String command, TelegramCommonHandler action) throws InvalidAttributesException {
 
-		if (actionConnector.containsKey(command)) {
-			throw new InvalidAttributesException("Command already registered!");
-		}
+		if (responseHandlerConnector
+				.containsKey(command)) { throw new InvalidAttributesException("Command already registered!"); }
 
-		actionConnector.put(command, action);
+		responseHandlerConnector.put(command, action);
 	}
 
 	/**
@@ -96,8 +101,44 @@ public class TeleBot extends Thread {
 	 */
 	public void unregisterCommandAction(String command) {
 
-		if (actionConnector.containsKey(command)) {
-			actionConnector.remove(command);
+		if (responseHandlerConnector.containsKey(command)) {
+			responseHandlerConnector.remove(command);
+		}
+	}
+
+	/**
+	 * <p>
+	 * Registers a new action to be executed on receiving the given command.
+	 * </p>
+	 * 
+	 * @param command
+	 *            The command to link to the action
+	 * @param action
+	 *            The action
+	 * @throws InvalidAttributesException
+	 * @since 0.0.5
+	 */
+	public void registerMessageAction(String command, TelegramMessageHandler action) throws InvalidAttributesException {
+
+		if (messageHandlerConnector
+				.containsKey(command)) { throw new InvalidAttributesException("Command already registered!"); }
+
+		messageHandlerConnector.put(command, action);
+	}
+
+	/**
+	 * <p>
+	 * Unregisters a command.
+	 * </p>
+	 * 
+	 * @param command
+	 *            The command to delete
+	 * @since 0.0.5
+	 */
+	public void unregisterMessageAction(String command) {
+
+		if (messageHandlerConnector.containsKey(command)) {
+			messageHandlerConnector.remove(command);
 		}
 	}
 
@@ -110,13 +151,13 @@ public class TeleBot extends Thread {
 	 *            The action to register or null to remove the registered action
 	 * @since 0.0.1
 	 */
-	public void registerDefaultTextAction(TelegramActionHandler action) {
+	public void registerDefaultTextAction(TelegramMessageHandler action) {
 
 		defaultAction = action;
 	}
 
-	private HttpResponse<JsonNode> sendRawRequest(String method,
-			HashMap<String, Object> parameters) throws UnirestException {
+	private HttpResponse<JsonNode> sendRawRequest(String method, HashMap<String, Object> parameters)
+			throws UnirestException {
 
 		return Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
 	}
@@ -208,8 +249,8 @@ public class TeleBot extends Thread {
 	 * @see <a href="https://core.telegram.org/bots/api#forwardmessage">https://
 	 *      core.telegram.org/bots/api#forwardmessage</a>
 	 */
-	public HttpResponse<JsonNode> forwardMessage(int chatId, int fromChatId, boolean disableNotification,
-			int messageId) throws UnirestException {
+	public HttpResponse<JsonNode> forwardMessage(int chatId, int fromChatId, boolean disableNotification, int messageId)
+			throws UnirestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
@@ -364,35 +405,44 @@ public class TeleBot extends Thread {
 					for (int i = 0; i < jsonResponse.length(); i++) {
 
 						// Iterate over the messages in the last update
-						TelegramMessage message = new TelegramMessage(
-								jsonResponse.getJSONObject(i).getJSONObject("message"));
-						int chatId = message.getChatId();
+						JSONObject responseObject = jsonResponse.getJSONObject(i);
 
-						if (message.has("text")) {
+						if (responseObject.getJSONObject("message") != null) {
+							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
+							int chatId = message.getChatId();
 
-							String command[] = message.toCommandArray();
-							String cmd = "";
-							boolean executeCommand = true;
+							if (message.has("text")) {
 
-							if (command[0].contains("@")) {
+								String command[] = message.toCommandArray();
+								String cmd = "";
+								boolean executeCommand = true;
 
-								String[] commandList = command[0].split("@");
-								if (commandList[1].equals(botName)) {
-									cmd = commandList[0];
+								if (command[0].contains("@")) {
+
+									String[] commandList = command[0].split("@");
+									if (commandList[1].equals(botName)) {
+										cmd = commandList[0];
+									} else {
+										executeCommand = false;
+									}
+
 								} else {
-									executeCommand = false;
+									cmd = command[0];
 								}
 
-							} else {
-								cmd = command[0];
+								if (messageHandlerConnector.containsKey(cmd)) {
+									TelegramMessageHandler action = messageHandlerConnector.get(cmd);
+									action.onCommandReceive(chatId, message);
+								} else if (defaultAction != null && executeCommand) {
+									defaultAction.onCommandReceive(message);
+								}
 							}
-
-							if (actionConnector.containsKey(cmd)) {
-								TelegramActionHandler action = actionConnector.get(cmd);
-								action.onCommandReceive(chatId, message);
-							} else if (defaultAction != null && executeCommand) {
-								defaultAction.onCommandReceive(chatId, message);
+						} else {
+							
+							for (TelegramCommonHandler handler : responseHandlerConnector.values()) {
+								handler.onCommandReceive(responseObject);
 							}
+							
 						}
 
 					}
