@@ -29,7 +29,7 @@ public class InlineKeyboardButton implements JSONString {
 	}
 
 	public InlineKeyboardButton(String text) {
-		this(text, null, null, null);
+		this(text, null, text, null);
 	}
 
 	public String getText() {
