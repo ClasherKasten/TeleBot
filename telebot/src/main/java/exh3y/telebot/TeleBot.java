@@ -6,6 +6,7 @@ import javax.naming.directory.InvalidAttributesException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -364,35 +365,42 @@ public class TeleBot extends Thread {
 					for (int i = 0; i < jsonResponse.length(); i++) {
 
 						// Iterate over the messages in the last update
-						TelegramMessage message = new TelegramMessage(
-								jsonResponse.getJSONObject(i).getJSONObject("message"));
-						int chatId = message.getChatId();
+						JSONObject responseObject = jsonResponse.getJSONObject(i);
 
-						if (message.has("text")) {
+						if (responseObject.has("message")) {
+							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
+							int chatId = message.getChatId();
 
-							String command[] = message.toCommandArray();
-							String cmd = "";
-							boolean executeCommand = true;
+							if (message.has("text")) {
 
-							if (command[0].contains("@")) {
+								String command[] = message.toCommandArray();
+								String cmd = "";
+								boolean executeCommand = true;
 
-								String[] commandList = command[0].split("@");
-								if (commandList[1].equals(botName)) {
-									cmd = commandList[0];
+								if (command[0].contains("@")) {
+
+									String[] commandList = command[0].split("@");
+									if (commandList[1].equals(botName)) {
+										cmd = commandList[0];
+									} else {
+										executeCommand = false;
+									}
+
 								} else {
-									executeCommand = false;
+									cmd = command[0];
 								}
 
-							} else {
-								cmd = command[0];
+								if (actionConnector.containsKey(cmd)) {
+									TelegramActionHandler action = actionConnector.get(cmd);
+									action.onCommandReceive(chatId, message);
+								} else if (defaultAction != null && executeCommand) {
+									defaultAction.onCommandReceive(chatId, message);
+								}
 							}
+						} else {
 
-							if (actionConnector.containsKey(cmd)) {
-								TelegramActionHandler action = actionConnector.get(cmd);
-								action.onCommandReceive(chatId, message);
-							} else if (defaultAction != null && executeCommand) {
-								defaultAction.onCommandReceive(chatId, message);
-							}
+							// TODO: General handlers to handle all responses
+							// not containing a command
 						}
 
 					}
