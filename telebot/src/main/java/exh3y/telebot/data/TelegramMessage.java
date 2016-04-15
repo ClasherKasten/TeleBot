@@ -69,4 +69,15 @@ public class TelegramMessage extends JSONObject {
 		return this.getInt("message_id");
 	}
 
+	/**
+	 * Returns the message's chat type
+	 * 
+	 * @return The type of the chat
+	 * @since 0.0.5
+	 */
+	public String getChatType() {
+
+		return this.getJSONObject("chat").getString("type");
+	}
+
 }
