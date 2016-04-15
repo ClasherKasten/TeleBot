@@ -1,11 +1,14 @@
 package exh3y.telebot;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.naming.directory.InvalidAttributesException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -13,6 +16,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
+import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
 
@@ -26,6 +30,8 @@ public class TeleBot extends Thread {
 
 	private HashMap<String, TelegramActionHandler>	actionConnector;
 	private TelegramActionHandler					defaultAction		= null;
+
+	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
 	/**
 	 * <p>
@@ -53,6 +59,7 @@ public class TeleBot extends Thread {
 		this.botName = botName;
 
 		actionConnector = new HashMap<String, TelegramActionHandler>();
+		responseHandlers = new ArrayList<>();
 	}
 
 	/**
@@ -113,6 +120,30 @@ public class TeleBot extends Thread {
 	public void registerDefaultTextAction(TelegramActionHandler action) {
 
 		defaultAction = action;
+	}
+
+	/**
+	 * Registers a new handler to get notified about new responses.
+	 * 
+	 * @param handler
+	 *            The handler to register
+	 * @since 0.0.5
+	 */
+	public void registerResponseHandler(TelegramResponseHandler handler) {
+
+		responseHandlers.add(handler);
+	}
+
+	/**
+	 * Unregisters the given handler.
+	 * 
+	 * @param handler
+	 *            The handler to remove from registered handlers
+	 * @since 0.0.5
+	 */
+	public void unregisterResponseHandler(TelegramResponseHandler handler) {
+
+		responseHandlers.remove(handler);
 	}
 
 	private HttpResponse<JsonNode> sendRawRequest(String method,
@@ -364,34 +395,43 @@ public class TeleBot extends Thread {
 					for (int i = 0; i < jsonResponse.length(); i++) {
 
 						// Iterate over the messages in the last update
-						TelegramMessage message = new TelegramMessage(
-								jsonResponse.getJSONObject(i).getJSONObject("message"));
-						int chatId = message.getChatId();
+						JSONObject responseObject = jsonResponse.getJSONObject(i);
 
-						if (message.has("text")) {
+						if (responseObject.has("message")) {
+							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
+							int chatId = message.getChatId();
 
-							String command[] = message.toCommandArray();
-							String cmd = "";
-							boolean executeCommand = true;
+							if (message.has("text")) {
 
-							if (command[0].contains("@")) {
+								String command[] = message.toCommandArray();
+								String cmd = "";
+								boolean executeCommand = true;
 
-								String[] commandList = command[0].split("@");
-								if (commandList[1].equals(botName)) {
-									cmd = commandList[0];
+								if (command[0].contains("@")) {
+
+									String[] commandList = command[0].split("@");
+									if (commandList[1].equals(botName)) {
+										cmd = commandList[0];
+									} else {
+										executeCommand = false;
+									}
+
 								} else {
-									executeCommand = false;
+									cmd = command[0];
 								}
 
-							} else {
-								cmd = command[0];
+								if (actionConnector.containsKey(cmd)) {
+									TelegramActionHandler action = actionConnector.get(cmd);
+									action.onCommandReceive(chatId, message);
+								} else if (defaultAction != null && executeCommand) {
+									defaultAction.onCommandReceive(chatId, message);
+								}
 							}
+						} else {
 
-							if (actionConnector.containsKey(cmd)) {
-								TelegramActionHandler action = actionConnector.get(cmd);
-								action.onCommandReceive(chatId, message);
-							} else if (defaultAction != null && executeCommand) {
-								defaultAction.onCommandReceive(chatId, message);
+							for (TelegramResponseHandler handler : responseHandlers) {
+								
+								handler.onReceive(responseObject);
 							}
 						}
 

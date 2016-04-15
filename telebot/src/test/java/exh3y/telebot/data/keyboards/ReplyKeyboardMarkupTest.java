@@ -1,4 +1,4 @@
-package exh3y.telebot.data;
+package exh3y.telebot.data.keyboards;
 
 import static org.junit.Assert.*;
 
@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import exh3y.telebot.data.keyboards.ReplyKeyboardMarkup;
 import exh3y.telebot.testutil.StringGenerator;
 
 public class ReplyKeyboardMarkupTest {
