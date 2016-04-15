@@ -275,6 +275,7 @@ public class TeleBot extends Thread {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
+		parameters.put("message_id", messageId);
 		parameters.put("text", text);
 
 		if (parseMode != null) {
