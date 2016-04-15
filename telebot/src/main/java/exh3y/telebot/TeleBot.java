@@ -19,6 +19,7 @@ import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.data.keyboards.InlineKeyboardMarkup;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
+import exh3y.telebot.exceptions.InvalidRequestException;
 
 public class TeleBot extends Thread {
 
@@ -147,9 +148,14 @@ public class TeleBot extends Thread {
 	}
 
 	private HttpResponse<JsonNode> sendRawRequest(String method,
-			HashMap<String, Object> parameters) throws UnirestException {
+			HashMap<String, Object> parameters) throws UnirestException, InvalidRequestException {
 
-		return Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
+		HttpResponse<JsonNode> response = Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
+		JSONObject jsonResponse = new JSONObject(response.toString());
+		if (!jsonResponse.getBoolean("ok")) {
+			throw new InvalidRequestException(jsonResponse.optString("description"));
+		}
+		return response;
 	}
 
 	/**
@@ -173,10 +179,13 @@ public class TeleBot extends Thread {
 	 *            The keyboard markup to use for replies.
 	 * @return The server's response
 	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 *             Thrown if the request was not successful
 	 * @since 0.0.4
 	 */
 	public HttpResponse<JsonNode> sendMessage(int chatId, String text, String parseMode, boolean disableWebPagePreview,
-			boolean disableNotification, int replyToMessageID, ReplyMarkup replyMarkup) throws UnirestException {
+			boolean disableNotification, int replyToMessageID,
+			ReplyMarkup replyMarkup) throws UnirestException, InvalidRequestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
@@ -216,9 +225,12 @@ public class TeleBot extends Thread {
 	 *            The message to send
 	 * @return The server's response
 	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 *             Thrown if the request was not successful
 	 * @since 0.0.1
 	 */
-	public HttpResponse<JsonNode> sendMessage(int chatId, String text) throws UnirestException {
+	public HttpResponse<JsonNode> sendMessage(int chatId,
+			String text) throws UnirestException, InvalidRequestException {
 
 		return sendMessage(chatId, text, null, false, false, -1, null);
 	}
@@ -235,12 +247,14 @@ public class TeleBot extends Thread {
 	 *            The message to forward
 	 * @return The server's response
 	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 *             Thrown if the request was not successful
 	 * @since 0.0.4
 	 * @see <a href="https://core.telegram.org/bots/api#forwardmessage">https://
 	 *      core.telegram.org/bots/api#forwardmessage</a>
 	 */
 	public HttpResponse<JsonNode> forwardMessage(int chatId, int fromChatId, boolean disableNotification,
-			int messageId) throws UnirestException {
+			int messageId) throws UnirestException, InvalidRequestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
@@ -269,9 +283,12 @@ public class TeleBot extends Thread {
 	 * @param replyMarkup
 	 * @return The sent message
 	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 *             Thrown if the request was not successful
 	 */
 	public HttpResponse<JsonNode> editMessageText(int chatId, int messageId, String text, String parseMode,
-			boolean disableWebPagePreview, InlineKeyboardMarkup replyMarkup) throws UnirestException {
+			boolean disableWebPagePreview,
+			InlineKeyboardMarkup replyMarkup) throws UnirestException, InvalidRequestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
@@ -305,12 +322,14 @@ public class TeleBot extends Thread {
 	 * @param replyMarkup
 	 * @return The server's response
 	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 *             Thrown if the request was not successful
 	 * @since 0.0.4
 	 * @see <a href="https://core.telegram.org/bots/api#sendlocation">https://
 	 *      core.telegram.org/bots/api#sendlocation</a>
 	 */
 	public HttpResponse<JsonNode> sendLocation(int chatId, float latitude, float longitude, boolean disableNotification,
-			int replyToMessageId, ReplyMarkup replyMarkup) throws UnirestException {
+			int replyToMessageId, ReplyMarkup replyMarkup) throws UnirestException, InvalidRequestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
@@ -342,11 +361,14 @@ public class TeleBot extends Thread {
 	 *            The action to send
 	 * @return The server's response
 	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 *             Thrown if the request was not successful
 	 * @since 0.0.4
 	 * @see <a href="https://core.telegram.org/bots/api#sendchataction">https://
 	 *      core.telegram.org/bots/api#sendchataction</a>
 	 */
-	public HttpResponse<JsonNode> sendChatAction(int chatId, String action) throws UnirestException {
+	public HttpResponse<JsonNode> sendChatAction(int chatId,
+			String action) throws UnirestException, InvalidRequestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
 		parameters.put("chat_id", chatId);
