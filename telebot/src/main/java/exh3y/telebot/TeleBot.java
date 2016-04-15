@@ -151,7 +151,7 @@ public class TeleBot extends Thread {
 			HashMap<String, Object> parameters) throws UnirestException, InvalidRequestException {
 
 		HttpResponse<JsonNode> response = Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
-		JSONObject jsonResponse = new JSONObject(response.toString());
+		JSONObject jsonResponse = new JSONObject(response.getBody());
 		if (!jsonResponse.getBoolean("ok")) {
 			throw new InvalidRequestException(jsonResponse.optString("description"));
 		}
