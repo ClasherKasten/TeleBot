@@ -482,6 +482,54 @@ public class TeleBot extends Thread {
 	}
 
 	/**
+	 * Kicks a user from a group.
+	 * 
+	 * @param chatId
+	 *            The chat's id
+	 * @param userId
+	 *            The user's id
+	 * @return The server's response
+	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 * @since 0.0.5
+	 * @see <a href="https://core.telegram.org/bots/api#kickchatmember">https://
+	 *      core.telegram.org/bots/api#kickchatmember</a>
+	 */
+	public HttpResponse<JsonNode> kickChatMember(int chatId,
+			int userId) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("user_id", userId);
+
+		return sendRawRequest("kickChatMember", parameters);
+	}
+
+	/**
+	 * Unbans a previously kicked user in a supergroup.
+	 * 
+	 * @param chatId
+	 *            The chat's id
+	 * @param userId
+	 *            The user's id
+	 * @return The server's response
+	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 * @since 0.0.5
+	 * @see <a href="https://core.telegram.org/bots/api#unbanchatmember">https:/
+	 *      /core.telegram.org/bots/api#unbanchatmember</a>
+	 */
+	public HttpResponse<JsonNode> unbanChatMember(int chatId,
+			int userId) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("user_id", userId);
+
+		return sendRawRequest("unbanChatMember", parameters);
+	}
+
+	/**
 	 * <p>
 	 * Returns all unprocessed messages.
 	 * </p>
