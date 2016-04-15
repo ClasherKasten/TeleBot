@@ -530,6 +530,40 @@ public class TeleBot extends Thread {
 	}
 
 	/**
+	 * Sends an answer to a callback query
+	 * 
+	 * @param callbackQueryId
+	 *            The query to answer
+	 * @param text
+	 *            The text to show
+	 * @param showAlert
+	 *            Show an alert instead of a notification
+	 * @return The server's response
+	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 * @since 0.0.5
+	 * @see <a href="https://core.telegram.org/bots/api#answercallbackquery">
+	 *      https://core.telegram.org/bots/api#answercallbackquery</a>
+	 */
+	public HttpResponse<JsonNode> answerCallbackQuery(String callbackQueryId, String text,
+			boolean showAlert) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("callback_query_id", callbackQueryId);
+
+		if (text != null) {
+			parameters.put("text", text);
+		}
+
+		if (showAlert) {
+			parameters.put("show_alert", showAlert);
+		}
+
+		return sendRawRequest("answerCallbackQuery", parameters);
+
+	}
+
+	/**
 	 * <p>
 	 * Returns all unprocessed messages.
 	 * </p>
