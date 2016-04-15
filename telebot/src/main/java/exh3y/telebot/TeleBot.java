@@ -379,6 +379,54 @@ public class TeleBot extends Thread {
 	}
 
 	/**
+	 * Sends a contact to the given chat
+	 * 
+	 * @param chatId
+	 *            The chat to send the message to
+	 * @param phoneNumber
+	 *            The contact's phone number
+	 * @param firstName
+	 *            The contact's first name
+	 * @param lastName
+	 *            The contact's last name
+	 * @param disableNotification
+	 * @param replyToMessageId
+	 * @param replyMarkup
+	 * @return The server's response
+	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 * @since 0.0.5
+	 */
+	public HttpResponse<JsonNode> sendSontact(int chatId, String phoneNumber, String firstName, String lastName,
+			boolean disableNotification, int replyToMessageId,
+			ReplyMarkup replyMarkup) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("phone_number", phoneNumber);
+		parameters.put("first_name", firstName);
+
+		if (lastName != null) {
+			parameters.put("last_name", lastName);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", true);
+		}
+
+		if (replyToMessageId != -1) {
+			parameters.put("reply_to_message_id", replyToMessageId);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup);
+		}
+
+		return sendRawRequest("sendContact", parameters);
+
+	}
+
+	/**
 	 * <p>
 	 * Returns all unprocessed messages.
 	 * </p>
