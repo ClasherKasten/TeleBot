@@ -1,6 +1,5 @@
 package exh3y.telebot;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +17,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
+import exh3y.telebot.data.keyboards.InlineKeyboardMarkup;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
 
 public class TeleBot extends Thread {
@@ -256,6 +256,43 @@ public class TeleBot extends Thread {
 	}
 
 	/**
+	 * Changes the text of the given message
+	 * 
+	 * @param chatId
+	 *            The chat the message was sent in
+	 * @param messageId
+	 *            The id of the message to edit
+	 * @param text
+	 *            The new text
+	 * @param parseMode
+	 * @param disableWebPagePreview
+	 * @param replyMarkup
+	 * @return The sent message
+	 * @throws UnirestException
+	 */
+	public HttpResponse<JsonNode> editMessageText(int chatId, int messageId, String text, String parseMode,
+			boolean disableWebPagePreview, InlineKeyboardMarkup replyMarkup) throws UnirestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("text", text);
+
+		if (parseMode != null) {
+			parameters.put("parse_mode", parseMode);
+		}
+
+		if (disableWebPagePreview) {
+			parameters.put("disable_web_page_preview", true);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup.toJSONString());
+		}
+
+		return sendRawRequest("editMessageText", parameters);
+	}
+
+	/**
 	 * Sends a given location to a chat
 	 * 
 	 * @param chatId
@@ -430,7 +467,7 @@ public class TeleBot extends Thread {
 						} else {
 
 							for (TelegramResponseHandler handler : responseHandlers) {
-								
+
 								handler.onReceive(responseObject);
 							}
 						}
