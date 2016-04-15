@@ -311,6 +311,71 @@ public class TeleBot extends Thread {
 	}
 
 	/**
+	 * Edits a message's caption
+	 * 
+	 * @param chatId
+	 *            The chat the message was sent in
+	 * @param messageId
+	 *            The message's id
+	 * @param caption
+	 *            The new caption
+	 * @param replyMarkup
+	 * @return The server's response
+	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 * @since 0.0.5
+	 * @see <a href="https://core.telegram.org/bots/api#editmessagecaption">
+	 *      https://core.telegram.org/bots/api#editmessagecaption</a>
+	 */
+	public HttpResponse<JsonNode> editMessageCaption(int chatId, int messageId, String caption,
+			InlineKeyboardMarkup replyMarkup) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("message_id", messageId);
+
+		if (caption != null) {
+			parameters.put("caption", caption);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup);
+		}
+
+		return sendRawRequest("editMessageCaption", parameters);
+
+	}
+
+	/**
+	 * Edits the reply markup of the given message
+	 * 
+	 * @param chatId
+	 *            The chat's id
+	 * @param messageId
+	 *            The message's id
+	 * @param replyMarkup
+	 * @return The server's response
+	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 * @since 0.0.5
+	 * @see <a href="https://core.telegram.org/bots/api#editmessagereplymarkup">
+	 *      https://core.telegram.org/bots/api#editmessagereplymarkup</a>
+	 */
+	public HttpResponse<JsonNode> editMessageReplyMarkup(int chatId, int messageId,
+			InlineKeyboardMarkup replyMarkup) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("message_id", messageId);
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup);
+		}
+
+		return sendRawRequest("editMessageReplyMarkup", parameters);
+	}
+
+	/**
 	 * Sends a given location to a chat
 	 * 
 	 * @param chatId
