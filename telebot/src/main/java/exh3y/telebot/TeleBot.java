@@ -427,6 +427,61 @@ public class TeleBot extends Thread {
 	}
 
 	/**
+	 * Sends a venue to the given chat.
+	 * 
+	 * @param chatId
+	 *            The chat to send the venue to
+	 * @param latitude
+	 *            The venue's latitude
+	 * @param longitude
+	 *            The venue's longitude
+	 * @param title
+	 *            The venue's title
+	 * @param address
+	 *            The venue's address
+	 * @param foursquareId
+	 *            The foursquare_id of the venue
+	 * @param disableNotification
+	 * @param replyToMessageId
+	 * @param replyMarkup
+	 * @return The server's response
+	 * @throws UnirestException
+	 * @throws InvalidRequestException
+	 * @since 0.0.5
+	 * @see <a href="https://core.telegram.org/bots/api#sendvenue">https://core.
+	 *      telegram.org/bots/api#sendvenue</a>
+	 */
+	public HttpResponse<JsonNode> sendVenue(int chatId, float latitude, float longitude, String title, String address,
+			String foursquareId, boolean disableNotification, int replyToMessageId,
+			ReplyMarkup replyMarkup) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("latitude", latitude);
+		parameters.put("longitude", longitude);
+		parameters.put("title", title);
+		parameters.put("address", address);
+
+		if (foursquareId != null) {
+			parameters.put("foursquare_id", foursquareId);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", true);
+		}
+
+		if (replyToMessageId != -1) {
+			parameters.put("reply_to_message_id", replyToMessageId);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup);
+		}
+
+		return sendRawRequest("sendVenue", parameters);
+	}
+
+	/**
 	 * <p>
 	 * Returns all unprocessed messages.
 	 * </p>
