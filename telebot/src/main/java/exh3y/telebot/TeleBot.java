@@ -1,5 +1,7 @@
 package exh3y.telebot;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.naming.directory.InvalidAttributesException;
@@ -14,6 +16,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
+import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
 
@@ -27,6 +30,8 @@ public class TeleBot extends Thread {
 
 	private HashMap<String, TelegramActionHandler>	actionConnector;
 	private TelegramActionHandler					defaultAction		= null;
+
+	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
 	/**
 	 * <p>
@@ -54,6 +59,7 @@ public class TeleBot extends Thread {
 		this.botName = botName;
 
 		actionConnector = new HashMap<String, TelegramActionHandler>();
+		responseHandlers = new ArrayList<>();
 	}
 
 	/**
@@ -114,6 +120,30 @@ public class TeleBot extends Thread {
 	public void registerDefaultTextAction(TelegramActionHandler action) {
 
 		defaultAction = action;
+	}
+
+	/**
+	 * Registers a new handler to get notified about new responses.
+	 * 
+	 * @param handler
+	 *            The handler to register
+	 * @since 0.0.5
+	 */
+	public void registerResponseHandler(TelegramResponseHandler handler) {
+
+		responseHandlers.add(handler);
+	}
+
+	/**
+	 * Unregisters the given handler.
+	 * 
+	 * @param handler
+	 *            The handler to remove from registered handlers
+	 * @since 0.0.5
+	 */
+	public void unregisterResponseHandler(TelegramResponseHandler handler) {
+
+		responseHandlers.remove(handler);
 	}
 
 	private HttpResponse<JsonNode> sendRawRequest(String method,
@@ -399,8 +429,10 @@ public class TeleBot extends Thread {
 							}
 						} else {
 
-							// TODO: General handlers to handle all responses
-							// not containing a command
+							for (TelegramResponseHandler handler : responseHandlers) {
+								
+								handler.onReceive(responseObject);
+							}
 						}
 
 					}
