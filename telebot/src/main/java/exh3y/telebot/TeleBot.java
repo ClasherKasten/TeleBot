@@ -31,6 +31,7 @@ public class TeleBot extends Thread {
 
 	private HashMap<String, TelegramActionHandler>	actionConnector;
 	private TelegramActionHandler					defaultAction		= null;
+	private TelegramActionHandler					controllerAction	= null;
 
 	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
@@ -145,6 +146,17 @@ public class TeleBot extends Thread {
 	public void unregisterResponseHandler(TelegramResponseHandler handler) {
 
 		responseHandlers.remove(handler);
+	}
+	
+	/**
+	 * Registers a single action to be executed on every received message.
+	 * 
+	 * @param handler The handler to register
+	 * @since 0.0.5
+	 */
+	public void registerControllerAction(TelegramActionHandler handler) {
+		
+		controllerAction = handler;
 	}
 
 	private HttpResponse<JsonNode> sendRawRequest(String method,
@@ -706,6 +718,7 @@ public class TeleBot extends Thread {
 
 						// Iterate over the messages in the last update
 						JSONObject responseObject = jsonResponse.getJSONObject(i);
+						controllerAction.onCommandReceive(-1, responseObject);
 
 						if (responseObject.has("message")) {
 							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
