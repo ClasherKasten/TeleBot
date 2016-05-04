@@ -11,16 +11,28 @@ import exh3y.telebot.testutil.StringGenerator;
 
 public class TelegramMessageTest {
 
+	private TelegramMessage createTestMessage(JSONObject json) {
+
+		if (json == null) {
+			json = new JSONObject(
+					"{\"message_id\":42,\"from\":{\"id\":547885,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\"},\"chat\":{\"id\":1337,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\",\"type\":\"private\"},\"date\":1450006107,\"text\":\"This is a test message.\"}");
+		}
+		return new TelegramMessage(json);
+
+	}
+
 	@Test
 	public void testMessageCreation() {
 
 		JSONObject json = new JSONObject(
 				"{\"message_id\":42,\"from\":{\"id\":547885,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\"},\"chat\":{\"id\":1337,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\",\"type\":\"private\"},\"date\":1450006107,\"text\":\"This is a test message.\"}");
-		TelegramMessage telemessage = new TelegramMessage(json);
+
+		TelegramMessage telemessage = createTestMessage(json);
 
 		assertTrue(telemessage.getText().equals("This is a test message."));
 		assertTrue(telemessage.getChatId() == 1337);
-
+		assertTrue(telemessage.getMessageId() == 42);
+		assertTrue(telemessage.getChatType().equals("private"));
 	}
 
 	@Test
@@ -51,7 +63,7 @@ public class TelegramMessageTest {
 
 			for (int i = 0; i < 10; i++) {
 
-				TelegramMessage message = new TelegramMessage(stringGenerator.randomJSONMessage(commandString));
+				TelegramMessage message = createTestMessage(stringGenerator.randomJSONMessage(commandString));
 
 				String[] commands = message.toCommandArray();
 

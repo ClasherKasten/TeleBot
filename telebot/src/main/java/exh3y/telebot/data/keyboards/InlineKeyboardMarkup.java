@@ -7,7 +7,7 @@ import exh3y.telebot.data.InlineKeyboardButton;
 
 public class InlineKeyboardMarkup extends ReplyMarkup {
 
-	private InlineKeyboardButton[][] keyboard;
+	public InlineKeyboardButton[][] keyboard;
 
 	/**
 	 * Creates a new InlineKeyboardMarkup

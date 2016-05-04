@@ -9,17 +9,22 @@ public class ForceReplyTest {
 
 	@Test
 	public void testKeyboardCreation() {
-		
+
 		new ForceReply(false);
 	}
-	
+
 	@Test
 	public void testToJSONString() {
-		
-		ForceReply keyboard = new ForceReply(true);
-		
-		JSONObject json = new JSONObject(keyboard.toJSONString());
+
+		ForceReply selectiveKeyboard = new ForceReply(true);
+
+		JSONObject json = new JSONObject(selectiveKeyboard.toJSONString());
 		assertTrue(json.getBoolean("selective"));
+
+		ForceReply nonSelectiveKeyboard = new ForceReply(false);
+
+		json = new JSONObject(nonSelectiveKeyboard.toJSONString());
+		assertFalse(json.optBoolean("selective", false));
 	}
-	
+
 }

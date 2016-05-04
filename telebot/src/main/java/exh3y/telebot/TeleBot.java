@@ -51,7 +51,7 @@ public class TeleBot extends Thread {
 		this.endpoint = endpoint;
 		this.token = token;
 
-		String botName = "unknown";
+		String botName = null;
 		try {
 			botName = getMe().getBody().getObject().getJSONObject("result").getString("username");
 		} catch (JSONException | UnirestException e) {
@@ -147,15 +147,16 @@ public class TeleBot extends Thread {
 
 		responseHandlers.remove(handler);
 	}
-	
+
 	/**
 	 * Registers a single action to be executed on every received message.
 	 * 
-	 * @param handler The handler to register
+	 * @param handler
+	 *            The handler to register
 	 * @since 0.0.5
 	 */
 	public void registerControllerAction(TelegramActionHandler handler) {
-		
+
 		controllerAction = handler;
 	}
 
