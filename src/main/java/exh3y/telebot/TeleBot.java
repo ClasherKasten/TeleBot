@@ -1,5 +1,7 @@
 package exh3y.telebot;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,17 +25,17 @@ import exh3y.telebot.exceptions.InvalidRequestException;
 
 public class TeleBot extends Thread {
 
-	private final String endpoint;
-	private final String token;
-	private final String botName;
+	private final String							endpoint;
+	private final String							token;
+	private final String							botName;
 
-	private long pollingIntervall = 1000;
+	private long									pollingIntervall	= 1000;
 
-	private HashMap<String, TelegramActionHandler> actionConnector;
-	private TelegramActionHandler defaultAction = null;
-	private TelegramActionHandler controllerAction = null;
+	private HashMap<String, TelegramActionHandler>	actionConnector;
+	private TelegramActionHandler					defaultAction		= null;
+	private TelegramActionHandler					controllerAction	= null;
 
-	private ArrayList<TelegramResponseHandler> responseHandlers;
+	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
 	/**
 	 * <p>
@@ -87,9 +89,8 @@ public class TeleBot extends Thread {
 	 */
 	public void registerCommandAction(String command, TelegramActionHandler action) throws InvalidAttributesException {
 
-		if (actionConnector.containsKey(command)) {
-			throw new InvalidAttributesException("Command already registered!");
-		}
+		if (actionConnector
+				.containsKey(command)) { throw new InvalidAttributesException("Command already registered!"); }
 
 		actionConnector.put(command, action);
 	}
@@ -160,15 +161,24 @@ public class TeleBot extends Thread {
 		controllerAction = handler;
 	}
 
+	private HttpResponse<JsonNode> sendRawRequest(String method, HashMap<String, Object> parameters,
+			HashMap<String, String> headers) throws UnirestException, InvalidRequestException {
+
+		HttpResponse<JsonNode> response = Unirest.post(endpoint + token + "/" + method).headers(headers)
+				.fields(parameters).asJson();
+		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
+		if (!jsonResponse
+				.getBoolean("ok")) { throw new InvalidRequestException(jsonResponse.optString("description")); }
+		return response;
+	}
+
 	private HttpResponse<JsonNode> sendRawRequest(String method, HashMap<String, Object> parameters)
 			throws UnirestException, InvalidRequestException {
 
-		HttpResponse<JsonNode> response = Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
-		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
-		if (!jsonResponse.getBoolean("ok")) {
-			throw new InvalidRequestException(jsonResponse.optString("description"));
-		}
-		return response;
+		HashMap<String, String> headers = new HashMap<>();
+		headers.put("accept", "application/json");
+
+		return sendRawRequest(method, parameters, headers);
 	}
 
 	/**
@@ -225,6 +235,77 @@ public class TeleBot extends Thread {
 		}
 
 		return sendRawRequest("sendMessage", parameters);
+	}
+
+	// TODO: Fix
+	public HttpResponse<JsonNode> sendAudio(int chatId, File audio, int duration, String performer, String title,
+			boolean disableNotification, int replyToMessageId, ReplyMarkup replyMarkup)
+			throws UnirestException, InvalidRequestException, FileNotFoundException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("audio", audio);
+
+		if (duration != -1) {
+			parameters.put("duration", duration);
+		}
+
+		if (performer != null) {
+			parameters.put("performer", performer);
+		}
+
+		if (title != null) {
+			parameters.put("title", title);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", true);
+		}
+
+		if (replyToMessageId != -1) {
+			parameters.put("reply_to_message_id", replyToMessageId);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup);
+		}
+
+		HashMap<String, String> headers = new HashMap<>();
+		headers.put("accept", "application/json");
+		headers.put("Content-Type", "multipart/form-data");
+
+		return sendRawRequest("sendAudio", parameters, headers);
+	}
+
+	// TODO: Fix
+	public HttpResponse<JsonNode> sendVoice(int chatId, File voice, int duration, boolean disableNotification,
+			int replyToMessageId, ReplyMarkup replyMarkup) throws UnirestException, InvalidRequestException {
+
+		HashMap<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", chatId);
+		parameters.put("voice", voice);
+
+		if (duration != -1) {
+			parameters.put("duration", duration);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", true);
+		}
+
+		if (replyToMessageId != -1) {
+			parameters.put("reply_to_message_id", replyToMessageId);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup);
+		}
+		
+		HashMap<String, String> headers = new HashMap<>();
+		headers.put("accept", "application/json");
+		headers.put("Content-Type", "multipart/form-data");
+
+		return sendRawRequest("sendVoice", parameters, headers);
 	}
 
 	/**
