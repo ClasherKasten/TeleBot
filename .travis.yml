@@ -1,6 +1,5 @@
 language: java
-before_script: cd telebot
-script: mvn test
+script: gradle test
 jdk:
   - oraclejdk8
   - oraclejdk7

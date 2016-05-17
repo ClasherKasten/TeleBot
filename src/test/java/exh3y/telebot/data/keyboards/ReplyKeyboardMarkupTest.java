@@ -57,19 +57,20 @@ public class ReplyKeyboardMarkupTest {
 
 			}
 
-			ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup(keyboard);
+			boolean[][] testValues = { { true, false, false }, { false, true, false }, { false, false, true } };
 
-			try {
+			for (int i = 0; i < testValues.length; i++) {
+				ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup(keyboard, testValues[i][0], testValues[i][1],
+						testValues[i][2]);
+
 				JSONObject object = new JSONObject(markup.toJSONString());
 
 				JSONArray objectArray = object.getJSONArray("keyboard");
 				JSONArray actualArray = new JSONArray(keyboard);
 
 				assertTrue(objectArray.toString().equals(actualArray.toString()));
-
-			} catch (Exception e) {
-				assertTrue(false);
 			}
+
 		}
 	}
 
