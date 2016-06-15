@@ -2,6 +2,8 @@ package exh3y.telebot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.directory.InvalidAttributesException;
 
@@ -15,6 +17,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
+import exh3y.telebot.actions.TelegramInlineQueryHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.data.keyboards.InlineKeyboardMarkup;
@@ -23,17 +26,18 @@ import exh3y.telebot.exceptions.InvalidRequestException;
 
 public class TeleBot extends Thread {
 
-	private final String endpoint;
-	private final String token;
-	private final String botName;
+	private final String						endpoint;
+	private final String						token;
+	private final String						botName;
 
-	private long pollingIntervall = 1000;
+	private long								pollingIntervall	= 1000;
 
-	private HashMap<String, TelegramActionHandler> actionConnector;
-	private TelegramActionHandler defaultAction = null;
-	private TelegramActionHandler controllerAction = null;
+	private Map<String, TelegramActionHandler>	actionConnector;
+	private TelegramActionHandler				defaultAction		= null;
+	private TelegramActionHandler				controllerAction	= null;
 
-	private ArrayList<TelegramResponseHandler> responseHandlers;
+	private List<TelegramResponseHandler>		responseHandlers;
+	private List<TelegramInlineQueryHandler>	inlineQueryHandlers;
 
 	/**
 	 * <p>
@@ -62,6 +66,7 @@ public class TeleBot extends Thread {
 
 		actionConnector = new HashMap<String, TelegramActionHandler>();
 		responseHandlers = new ArrayList<>();
+		inlineQueryHandlers = new ArrayList<>();
 	}
 
 	/**
@@ -158,6 +163,34 @@ public class TeleBot extends Thread {
 	public void registerControllerAction(TelegramActionHandler handler) {
 
 		controllerAction = handler;
+	}
+
+	/**
+	 * Registers an inline query handler.
+	 * 
+	 * @param handler
+	 *            The handler to register
+	 * @since 0.0.6
+	 */
+	public void registerInlineQueryAction(TelegramInlineQueryHandler handler) {
+
+		if (!inlineQueryHandlers.contains(handler)) {
+			inlineQueryHandlers.add(handler);
+		}
+	}
+
+	/**
+	 * Removes a registered inline query handler
+	 * 
+	 * @param handler
+	 *            The handler to remove
+	 * @since 0.0.6
+	 */
+	public void unregisterInlineQueryHandler(TelegramInlineQueryHandler handler) {
+
+		if (inlineQueryHandlers.contains(handler)) {
+			inlineQueryHandlers.remove(handler);
+		}
 	}
 
 	private HttpResponse<JsonNode> sendRawRequest(String method, HashMap<String, Object> parameters)
@@ -751,6 +784,14 @@ public class TeleBot extends Thread {
 								} else if (defaultAction != null && executeCommand) {
 									defaultAction.onCommandReceive(chatId, message);
 								}
+							}
+						} else if (responseObject.has("inline_query")) {
+
+							JSONObject inlineQuery = responseObject.getJSONObject("inline_query");
+							
+							for (TelegramInlineQueryHandler handler : inlineQueryHandlers) {
+								
+								handler.onInlineReceive(inlineQuery);
 							}
 						} else {
 
