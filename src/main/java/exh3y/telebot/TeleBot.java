@@ -220,11 +220,6 @@ public class TeleBot extends Thread {
 				continue;
 			}
 
-			if (parameters.get(key) instanceof JSONObject) {
-
-				builder.addTextBody(key, ((JSONObject) parameters.get(key)).toString());
-			}
-
 			builder.addTextBody(key, (String) parameters.get(key));
 
 		}
@@ -259,15 +254,16 @@ public class TeleBot extends Thread {
 	 * @param text
 	 *            The message to send
 	 * @param parseMode
-	 *            The parse mode to use
+	 *            <i>optional</i> The parse mode to use
 	 * @param disableWebPagePreview
-	 *            Disables the web page preview in the chat
+	 *            <i>optional</i> Disables the web page preview in the chat
 	 * @param disableNotification
-	 *            Send the message silently
+	 *            <i>optional</i> Send the message silently
 	 * @param replyToMessageID
-	 *            The message id to reply to. '-1' if the message is not a reply
+	 *            <i>optional</i> The message id to reply to. '-1' if the
+	 *            message is not a reply
 	 * @param replyMarkup
-	 *            The keyboard markup to use for replies.
+	 *            <i>optional</i> The keyboard markup to use for replies.
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
@@ -334,6 +330,7 @@ public class TeleBot extends Thread {
 	 * @param fromChatId
 	 *            The chat the message was sent into
 	 * @param disableNotification
+	 *            <i>optional</i>
 	 * @param messageId
 	 *            The message to forward
 	 * @return The server's response
@@ -474,8 +471,11 @@ public class TeleBot extends Thread {
 	 * @param latitude
 	 * @param longitude
 	 * @param disableNotification
+	 *            <i>optional</i>
 	 * @param replyToMessageId
+	 *            <i>optional</i>
 	 * @param replyMarkup
+	 *            <i>optional</i>
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
@@ -544,16 +544,19 @@ public class TeleBot extends Thread {
 	 * @param firstName
 	 *            The contact's first name
 	 * @param lastName
-	 *            The contact's last name
+	 *            <i>optional</i> The contact's last name
 	 * @param disableNotification
+	 *            <i>optional</i>
 	 * @param replyToMessageId
+	 *            <i>optional</i>
 	 * @param replyMarkup
+	 *            <i>optional</i>
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
 	 * @since 0.0.5
 	 */
-	public HttpResponse<JsonNode> sendSontact(int chatId, String phoneNumber, String firstName, String lastName,
+	public HttpResponse<JsonNode> sendContact(int chatId, String phoneNumber, String firstName, String lastName,
 			boolean disableNotification, int replyToMessageId, ReplyMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException {
 
@@ -596,10 +599,13 @@ public class TeleBot extends Thread {
 	 * @param address
 	 *            The venue's address
 	 * @param foursquareId
-	 *            The foursquare_id of the venue
+	 *            <i>optional</i> The foursquare_id of the venue
 	 * @param disableNotification
+	 *            <i>optional</i>
 	 * @param replyToMessageId
+	 *            <i>optional</i>
 	 * @param replyMarkup
+	 *            <i>optional</i>
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
@@ -685,6 +691,26 @@ public class TeleBot extends Thread {
 		return sendRawRequest("unbanChatMember", parameters);
 	}
 
+	/**
+	 * Sends a photo to the given chat
+	 * 
+	 * @param chatId
+	 *            The chat to send the message into
+	 * @param photo
+	 *            The photo to send
+	 * @param caption
+	 *            <i>optional</i>
+	 * @param disableNotification
+	 *            <i>optional</i>
+	 * @param replyToMessageId
+	 *            <i>optional</i>
+	 * @param replyMarkup
+	 *            <i>optional</i>
+	 * @return The server's response
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * @since 0.0.6
+	 */
 	public HttpEntity sendPhoto(int chatId, File photo, String caption, boolean disableNotification,
 			int replyToMessageId, ReplyMarkup replyMarkup) throws ClientProtocolException, IOException {
 
@@ -697,18 +723,77 @@ public class TeleBot extends Thread {
 		}
 
 		if (disableNotification) {
-			parameters.put("disable_notification", true);
+			parameters.put("disable_notification", "true");
 		}
 
 		if (replyToMessageId != -1) {
-			parameters.put("reply_to_message_id", replyToMessageId);
+			parameters.put("reply_to_message_id", String.valueOf(replyToMessageId));
 		}
 
 		if (replyMarkup != null) {
-			parameters.put("reply_markup", replyMarkup);
+			parameters.put("reply_markup", replyMarkup.toJSONString());
 		}
 
 		return sendRawFileUploadRequest("sendPhoto", parameters);
+	}
+
+	/**
+	 * Sends an audio file to the given chat
+	 * 
+	 * @param chatId
+	 *            The chat to send the message into
+	 * @param audio
+	 *            The audio file
+	 * @param duration
+	 *            <i>optional</i>
+	 * @param performer
+	 *            <i>optional</i>
+	 * @param title
+	 *            <i>optional</i>
+	 * @param disableNotification
+	 *            <i>optional</i>
+	 * @param replyToMessageId
+	 *            <i>optional</i>
+	 * @param replyMarkup
+	 *            <i>optional</i>
+	 * @return The server's response
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 * @since 0.0.6
+	 */
+	public HttpEntity sendAudio(int chatId, File audio, int duration, String performer, String title,
+			boolean disableNotification, int replyToMessageId, ReplyMarkup replyMarkup)
+			throws ClientProtocolException, IOException {
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", String.valueOf(chatId));
+		parameters.put("audio", audio);
+
+		if (duration != -1) {
+			parameters.put("duration", String.valueOf(duration));
+		}
+
+		if (performer != null) {
+			parameters.put("performer", performer);
+		}
+
+		if (title != null) {
+			parameters.put("title", title);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", "true");
+		}
+
+		if (replyToMessageId != -1) {
+			parameters.put("reply_to_message_id", String.valueOf(replyToMessageId));
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup.toJSONString());
+		}
+
+		return sendRawFileUploadRequest("sendAudio", parameters);
 
 	}
 
@@ -718,9 +803,9 @@ public class TeleBot extends Thread {
 	 * @param callbackQueryId
 	 *            The query to answer
 	 * @param text
-	 *            The text to show
+	 *            <i>optional</i> The text to show
 	 * @param showAlert
-	 *            Show an alert instead of a notification
+	 *            <i>optional</i> Show an alert instead of a notification
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
