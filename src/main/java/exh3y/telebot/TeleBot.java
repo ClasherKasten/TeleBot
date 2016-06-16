@@ -1,5 +1,7 @@
 package exh3y.telebot;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,14 @@ import java.util.Map;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,6 +201,41 @@ public class TeleBot extends Thread {
 		if (inlineQueryHandlers.contains(handler)) {
 			inlineQueryHandlers.remove(handler);
 		}
+	}
+
+	private HttpEntity sendRawFileUploadRequest(String method, Map<String, Object> parameters)
+			throws ClientProtocolException, IOException {
+
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpPost uploadFile = new HttpPost(endpoint + token + "/" + method);
+
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+		for (String key : parameters.keySet()) {
+
+			if (parameters.get(key) instanceof File) {
+
+				File file = (File) parameters.get(key);
+				builder.addBinaryBody(key, file, ContentType.MULTIPART_FORM_DATA, file.getName());
+				continue;
+			}
+
+			if (parameters.get(key) instanceof JSONObject) {
+
+				builder.addTextBody(key, ((JSONObject) parameters.get(key)).toString());
+			}
+
+			builder.addTextBody(key, (String) parameters.get(key));
+
+		}
+
+		HttpEntity multipart = builder.build();
+
+		uploadFile.setEntity(multipart);
+
+		CloseableHttpResponse response = httpClient.execute(uploadFile);
+
+		return response.getEntity();
 	}
 
 	private HttpResponse<JsonNode> sendRawRequest(String method, HashMap<String, Object> parameters)
@@ -640,6 +685,33 @@ public class TeleBot extends Thread {
 		return sendRawRequest("unbanChatMember", parameters);
 	}
 
+	public HttpEntity sendPhoto(int chatId, File photo, String caption, boolean disableNotification,
+			int replyToMessageId, ReplyMarkup replyMarkup) throws ClientProtocolException, IOException {
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", String.valueOf(chatId));
+		parameters.put("photo", photo);
+
+		if (caption != null) {
+			parameters.put("caption", caption);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", true);
+		}
+
+		if (replyToMessageId != -1) {
+			parameters.put("reply_to_message_id", replyToMessageId);
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup);
+		}
+
+		return sendRawFileUploadRequest("sendPhoto", parameters);
+
+	}
+
 	/**
 	 * Sends an answer to a callback query
 	 * 
@@ -788,9 +860,9 @@ public class TeleBot extends Thread {
 						} else if (responseObject.has("inline_query")) {
 
 							JSONObject inlineQuery = responseObject.getJSONObject("inline_query");
-							
+
 							for (TelegramInlineQueryHandler handler : inlineQueryHandlers) {
-								
+
 								handler.onInlineReceive(inlineQuery);
 							}
 						} else {
