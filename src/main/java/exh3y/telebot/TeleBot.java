@@ -737,6 +737,11 @@ public class TeleBot extends Thread {
 		return sendRawFileUploadRequest("sendPhoto", parameters);
 	}
 
+	public HttpEntity sendPhoto(int chatId, File photo) throws ClientProtocolException, IOException {
+
+		return sendPhoto(chatId, photo, null, false, -1, null);
+	}
+
 	/**
 	 * Sends an audio file to the given chat
 	 * 
@@ -794,7 +799,61 @@ public class TeleBot extends Thread {
 		}
 
 		return sendRawFileUploadRequest("sendAudio", parameters);
+	}
 
+	public HttpEntity sendAudio(int chatId, File audio) throws ClientProtocolException, IOException {
+
+		return sendAudio(chatId, audio, -1, null, null, false, -1, null);
+	}
+
+	/**
+	 * Sends a document to the given chat
+	 * 
+	 * @param chatId
+	 *            The chat to send the message into
+	 * @param document
+	 *            The document to send
+	 * @param caption
+	 *            <i>optional</i>
+	 * @param disableNotification
+	 *            <i>optional</i>
+	 * @param replyToMessageId
+	 *            <i>optional</i>
+	 * @param replyMarkup
+	 *            <i>optional</i>
+	 * @return The server's response
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public HttpEntity sendDocument(int chatId, File document, String caption, boolean disableNotification,
+			int replyToMessageId, ReplyMarkup replyMarkup) throws ClientProtocolException, IOException {
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("chat_id", String.valueOf(chatId));
+		parameters.put("document", document);
+
+		if (caption != null) {
+			parameters.put("caption", caption);
+		}
+
+		if (disableNotification) {
+			parameters.put("disable_notification", "true");
+		}
+
+		if (replyToMessageId != -1) {
+			parameters.put("reply_to_message_id", String.valueOf(replyToMessageId));
+		}
+
+		if (replyMarkup != null) {
+			parameters.put("reply_markup", replyMarkup.toJSONString());
+		}
+
+		return sendRawFileUploadRequest("sendDocument", parameters);
+	}
+
+	public HttpEntity sendDocument(int chatId, File document) throws ClientProtocolException, IOException {
+
+		return sendDocument(chatId, document, null, false, -1, null);
 	}
 
 	/**
