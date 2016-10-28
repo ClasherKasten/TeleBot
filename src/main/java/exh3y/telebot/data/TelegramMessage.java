@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 public class TelegramMessage extends JSONObject {
 
+	private TelegramChat chat;
+	
 	/**
 	 * <p>
 	 * Creates a new TelegramMessage object from a given JSON-String
@@ -15,6 +17,7 @@ public class TelegramMessage extends JSONObject {
 	public TelegramMessage(JSONObject message) {
 
 		super(message.toString());
+		chat = new TelegramChat(this.getJSONObject("chat"));
 	}
 
 	/**
@@ -50,10 +53,11 @@ public class TelegramMessage extends JSONObject {
 	 * 
 	 * @return The chatID
 	 * @since 0.0.3
+	 * @deprecated You should use the methods provided by TelegramChat using message.getChat().
 	 */
 	public int getChatId() {
 
-		return this.getJSONObject("chat").getInt("id");
+		return this.chat.getId();
 	}
 
 	/**
@@ -74,10 +78,22 @@ public class TelegramMessage extends JSONObject {
 	 * 
 	 * @return The type of the chat
 	 * @since 0.0.5
+	 * @deprecated You should use the methods provided by TelegramChat using message.getChat().
 	 */
 	public String getChatType() {
 
-		return this.getJSONObject("chat").getString("type");
+		return this.chat.getString("type");
+	}
+	
+	/**
+	 * Returns the message's chat
+	 * 
+	 * @return The chat
+	 * @since 0.0.6
+	 */
+	public TelegramChat getChat() {
+		
+		return chat;
 	}
 
 }
