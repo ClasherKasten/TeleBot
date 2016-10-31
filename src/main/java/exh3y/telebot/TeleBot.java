@@ -19,6 +19,7 @@ import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.data.keyboards.InlineKeyboardMarkup;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
+import exh3y.telebot.exceptions.InvalidApiKeyException;
 import exh3y.telebot.exceptions.InvalidRequestException;
 
 public class TeleBot extends Thread {
@@ -45,9 +46,10 @@ public class TeleBot extends Thread {
 	 *            The api endpoint, defaults to "https://api.telegram.org/bot"
 	 * @param token
 	 *            The bot's token
+	 * @throws InvalidApiKeyException
 	 * @since 0.0.1
 	 */
-	public TeleBot(String endpoint, String token) {
+	public TeleBot(String endpoint, String token) throws InvalidApiKeyException {
 
 		this.endpoint = endpoint;
 		this.token = token;
@@ -56,7 +58,7 @@ public class TeleBot extends Thread {
 		try {
 			botName = getMe().getBody().getObject().getJSONObject("result").getString("username");
 		} catch (JSONException | UnirestException e) {
-			System.out.println("Not able to receive the bot's name: " + e.getMessage());
+			throw new InvalidApiKeyException("Not able to fetch the bot's username");
 		}
 
 		this.botName = botName;
@@ -67,9 +69,10 @@ public class TeleBot extends Thread {
 
 	/**
 	 * @param token
+	 * @throws InvalidApiKeyException
 	 * @since 0.0.1
 	 */
-	public TeleBot(String token) {
+	public TeleBot(String token) throws InvalidApiKeyException {
 
 		this("https://api.telegram.org/bot", token);
 	}
@@ -709,7 +712,6 @@ public class TeleBot extends Thread {
 	public void run() {
 
 		int lastUpdateId = 0;
-		System.out.println("Listening...");
 
 		HttpResponse<JsonNode> response;
 		while (running) {
