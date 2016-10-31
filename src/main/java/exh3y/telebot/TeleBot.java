@@ -47,9 +47,10 @@ public class TeleBot extends Thread {
 	 * @param token
 	 *            The bot's token
 	 * @throws InvalidApiKeyException
+	 * @throws UnirestException 
 	 * @since 0.0.1
 	 */
-	public TeleBot(String endpoint, String token) throws InvalidApiKeyException {
+	public TeleBot(String endpoint, String token) throws InvalidApiKeyException, UnirestException {
 
 		this.endpoint = endpoint;
 		this.token = token;
@@ -57,8 +58,10 @@ public class TeleBot extends Thread {
 		String botName = null;
 		try {
 			botName = getMe().getBody().getObject().getJSONObject("result").getString("username");
-		} catch (JSONException | UnirestException e) {
+		} catch (JSONException e) {
 			throw new InvalidApiKeyException("Not able to fetch the bot's username");
+		} catch (UnirestException e) {
+			throw e;
 		}
 
 		this.botName = botName;
@@ -70,9 +73,10 @@ public class TeleBot extends Thread {
 	/**
 	 * @param token
 	 * @throws InvalidApiKeyException
+	 * @throws UnirestException 
 	 * @since 0.0.1
 	 */
-	public TeleBot(String token) throws InvalidApiKeyException {
+	public TeleBot(String token) throws InvalidApiKeyException, UnirestException {
 
 		this("https://api.telegram.org/bot", token);
 	}

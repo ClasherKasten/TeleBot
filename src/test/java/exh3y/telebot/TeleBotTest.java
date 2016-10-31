@@ -5,8 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import org.apache.http.nio.entity.SkipContentListener;
 import org.json.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
@@ -24,13 +28,13 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 
 		try {
 			new TeleBot(apiKey);
-		} catch (InvalidApiKeyException e) {
+		} catch (InvalidApiKeyException | UnirestException e) {
 		}
 
 		// Create an invalid bot
 		try {
 			new TeleBot("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
-		} catch (InvalidApiKeyException e) {
+		} catch (InvalidApiKeyException | UnirestException e) {
 		}
 	}
 
@@ -53,7 +57,9 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			bot.registerResponseHandler(this);
 			bot.unregisterResponseHandler(this);
 			bot.registerControllerAction(this);
-		} catch (InvalidApiKeyException | InvalidAttributesException e1) {
+		} catch (InvalidApiKeyException | UnirestException e) {
+			
+		} catch (InvalidAttributesException e) {
 			assertFalse(true);
 		}
 	}
@@ -72,8 +78,9 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			
 			bot.registerCommandAction("/test", this);
 			bot.registerCommandAction("/test", this);
-		} catch (InvalidApiKeyException e1) {
-			e1.printStackTrace();
+		} catch (InvalidApiKeyException | UnirestException e) {
+			assertTrue(true);
+			return;
 		} catch (InvalidAttributesException e) {
 			assertTrue(true);
 			return;
