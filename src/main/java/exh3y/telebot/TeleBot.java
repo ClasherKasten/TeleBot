@@ -23,17 +23,18 @@ import exh3y.telebot.exceptions.InvalidRequestException;
 
 public class TeleBot extends Thread {
 
-	private final String endpoint;
-	private final String token;
-	private final String botName;
+	private final String							endpoint;
+	private final String							token;
+	private final String							botName;
 
-	private long pollingIntervall = 1000;
+	private long									pollingIntervall	= 1000;
+	private boolean									running				= true;
 
-	private HashMap<String, TelegramActionHandler> actionConnector;
-	private TelegramActionHandler defaultAction = null;
-	private TelegramActionHandler controllerAction = null;
+	private HashMap<String, TelegramActionHandler>	actionConnector;
+	private TelegramActionHandler					defaultAction		= null;
+	private TelegramActionHandler					controllerAction	= null;
 
-	private ArrayList<TelegramResponseHandler> responseHandlers;
+	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
 	/**
 	 * <p>
@@ -694,6 +695,16 @@ public class TeleBot extends Thread {
 		return this.botName;
 	}
 
+	/**
+	 * Stops the polling thread in the next cycle.
+	 * 
+	 * @since 0.0.7
+	 */
+	public void scheduleStop() {
+
+		running = false;
+	}
+
 	@Override
 	public void run() {
 
@@ -701,7 +712,7 @@ public class TeleBot extends Thread {
 		System.out.println("Listening...");
 
 		HttpResponse<JsonNode> response;
-		while (true) {
+		while (running) {
 			try {
 				response = getUpdates(lastUpdateId++);
 
@@ -724,7 +735,7 @@ public class TeleBot extends Thread {
 						}
 						if (responseObject.has("message")) {
 							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
-							int chatId = message.getChatId();
+							int chatId = message.getChat().getId();
 
 							if (message.has("text")) {
 
