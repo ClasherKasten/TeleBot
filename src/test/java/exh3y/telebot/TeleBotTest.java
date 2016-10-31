@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
+import exh3y.telebot.exceptions.InvalidApiKeyException;
 
 public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandler {
 
@@ -21,10 +22,16 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			apiKey = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11";
 		}
 
-		TeleBot bot = new TeleBot(apiKey);
+		try {
+			new TeleBot(apiKey);
+		} catch (InvalidApiKeyException e) {
+		}
 
 		// Create an invalid bot
-		new TeleBot("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
+		try {
+			new TeleBot("123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11");
+		} catch (InvalidApiKeyException e) {
+		}
 	}
 
 	@Test
@@ -35,9 +42,10 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			apiKey = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11";
 		}
 
-		TeleBot bot = new TeleBot(apiKey);
-
+		TeleBot bot;
 		try {
+			bot = new TeleBot(apiKey);
+			
 			bot.registerCommandAction("/test", this);
 			bot.unregisterCommandAction("/test");
 			bot.unregisterCommandAction("/anothercommand");
@@ -45,7 +53,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			bot.registerResponseHandler(this);
 			bot.unregisterResponseHandler(this);
 			bot.registerControllerAction(this);
-		} catch (InvalidAttributesException e) {
+		} catch (InvalidApiKeyException | InvalidAttributesException e1) {
 			assertFalse(true);
 		}
 	}
@@ -58,11 +66,14 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			apiKey = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11";
 		}
 
-		TeleBot bot = new TeleBot(apiKey);
-
+		TeleBot bot;
 		try {
+			bot = new TeleBot(apiKey);
+			
 			bot.registerCommandAction("/test", this);
 			bot.registerCommandAction("/test", this);
+		} catch (InvalidApiKeyException e1) {
+			e1.printStackTrace();
 		} catch (InvalidAttributesException e) {
 			assertTrue(true);
 			return;

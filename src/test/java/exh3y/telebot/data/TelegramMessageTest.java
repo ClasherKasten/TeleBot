@@ -7,6 +7,7 @@ import java.util.Random;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import exh3y.telebot.data.enums.ETelegramChatType;
 import exh3y.telebot.testutil.StringGenerator;
 
 public class TelegramMessageTest {
@@ -30,9 +31,9 @@ public class TelegramMessageTest {
 		TelegramMessage telemessage = createTestMessage(json);
 
 		assertTrue(telemessage.getText().equals("This is a test message."));
-		assertTrue(telemessage.getChatId() == 1337);
+		assertTrue(telemessage.getChat().getId() == 1337);
 		assertTrue(telemessage.getMessageId() == 42);
-		assertTrue(telemessage.getChatType().equals("private"));
+		assertTrue(telemessage.getChat().getType().equals(ETelegramChatType.PRIVATE));
 	}
 
 	@Test
