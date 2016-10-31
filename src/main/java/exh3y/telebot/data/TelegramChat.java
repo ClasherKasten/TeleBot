@@ -21,6 +21,20 @@ public class TelegramChat extends JSONObject {
 
 		this.type = ETelegramChatType.getEnumByName(chat.getString("type"));
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	
+		if (super.equals(obj)) {
+			return true;
+		}
+		
+		if (obj instanceof TelegramChat) {
+			return ((TelegramChat) obj).getId() == this.getId();
+		}
+		
+		return false;
+	}
 
 	/**
 	 * Returns the chat's type
