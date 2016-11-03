@@ -5,9 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import org.apache.http.nio.entity.SkipContentListener;
 import org.json.JSONObject;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mashape.unirest.http.exceptions.UnirestException;

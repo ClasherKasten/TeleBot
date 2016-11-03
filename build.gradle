@@ -25,6 +25,12 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+test {
+	testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
+
 artifacts {
     archives sourcesJar
     archives javadocJar
