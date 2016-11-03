@@ -1,5 +1,10 @@
 package exh3y.telebot.data;
 
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TelegramMessage extends JSONObject {
@@ -12,12 +17,16 @@ public class TelegramMessage extends JSONObject {
 	 * </p>
 	 * 
 	 * @param message
+	 * @throws IOException 
+	 * @throws JSONException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 * @since 0.0.3
 	 */
-	public TelegramMessage(JSONObject message) {
+	public TelegramMessage(JSONObject message) throws JsonParseException, JsonMappingException, JSONException, IOException {
 
 		super(message.toString());
-		chat = new TelegramChat(this.getJSONObject("chat"));
+		chat = TelegramChat.create(this.getJSONObject("chat"));
 	}
 
 	/**
@@ -82,7 +91,7 @@ public class TelegramMessage extends JSONObject {
 	 */
 	public String getChatType() {
 
-		return this.chat.getString("type");
+		return this.chat.getType().name();
 	}
 	
 	/**

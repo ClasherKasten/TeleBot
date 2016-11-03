@@ -2,8 +2,12 @@ package exh3y.telebot.data;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.Random;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
@@ -12,7 +16,7 @@ import exh3y.telebot.testutil.StringGenerator;
 
 public class TelegramMessageTest {
 
-	private TelegramMessage createTestMessage(JSONObject json) {
+	private TelegramMessage createTestMessage(JSONObject json) throws JsonParseException, JsonMappingException, JSONException, IOException {
 
 		if (json == null) {
 			json = new JSONObject(
@@ -28,7 +32,14 @@ public class TelegramMessageTest {
 		JSONObject json = new JSONObject(
 				"{\"message_id\":42,\"from\":{\"id\":547885,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\"},\"chat\":{\"id\":1337,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\",\"type\":\"private\"},\"date\":1450006107,\"text\":\"This is a test message.\"}");
 
-		TelegramMessage telemessage = createTestMessage(json);
+		TelegramMessage telemessage;
+		try {
+			telemessage = createTestMessage(json);
+		} catch (JSONException | IOException e) {
+			e.printStackTrace();
+			assertTrue(false);
+			return;
+		}
 
 		assertTrue(telemessage.getText().equals("This is a test message."));
 		assertTrue(telemessage.getChat().getId() == 1337);
@@ -64,7 +75,14 @@ public class TelegramMessageTest {
 
 			for (int i = 0; i < 10; i++) {
 
-				TelegramMessage message = createTestMessage(stringGenerator.randomJSONMessage(commandString));
+				TelegramMessage message;
+				try {
+					message = createTestMessage(stringGenerator.randomJSONMessage(commandString));
+				} catch (JSONException | IOException e) {
+					e.printStackTrace();
+					assertTrue(false);
+					return;
+				}
 
 				String[] commands = message.toCommandArray();
 
