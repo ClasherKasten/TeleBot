@@ -22,7 +22,7 @@ public class TelegramMessageTest {
 			json = new JSONObject(
 					"{\"message_id\":42,\"from\":{\"id\":547885,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\"},\"chat\":{\"id\":1337,\"first_name\":\"Some\",\"last_name\":\"User\",\"username\":\"testuser\",\"type\":\"private\"},\"date\":1450006107,\"text\":\"This is a test message.\"}");
 		}
-		return new TelegramMessage(json);
+		return TelegramMessage.create(json);
 
 	}
 
@@ -43,7 +43,7 @@ public class TelegramMessageTest {
 
 		assertTrue(telemessage.getText().equals("This is a test message."));
 		assertTrue(telemessage.getChat().getId() == 1337);
-		assertTrue(telemessage.getMessageId() == 42);
+		assertTrue(telemessage.getMessage_id() == 42);
 		assertTrue(telemessage.getChat().getType().equals(ETelegramChatType.PRIVATE));
 	}
 

@@ -743,7 +743,7 @@ public class TeleBot extends Thread {
 							controllerAction.onCommandReceive(-1, responseObject);
 						}
 						if (responseObject.has("message")) {
-							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
+							TelegramMessage message = TelegramMessage.create(responseObject.getJSONObject("message"));
 							int chatId = message.getChat().getId();
 
 							if (message.has("text")) {
