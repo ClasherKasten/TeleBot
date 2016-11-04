@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import exh3y.telebot.data.keyboards.InlineKeyboardButton;
+
 public class InlineKeyboardButtonTest {
 
 	@Test

@@ -3,8 +3,6 @@ package exh3y.telebot.data.keyboards;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import exh3y.telebot.data.InlineKeyboardButton;
-
 public class InlineKeyboardMarkup extends ReplyMarkup {
 
 	public InlineKeyboardButton[][] keyboard;
@@ -37,7 +35,7 @@ public class InlineKeyboardMarkup extends ReplyMarkup {
 			}
 
 		}
-		
+
 		this.keyboard = keyboard;
 
 	}
@@ -47,19 +45,19 @@ public class InlineKeyboardMarkup extends ReplyMarkup {
 
 		JSONArray keyboard = new JSONArray();
 		for (int i = 0; i < this.keyboard.length; i++) {
-			
+
 			JSONArray innerArray = new JSONArray();
-			
+
 			for (int j = 0; j < this.keyboard[i].length; j++) {
-				
+
 				innerArray.put(this.keyboard[i][j]);
-				
+
 			}
-			
+
 			keyboard.put(innerArray);
-			
+
 		}
-		
+
 		JSONObject object = new JSONObject();
 
 		object.put("inline_keyboard", keyboard);

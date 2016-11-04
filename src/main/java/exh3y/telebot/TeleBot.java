@@ -50,7 +50,7 @@ public class TeleBot extends Thread {
 	 * @param token
 	 *            The bot's token
 	 * @throws InvalidApiKeyException
-	 * @throws UnirestException 
+	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
 	public TeleBot(String endpoint, String token) throws InvalidApiKeyException, UnirestException {
@@ -76,7 +76,7 @@ public class TeleBot extends Thread {
 	/**
 	 * @param token
 	 * @throws InvalidApiKeyException
-	 * @throws UnirestException 
+	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
 	public TeleBot(String token) throws InvalidApiKeyException, UnirestException {
@@ -98,9 +98,8 @@ public class TeleBot extends Thread {
 	 */
 	public void registerCommandAction(String command, TelegramActionHandler action) throws InvalidAttributesException {
 
-		if (actionConnector.containsKey(command)) {
-			throw new InvalidAttributesException("Command already registered!");
-		}
+		if (actionConnector
+				.containsKey(command)) { throw new InvalidAttributesException("Command already registered!"); }
 
 		actionConnector.put(command, action);
 	}
@@ -176,9 +175,8 @@ public class TeleBot extends Thread {
 
 		HttpResponse<JsonNode> response = Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
 		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
-		if (!jsonResponse.getBoolean("ok")) {
-			throw new InvalidRequestException(jsonResponse.optString("description"));
-		}
+		if (!jsonResponse
+				.getBoolean("ok")) { throw new InvalidRequestException(jsonResponse.optString("description")); }
 		return response;
 	}
 

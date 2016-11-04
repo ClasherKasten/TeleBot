@@ -30,13 +30,9 @@ public class TelegramChat {
 	@Override
 	public boolean equals(Object obj) {
 
-		if (super.equals(obj)) {
-			return true;
-		}
+		if (super.equals(obj)) { return true; }
 
-		if (obj instanceof TelegramChat) {
-			return ((TelegramChat) obj).getId() == this.getId();
-		}
+		if (obj instanceof TelegramChat) { return ((TelegramChat) obj).getId() == this.getId(); }
 
 		return false;
 	}

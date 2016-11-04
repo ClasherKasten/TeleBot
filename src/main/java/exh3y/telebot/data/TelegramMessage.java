@@ -9,6 +9,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
+import exh3y.telebot.data.games.TelegramGame;
+
 public class TelegramMessage extends JSONObject {
 
 	private int									message_id;
