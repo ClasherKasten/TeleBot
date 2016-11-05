@@ -1,6 +1,7 @@
 package exh3y.telebot.data;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -13,9 +14,9 @@ public class TelegramChatTest {
 
 	@Test
 	public void testChatCreation() {
-		
-		String[] types = {"private", "group", "supergroup", "channel"};
-		
+
+		String[] types = { "private", "group", "supergroup", "channel" };
+
 		for (String type : types) {
 
 			JSONObject json = new JSONObject("{\"id\":12,\"type\":\"" + type + "\",\"username\":\"some user\"}");
@@ -24,16 +25,16 @@ public class TelegramChatTest {
 				chat = TelegramChat.create(json);
 			} catch (IOException e) {
 				e.printStackTrace();
-				assertTrue(false);
+				assertTrue("JSON parsing is working like expected", false);
 				return;
 			}
-			
+
 			assertEquals(chat.getId(), 12);
 			assertEquals(chat.getType(), ETelegramChatType.getEnumByName(type));
 			assertEquals(chat.getUsername(), "some user");
-			
+
 		}
-		
+
 	}
-	
+
 }
