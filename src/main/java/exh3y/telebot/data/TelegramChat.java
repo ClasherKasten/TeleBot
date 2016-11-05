@@ -1,25 +1,40 @@
 package exh3y.telebot.data;
 
-import org.json.JSONException;
+import java.io.IOException;
+import java.util.Optional;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
 import exh3y.telebot.data.enums.ETelegramChatType;
 
-public class TelegramChat extends JSONObject {
+public class TelegramChat {
 
-	private ETelegramChatType type;
+	private int					id;
+	private ETelegramChatType	type;
 
-	/**
-	 * Creates a new TelegramChat object from a given JSON-String
-	 * 
-	 * @param chat
-	 * @since 0.0.6
-	 */
-	public TelegramChat(JSONObject chat) {
+	private Optional<String>	title;
+	private Optional<String>	username;
+	private Optional<String>	first_name;
+	private Optional<String>	last_name;
+	private Optional<Boolean>	all_members_are_administrators;
 
-		super(chat.toString());
+	public static TelegramChat create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
-		this.type = ETelegramChatType.getEnumByName(chat.getString("type"));
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.readValue(json.toString(), TelegramChat.class);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (super.equals(obj)) { return true; }
+
+		if (obj instanceof TelegramChat) { return ((TelegramChat) obj).getId() == this.getId(); }
+
+		return false;
 	}
 
 	/**
@@ -41,87 +56,130 @@ public class TelegramChat extends JSONObject {
 	 */
 	public int getId() {
 
-		return this.getInt("id");
+		return this.id;
+	}
+
+	public boolean hasTitle() {
+
+		return this.title.isPresent();
 	}
 
 	/**
-	 * Returns the chat's title
-	 * 
-	 * @return The title
-	 * @since 0.0.6
+	 * @return the title
 	 */
 	public String getTitle() {
 
-		try {
-
-			return this.getString("title");
-		} catch (JSONException e) {
-			return "";
-		}
+		return title.get();
 	}
 
 	/**
-	 * Returns the user's username
-	 * 
-	 * @return The user's username
-	 * @since 0.0.6
+	 * @param title
+	 *            the title to set
+	 */
+	public void setTitle(String title) {
+
+		this.title = Optional.of(title);
+	}
+
+	public boolean hasUsername() {
+
+		return this.username.isPresent();
+	}
+
+	/**
+	 * @return the username
 	 */
 	public String getUsername() {
 
-		try {
-
-			return this.getString("username");
-		} catch (JSONException e) {
-			return "";
-		}
+		return username.get();
 	}
 
 	/**
-	 * Returns the user's first name
-	 * 
-	 * @return The user's first name
-	 * @since 0.0.6
+	 * @param username
+	 *            the username to set
 	 */
-	public String getFirstName() {
+	public void setUsername(String username) {
 
-		try {
+		this.username = Optional.of(username);
+	}
 
-			return this.getString("first_name");
-		} catch (JSONException e) {
-			return "";
-		}
+	public boolean hasFirst_name() {
+
+		return this.first_name.isPresent();
 	}
 
 	/**
-	 * Returns the user's last name
-	 * 
-	 * @return The user's last name
-	 * @since 0.0.6
+	 * @return the first_name
 	 */
-	public String getLastName() {
+	public String getFirst_name() {
 
-		try {
-
-			return this.getString("last_name");
-		} catch (JSONException e) {
-			return "";
-		}
+		return first_name.get();
 	}
 
 	/**
-	 * Are all users administrators?
-	 * 
-	 * @return True if all users are administrators, false otherwise
-	 * @since 0.0.6
+	 * @param first_name
+	 *            the first_name to set
 	 */
-	public boolean getAllUsersAreAdmins() {
+	public void setFirst_name(String first_name) {
 
-		try {
+		this.first_name = Optional.of(first_name);
+	}
 
-			return this.getBoolean("all_members_are_administrators");
-		} catch (JSONException e) {
-			return false;
-		}
+	public boolean hasLast_name() {
+
+		return this.last_name.isPresent();
+	}
+
+	/**
+	 * @return the last_name
+	 */
+	public String getLast_name() {
+
+		return last_name.get();
+	}
+
+	/**
+	 * @param last_name
+	 *            the last_name to set
+	 */
+	public void setLast_name(String last_name) {
+
+		this.last_name = Optional.of(last_name);
+	}
+
+	/**
+	 * @return the all_members_are_administrators
+	 */
+	public Boolean getAll_members_are_administrators() {
+
+		return all_members_are_administrators.orElse(false);
+	}
+
+	/**
+	 * @param all_members_are_administrators
+	 *            the all_members_are_administrators to set
+	 */
+	public void setAll_members_are_administrators(Boolean all_members_are_administrators) {
+
+		this.all_members_are_administrators = Optional.of(all_members_are_administrators);
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(int id) {
+
+		this.id = id;
+	}
+
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(String type) {
+
+		this.type = ETelegramChatType.getEnumByName(type);
 	}
 
 }

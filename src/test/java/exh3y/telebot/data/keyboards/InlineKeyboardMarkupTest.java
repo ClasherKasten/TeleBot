@@ -7,7 +7,6 @@ import java.util.Random;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import exh3y.telebot.data.InlineKeyboardButton;
 import exh3y.telebot.testutil.StringGenerator;
 
 public class InlineKeyboardMarkupTest {

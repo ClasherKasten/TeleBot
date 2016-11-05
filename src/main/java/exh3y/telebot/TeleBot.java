@@ -1,22 +1,13 @@
 package exh3y.telebot;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,27 +18,27 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
-import exh3y.telebot.actions.TelegramInlineQueryHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.data.keyboards.InlineKeyboardMarkup;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
+import exh3y.telebot.exceptions.InvalidApiKeyException;
 import exh3y.telebot.exceptions.InvalidRequestException;
 
 public class TeleBot extends Thread {
 
-	private final String						endpoint;
-	private final String						token;
-	private final String						botName;
+	private final String							endpoint;
+	private final String							token;
+	private final String							botName;
 
-	private long								pollingIntervall	= 1000;
+	private long									pollingIntervall	= 1000;
+	private boolean									running				= true;
 
-	private Map<String, TelegramActionHandler>	actionConnector;
-	private TelegramActionHandler				defaultAction		= null;
-	private TelegramActionHandler				controllerAction	= null;
+	private HashMap<String, TelegramActionHandler>	actionConnector;
+	private TelegramActionHandler					defaultAction		= null;
+	private TelegramResponseHandler					controllerAction	= null;
 
-	private List<TelegramResponseHandler>		responseHandlers;
-	private List<TelegramInlineQueryHandler>	inlineQueryHandlers;
+	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
 	/**
 	 * <p>
@@ -58,9 +49,11 @@ public class TeleBot extends Thread {
 	 *            The api endpoint, defaults to "https://api.telegram.org/bot"
 	 * @param token
 	 *            The bot's token
+	 * @throws InvalidApiKeyException
+	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
-	public TeleBot(String endpoint, String token) {
+	public TeleBot(String endpoint, String token) throws InvalidApiKeyException, UnirestException {
 
 		this.endpoint = endpoint;
 		this.token = token;
@@ -68,22 +61,25 @@ public class TeleBot extends Thread {
 		String botName = null;
 		try {
 			botName = getMe().getBody().getObject().getJSONObject("result").getString("username");
-		} catch (JSONException | UnirestException e) {
-			System.out.println("Not able to receive the bot's name: " + e.getMessage());
+		} catch (JSONException e) {
+			throw new InvalidApiKeyException("Not able to fetch the bot's username");
+		} catch (UnirestException e) {
+			throw e;
 		}
 
 		this.botName = botName;
 
 		actionConnector = new HashMap<String, TelegramActionHandler>();
 		responseHandlers = new ArrayList<>();
-		inlineQueryHandlers = new ArrayList<>();
 	}
 
 	/**
 	 * @param token
+	 * @throws InvalidApiKeyException
+	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
-	public TeleBot(String token) {
+	public TeleBot(String token) throws InvalidApiKeyException, UnirestException {
 
 		this("https://api.telegram.org/bot", token);
 	}
@@ -102,9 +98,8 @@ public class TeleBot extends Thread {
 	 */
 	public void registerCommandAction(String command, TelegramActionHandler action) throws InvalidAttributesException {
 
-		if (actionConnector.containsKey(command)) {
-			throw new InvalidAttributesException("Command already registered!");
-		}
+		if (actionConnector
+				.containsKey(command)) { throw new InvalidAttributesException("Command already registered!"); }
 
 		actionConnector.put(command, action);
 	}
@@ -170,67 +165,9 @@ public class TeleBot extends Thread {
 	 *            The handler to register
 	 * @since 0.0.5
 	 */
-	public void registerControllerAction(TelegramActionHandler handler) {
+	public void registerControllerAction(TelegramResponseHandler handler) {
 
 		controllerAction = handler;
-	}
-
-	/**
-	 * Registers an inline query handler.
-	 * 
-	 * @param handler
-	 *            The handler to register
-	 * @since 0.0.6
-	 */
-	public void registerInlineQueryAction(TelegramInlineQueryHandler handler) {
-
-		if (!inlineQueryHandlers.contains(handler)) {
-			inlineQueryHandlers.add(handler);
-		}
-	}
-
-	/**
-	 * Removes a registered inline query handler
-	 * 
-	 * @param handler
-	 *            The handler to remove
-	 * @since 0.0.6
-	 */
-	public void unregisterInlineQueryHandler(TelegramInlineQueryHandler handler) {
-
-		if (inlineQueryHandlers.contains(handler)) {
-			inlineQueryHandlers.remove(handler);
-		}
-	}
-
-	private HttpEntity sendRawFileUploadRequest(String method, Map<String, Object> parameters)
-			throws ClientProtocolException, IOException {
-
-		CloseableHttpClient httpClient = HttpClients.createDefault();
-		HttpPost uploadFile = new HttpPost(endpoint + token + "/" + method);
-
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-
-		for (String key : parameters.keySet()) {
-
-			if (parameters.get(key) instanceof File) {
-
-				File file = (File) parameters.get(key);
-				builder.addBinaryBody(key, file, ContentType.MULTIPART_FORM_DATA, file.getName());
-				continue;
-			}
-
-			builder.addTextBody(key, (String) parameters.get(key));
-
-		}
-
-		HttpEntity multipart = builder.build();
-
-		uploadFile.setEntity(multipart);
-
-		CloseableHttpResponse response = httpClient.execute(uploadFile);
-
-		return response.getEntity();
 	}
 
 	private HttpResponse<JsonNode> sendRawRequest(String method, HashMap<String, Object> parameters)
@@ -238,9 +175,8 @@ public class TeleBot extends Thread {
 
 		HttpResponse<JsonNode> response = Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
 		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
-		if (!jsonResponse.getBoolean("ok")) {
-			throw new InvalidRequestException(jsonResponse.optString("description"));
-		}
+		if (!jsonResponse
+				.getBoolean("ok")) { throw new InvalidRequestException(jsonResponse.optString("description")); }
 		return response;
 	}
 
@@ -254,16 +190,15 @@ public class TeleBot extends Thread {
 	 * @param text
 	 *            The message to send
 	 * @param parseMode
-	 *            <i>optional</i> The parse mode to use
+	 *            The parse mode to use
 	 * @param disableWebPagePreview
-	 *            <i>optional</i> Disables the web page preview in the chat
+	 *            Disables the web page preview in the chat
 	 * @param disableNotification
-	 *            <i>optional</i> Send the message silently
+	 *            Send the message silently
 	 * @param replyToMessageID
-	 *            <i>optional</i> The message id to reply to. '-1' if the
-	 *            message is not a reply
+	 *            The message id to reply to. '-1' if the message is not a reply
 	 * @param replyMarkup
-	 *            <i>optional</i> The keyboard markup to use for replies.
+	 *            The keyboard markup to use for replies.
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
@@ -330,7 +265,6 @@ public class TeleBot extends Thread {
 	 * @param fromChatId
 	 *            The chat the message was sent into
 	 * @param disableNotification
-	 *            <i>optional</i>
 	 * @param messageId
 	 *            The message to forward
 	 * @return The server's response
@@ -471,11 +405,8 @@ public class TeleBot extends Thread {
 	 * @param latitude
 	 * @param longitude
 	 * @param disableNotification
-	 *            <i>optional</i>
 	 * @param replyToMessageId
-	 *            <i>optional</i>
 	 * @param replyMarkup
-	 *            <i>optional</i>
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
@@ -544,19 +475,16 @@ public class TeleBot extends Thread {
 	 * @param firstName
 	 *            The contact's first name
 	 * @param lastName
-	 *            <i>optional</i> The contact's last name
+	 *            The contact's last name
 	 * @param disableNotification
-	 *            <i>optional</i>
 	 * @param replyToMessageId
-	 *            <i>optional</i>
 	 * @param replyMarkup
-	 *            <i>optional</i>
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
 	 * @since 0.0.5
 	 */
-	public HttpResponse<JsonNode> sendContact(int chatId, String phoneNumber, String firstName, String lastName,
+	public HttpResponse<JsonNode> sendSontact(int chatId, String phoneNumber, String firstName, String lastName,
 			boolean disableNotification, int replyToMessageId, ReplyMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException {
 
@@ -599,13 +527,10 @@ public class TeleBot extends Thread {
 	 * @param address
 	 *            The venue's address
 	 * @param foursquareId
-	 *            <i>optional</i> The foursquare_id of the venue
+	 *            The foursquare_id of the venue
 	 * @param disableNotification
-	 *            <i>optional</i>
 	 * @param replyToMessageId
-	 *            <i>optional</i>
 	 * @param replyMarkup
-	 *            <i>optional</i>
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
@@ -692,179 +617,14 @@ public class TeleBot extends Thread {
 	}
 
 	/**
-	 * Sends a photo to the given chat
-	 * 
-	 * @param chatId
-	 *            The chat to send the message into
-	 * @param photo
-	 *            The photo to send
-	 * @param caption
-	 *            <i>optional</i>
-	 * @param disableNotification
-	 *            <i>optional</i>
-	 * @param replyToMessageId
-	 *            <i>optional</i>
-	 * @param replyMarkup
-	 *            <i>optional</i>
-	 * @return The server's response
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 * @since 0.0.6
-	 */
-	public HttpEntity sendPhoto(int chatId, File photo, String caption, boolean disableNotification,
-			int replyToMessageId, ReplyMarkup replyMarkup) throws ClientProtocolException, IOException {
-
-		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("chat_id", String.valueOf(chatId));
-		parameters.put("photo", photo);
-
-		if (caption != null) {
-			parameters.put("caption", caption);
-		}
-
-		if (disableNotification) {
-			parameters.put("disable_notification", "true");
-		}
-
-		if (replyToMessageId != -1) {
-			parameters.put("reply_to_message_id", String.valueOf(replyToMessageId));
-		}
-
-		if (replyMarkup != null) {
-			parameters.put("reply_markup", replyMarkup.toJSONString());
-		}
-
-		return sendRawFileUploadRequest("sendPhoto", parameters);
-	}
-
-	public HttpEntity sendPhoto(int chatId, File photo) throws ClientProtocolException, IOException {
-
-		return sendPhoto(chatId, photo, null, false, -1, null);
-	}
-
-	/**
-	 * Sends an audio file to the given chat
-	 * 
-	 * @param chatId
-	 *            The chat to send the message into
-	 * @param audio
-	 *            The audio file
-	 * @param duration
-	 *            <i>optional</i>
-	 * @param performer
-	 *            <i>optional</i>
-	 * @param title
-	 *            <i>optional</i>
-	 * @param disableNotification
-	 *            <i>optional</i>
-	 * @param replyToMessageId
-	 *            <i>optional</i>
-	 * @param replyMarkup
-	 *            <i>optional</i>
-	 * @return The server's response
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 * @since 0.0.6
-	 */
-	public HttpEntity sendAudio(int chatId, File audio, int duration, String performer, String title,
-			boolean disableNotification, int replyToMessageId, ReplyMarkup replyMarkup)
-			throws ClientProtocolException, IOException {
-
-		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("chat_id", String.valueOf(chatId));
-		parameters.put("audio", audio);
-
-		if (duration != -1) {
-			parameters.put("duration", String.valueOf(duration));
-		}
-
-		if (performer != null) {
-			parameters.put("performer", performer);
-		}
-
-		if (title != null) {
-			parameters.put("title", title);
-		}
-
-		if (disableNotification) {
-			parameters.put("disable_notification", "true");
-		}
-
-		if (replyToMessageId != -1) {
-			parameters.put("reply_to_message_id", String.valueOf(replyToMessageId));
-		}
-
-		if (replyMarkup != null) {
-			parameters.put("reply_markup", replyMarkup.toJSONString());
-		}
-
-		return sendRawFileUploadRequest("sendAudio", parameters);
-	}
-
-	public HttpEntity sendAudio(int chatId, File audio) throws ClientProtocolException, IOException {
-
-		return sendAudio(chatId, audio, -1, null, null, false, -1, null);
-	}
-
-	/**
-	 * Sends a document to the given chat
-	 * 
-	 * @param chatId
-	 *            The chat to send the message into
-	 * @param document
-	 *            The document to send
-	 * @param caption
-	 *            <i>optional</i>
-	 * @param disableNotification
-	 *            <i>optional</i>
-	 * @param replyToMessageId
-	 *            <i>optional</i>
-	 * @param replyMarkup
-	 *            <i>optional</i>
-	 * @return The server's response
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 */
-	public HttpEntity sendDocument(int chatId, File document, String caption, boolean disableNotification,
-			int replyToMessageId, ReplyMarkup replyMarkup) throws ClientProtocolException, IOException {
-
-		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("chat_id", String.valueOf(chatId));
-		parameters.put("document", document);
-
-		if (caption != null) {
-			parameters.put("caption", caption);
-		}
-
-		if (disableNotification) {
-			parameters.put("disable_notification", "true");
-		}
-
-		if (replyToMessageId != -1) {
-			parameters.put("reply_to_message_id", String.valueOf(replyToMessageId));
-		}
-
-		if (replyMarkup != null) {
-			parameters.put("reply_markup", replyMarkup.toJSONString());
-		}
-
-		return sendRawFileUploadRequest("sendDocument", parameters);
-	}
-
-	public HttpEntity sendDocument(int chatId, File document) throws ClientProtocolException, IOException {
-
-		return sendDocument(chatId, document, null, false, -1, null);
-	}
-
-	/**
 	 * Sends an answer to a callback query
 	 * 
 	 * @param callbackQueryId
 	 *            The query to answer
 	 * @param text
-	 *            <i>optional</i> The text to show
+	 *            The text to show
 	 * @param showAlert
-	 *            <i>optional</i> Show an alert instead of a notification
+	 *            Show an alert instead of a notification
 	 * @return The server's response
 	 * @throws UnirestException
 	 * @throws InvalidRequestException
@@ -943,14 +703,23 @@ public class TeleBot extends Thread {
 		return this.botName;
 	}
 
+	/**
+	 * Stops the polling thread in the next cycle.
+	 * 
+	 * @since 0.0.7
+	 */
+	public void scheduleStop() {
+
+		running = false;
+	}
+
 	@Override
 	public void run() {
 
 		int lastUpdateId = 0;
-		System.out.println("Listening...");
 
 		HttpResponse<JsonNode> response;
-		while (true) {
+		while (running) {
 			try {
 				response = getUpdates(lastUpdateId++);
 
@@ -969,13 +738,13 @@ public class TeleBot extends Thread {
 						// Iterate over the messages in the last update
 						JSONObject responseObject = jsonResponse.getJSONObject(i);
 						if (controllerAction != null) {
-							controllerAction.onCommandReceive(-1, responseObject);
+							controllerAction.onReceive(responseObject);
 						}
+						
 						if (responseObject.has("message")) {
-							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
-							int chatId = message.getChatId();
+							TelegramMessage message = TelegramMessage.create(responseObject.getJSONObject("message"));
 
-							if (message.has("text")) {
+							if (message.hasText()) {
 
 								String command[] = message.toCommandArray();
 								String cmd = "";
@@ -996,18 +765,10 @@ public class TeleBot extends Thread {
 
 								if (actionConnector.containsKey(cmd)) {
 									TelegramActionHandler action = actionConnector.get(cmd);
-									action.onCommandReceive(chatId, message);
+									action.onMessageReceive(message);
 								} else if (defaultAction != null && executeCommand) {
-									defaultAction.onCommandReceive(chatId, message);
+									defaultAction.onMessageReceive(message);
 								}
-							}
-						} else if (responseObject.has("inline_query")) {
-
-							JSONObject inlineQuery = responseObject.getJSONObject("inline_query");
-
-							for (TelegramInlineQueryHandler handler : inlineQueryHandlers) {
-
-								handler.onInlineReceive(inlineQuery);
 							}
 						} else {
 
@@ -1027,6 +788,18 @@ public class TeleBot extends Thread {
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

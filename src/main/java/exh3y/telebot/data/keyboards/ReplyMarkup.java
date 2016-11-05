@@ -4,6 +4,4 @@ import org.json.JSONString;
 
 public abstract class ReplyMarkup implements JSONString {
 
-	
-	
 }

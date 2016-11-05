@@ -3,7 +3,7 @@ apply plugin: 'maven'
  
 group = 'com.github.exh3y'
 
-version = '0.0.6'
+version = '0.0.5'
 
 repositories {
     mavenCentral()
@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     compile 'com.mashape.unirest:unirest-java:1.4.7'
-    compile 'org.json:json:20160212'
+    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     testCompile 'junit:junit:4.12'
 }
 
@@ -23,6 +23,12 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+}
+
+test {
+	testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
 }
 
 artifacts {
