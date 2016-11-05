@@ -12,8 +12,6 @@ public interface TelegramActionHandler {
 	/**
 	 * The main method containing the action to execute.
 	 * 
-	 * @param chatId
-	 *            The chat's id
 	 * @param message
 	 *            The message
 	 * @since 0.1.0
