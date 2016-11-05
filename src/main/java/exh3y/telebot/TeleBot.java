@@ -36,7 +36,7 @@ public class TeleBot extends Thread {
 
 	private HashMap<String, TelegramActionHandler>	actionConnector;
 	private TelegramActionHandler					defaultAction		= null;
-	private TelegramActionHandler					controllerAction	= null;
+	private TelegramResponseHandler					controllerAction	= null;
 
 	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
@@ -165,7 +165,7 @@ public class TeleBot extends Thread {
 	 *            The handler to register
 	 * @since 0.0.5
 	 */
-	public void registerControllerAction(TelegramActionHandler handler) {
+	public void registerControllerAction(TelegramResponseHandler handler) {
 
 		controllerAction = handler;
 	}
@@ -738,13 +738,13 @@ public class TeleBot extends Thread {
 						// Iterate over the messages in the last update
 						JSONObject responseObject = jsonResponse.getJSONObject(i);
 						if (controllerAction != null) {
-							controllerAction.onCommandReceive(-1, responseObject);
+							controllerAction.onReceive(responseObject);
 						}
+						
 						if (responseObject.has("message")) {
 							TelegramMessage message = TelegramMessage.create(responseObject.getJSONObject("message"));
-							int chatId = message.getChat().getId();
 
-							if (message.has("text")) {
+							if (message.hasText()) {
 
 								String command[] = message.toCommandArray();
 								String cmd = "";
@@ -765,9 +765,9 @@ public class TeleBot extends Thread {
 
 								if (actionConnector.containsKey(cmd)) {
 									TelegramActionHandler action = actionConnector.get(cmd);
-									action.onCommandReceive(chatId, message);
+									action.onMessageReceive(message);
 								} else if (defaultAction != null && executeCommand) {
-									defaultAction.onCommandReceive(chatId, message);
+									defaultAction.onMessageReceive(message);
 								}
 							}
 						} else {

@@ -12,6 +12,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
+import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.exceptions.InvalidApiKeyException;
 
 public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandler {
@@ -88,7 +89,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 	}
 
 	@Override
-	public void onCommandReceive(int chatId, JSONObject message) {
+	public void onMessageReceive(TelegramMessage message) {
 
 		return;
 	}

@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import exh3y.telebot.data.games.TelegramGame;
 
-public class TelegramMessage extends JSONObject {
+public class TelegramMessage {
 
 	private int									message_id;
 	private TelegramChat						chat;
