@@ -16,9 +16,9 @@ public class TelegramVideo {
 	private Integer						height;
 	private Integer						duration;
 
-	private Optional<TelegramPhotoSize>	thumb;
-	private Optional<String>			mime_type;
-	private Optional<Integer>			file_size;
+	private Optional<TelegramPhotoSize>	thumb		= Optional.empty();
+	private Optional<String>			mime_type	= Optional.empty();
+	private Optional<Integer>			file_size	= Optional.empty();
 
 	public static TelegramVideo create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 

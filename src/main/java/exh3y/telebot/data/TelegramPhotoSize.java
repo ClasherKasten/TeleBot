@@ -15,7 +15,7 @@ public class TelegramPhotoSize {
 	private Integer				width;
 	private Integer				height;
 
-	private Optional<Integer>	file_size;
+	private Optional<Integer>	file_size	= Optional.empty();
 
 	public static TelegramPhotoSize create(JSONObject json)
 			throws JsonParseException, JsonMappingException, IOException {

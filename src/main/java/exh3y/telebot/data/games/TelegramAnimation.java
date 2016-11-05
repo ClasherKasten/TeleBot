@@ -15,10 +15,10 @@ public class TelegramAnimation {
 
 	private String						file_id;
 
-	private Optional<TelegramPhotoSize>	thumb;
-	private Optional<String>			file_name;
-	private Optional<String>			mime_type;
-	private Optional<Integer>			file_size;
+	private Optional<TelegramPhotoSize>	thumb		= Optional.empty();
+	private Optional<String>			file_name	= Optional.empty();
+	private Optional<String>			mime_type	= Optional.empty();
+	private Optional<Integer>			file_size	= Optional.empty();
 
 	public static TelegramAnimation create(JSONObject json)
 			throws JsonParseException, JsonMappingException, IOException {

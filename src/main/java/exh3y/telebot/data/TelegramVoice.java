@@ -14,8 +14,8 @@ public class TelegramVoice {
 	private String				file_id;
 	private Integer				duration;
 
-	private Optional<String>	mime_type;
-	private Optional<Integer>	file_size;
+	private Optional<String>	mime_type	= Optional.empty();
+	private Optional<Integer>	file_size	= Optional.empty();
 
 	public static TelegramVoice create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 

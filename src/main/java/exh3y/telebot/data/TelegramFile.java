@@ -13,8 +13,8 @@ public class TelegramFile {
 
 	private String				file_id;
 
-	private Optional<Integer>	file_size;
-	private Optional<String>	file_path;
+	private Optional<Integer>	file_size	= Optional.empty();
+	private Optional<String>	file_path	= Optional.empty();
 
 	public static TelegramFile create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 

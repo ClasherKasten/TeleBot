@@ -15,9 +15,9 @@ public class TelegramSticker {
 	private Integer						width;
 	private Integer						height;
 
-	private Optional<TelegramPhotoSize>	thumb;
-	private Optional<String>			emoji;
-	private Optional<Integer>			file_size;
+	private Optional<TelegramPhotoSize>	thumb		= Optional.empty();
+	private Optional<String>			emoji		= Optional.empty();
+	private Optional<Integer>			file_size	= Optional.empty();
 
 	public static TelegramSticker create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 

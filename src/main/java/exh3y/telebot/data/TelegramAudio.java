@@ -14,10 +14,10 @@ public class TelegramAudio {
 	private String				file_id;
 	private Integer				duration;
 
-	private Optional<String>	performer;
-	private Optional<String>	title;
-	private Optional<String>	mime_type;
-	private Optional<Integer>	file_size;
+	private Optional<String>	performer	= Optional.empty();
+	private Optional<String>	title		= Optional.empty();
+	private Optional<String>	mime_type	= Optional.empty();
+	private Optional<Integer>	file_size	= Optional.empty();
 
 	public static TelegramAudio create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 

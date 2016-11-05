@@ -18,9 +18,9 @@ public class TelegramGame {
 	private String								description;
 	private TelegramPhotoSize[]					photo;
 
-	private Optional<String>					text;
-	private Optional<TelegramMessageEntity[]>	text_entities;
-	private Optional<TelegramAnimation>			animation;
+	private Optional<String>					text			= Optional.empty();
+	private Optional<TelegramMessageEntity[]>	text_entities	= Optional.empty();
+	private Optional<TelegramAnimation>			animation		= Optional.empty();
 
 	public static TelegramGame create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 

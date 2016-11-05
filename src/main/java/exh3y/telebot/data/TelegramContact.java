@@ -14,8 +14,8 @@ public class TelegramContact {
 	private String				phone_number;
 	private String				first_name;
 
-	private Optional<String>	last_name;
-	private Optional<Integer>	user_id;
+	private Optional<String>	last_name	= Optional.empty();
+	private Optional<Integer>	user_id		= Optional.empty();
 
 	public static TelegramContact create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 

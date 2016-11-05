@@ -14,8 +14,9 @@ public class TelegramMessageEntity {
 	private String					type;
 	private int						offset;
 	private int						length;
-	private Optional<String>		url;
-	private Optional<TelegramUser>	user;
+
+	private Optional<String>		url		= Optional.empty();
+	private Optional<TelegramUser>	user	= Optional.empty();
 
 	public static TelegramMessageEntity create(JSONObject json)
 			throws JsonParseException, JsonMappingException, IOException {

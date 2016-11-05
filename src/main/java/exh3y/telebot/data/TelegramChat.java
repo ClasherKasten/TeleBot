@@ -15,11 +15,11 @@ public class TelegramChat {
 	private int					id;
 	private ETelegramChatType	type;
 
-	private Optional<String>	title;
-	private Optional<String>	username;
-	private Optional<String>	first_name;
-	private Optional<String>	last_name;
-	private Optional<Boolean>	all_members_are_administrators;
+	private Optional<String>	title							= Optional.empty();
+	private Optional<String>	username						= Optional.empty();
+	private Optional<String>	first_name						= Optional.empty();
+	private Optional<String>	last_name						= Optional.empty();
+	private Optional<Boolean>	all_members_are_administrators	= Optional.empty();
 
 	public static TelegramChat create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -30,9 +30,13 @@ public class TelegramChat {
 	@Override
 	public boolean equals(Object obj) {
 
-		if (super.equals(obj)) { return true; }
+		if (super.equals(obj)) {
+			return true;
+		}
 
-		if (obj instanceof TelegramChat) { return ((TelegramChat) obj).getId() == this.getId(); }
+		if (obj instanceof TelegramChat) {
+			return ((TelegramChat) obj).getId() == this.getId();
+		}
 
 		return false;
 	}

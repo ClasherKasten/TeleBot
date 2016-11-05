@@ -15,7 +15,7 @@ public class TelegramVenue {
 	private String				title;
 	private String				address;
 
-	private Optional<String>	foursquare_id;
+	private Optional<String>	foursquare_id	= Optional.empty();
 
 	public static TelegramVenue create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
