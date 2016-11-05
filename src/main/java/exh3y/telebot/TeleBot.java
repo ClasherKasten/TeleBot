@@ -20,6 +20,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
+import exh3y.telebot.data.enums.ETelegramParseMode;
 import exh3y.telebot.data.keyboards.InlineKeyboardMarkup;
 import exh3y.telebot.data.keyboards.ReplyMarkup;
 import exh3y.telebot.exceptions.InvalidApiKeyException;
@@ -207,8 +208,8 @@ public class TeleBot extends Thread {
 	 *             Thrown if the request was not successful
 	 * @since 0.0.4
 	 */
-	public HttpResponse<JsonNode> sendMessage(int chatId, String text, String parseMode, boolean disableWebPagePreview,
-			boolean disableNotification, int replyToMessageID, ReplyMarkup replyMarkup)
+	public HttpResponse<JsonNode> sendMessage(int chatId, String text, ETelegramParseMode parseMode,
+			boolean disableWebPagePreview, boolean disableNotification, int replyToMessageID, ReplyMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException {
 
 		HashMap<String, Object> parameters = new HashMap<>();
@@ -216,7 +217,7 @@ public class TeleBot extends Thread {
 		parameters.put("text", text);
 
 		if (parseMode != null) {
-			parameters.put("parse_mode", parseMode);
+			parameters.put("parse_mode", parseMode.getValue());
 		}
 
 		if (disableWebPagePreview) {
