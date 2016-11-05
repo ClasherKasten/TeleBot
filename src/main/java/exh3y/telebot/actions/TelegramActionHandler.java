@@ -1,6 +1,6 @@
 package exh3y.telebot.actions;
 
-import org.json.JSONObject;
+import exh3y.telebot.data.TelegramMessage;
 
 /**
  * Handles messages sent to the bot.
@@ -12,12 +12,10 @@ public interface TelegramActionHandler {
 	/**
 	 * The main method containing the action to execute.
 	 * 
-	 * @param chatId
-	 *            The chat's id
 	 * @param message
-	 *            The 'message' part of the response object
-	 * @since 0.0.1
+	 *            The message
+	 * @since 0.1.0
 	 */
-	void onCommandReceive(int chatId, JSONObject message);
+	void onMessageReceive(TelegramMessage message);
 
 }

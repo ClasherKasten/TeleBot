@@ -12,6 +12,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
+import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.exceptions.InvalidApiKeyException;
 
 public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandler {
@@ -47,7 +48,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 		TeleBot bot;
 		try {
 			bot = new TeleBot(apiKey);
-			
+
 			bot.registerCommandAction("/test", this);
 			bot.unregisterCommandAction("/test");
 			bot.unregisterCommandAction("/anothercommand");
@@ -56,7 +57,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			bot.unregisterResponseHandler(this);
 			bot.registerControllerAction(this);
 		} catch (InvalidApiKeyException | UnirestException e) {
-			
+
 		} catch (InvalidAttributesException e) {
 			assertFalse(true);
 		}
@@ -73,7 +74,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 		TeleBot bot;
 		try {
 			bot = new TeleBot(apiKey);
-			
+
 			bot.registerCommandAction("/test", this);
 			bot.registerCommandAction("/test", this);
 		} catch (InvalidApiKeyException | UnirestException e) {
@@ -88,7 +89,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 	}
 
 	@Override
-	public void onCommandReceive(int chatId, JSONObject message) {
+	public void onMessageReceive(TelegramMessage message) {
 
 		return;
 	}

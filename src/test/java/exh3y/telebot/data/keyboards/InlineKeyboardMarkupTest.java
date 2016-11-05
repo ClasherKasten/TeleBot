@@ -7,7 +7,6 @@ import java.util.Random;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import exh3y.telebot.data.InlineKeyboardButton;
 import exh3y.telebot.testutil.StringGenerator;
 
 public class InlineKeyboardMarkupTest {
@@ -67,8 +66,8 @@ public class InlineKeyboardMarkupTest {
 
 		InlineKeyboardMarkup buttonMarkup = new InlineKeyboardMarkup(buttons);
 		JSONObject json = new JSONObject(buttonMarkup.toJSONString());
-		
-		//TODO: Check if json object holds the correct information
+
+		// TODO: Check if json object holds the correct information
 
 	}
 

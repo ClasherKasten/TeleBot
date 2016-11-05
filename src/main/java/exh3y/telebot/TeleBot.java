@@ -1,10 +1,13 @@
 package exh3y.telebot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.naming.directory.InvalidAttributesException;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +36,7 @@ public class TeleBot extends Thread {
 
 	private HashMap<String, TelegramActionHandler>	actionConnector;
 	private TelegramActionHandler					defaultAction		= null;
-	private TelegramActionHandler					controllerAction	= null;
+	private TelegramResponseHandler					controllerAction	= null;
 
 	private ArrayList<TelegramResponseHandler>		responseHandlers;
 
@@ -47,7 +50,7 @@ public class TeleBot extends Thread {
 	 * @param token
 	 *            The bot's token
 	 * @throws InvalidApiKeyException
-	 * @throws UnirestException 
+	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
 	public TeleBot(String endpoint, String token) throws InvalidApiKeyException, UnirestException {
@@ -73,7 +76,7 @@ public class TeleBot extends Thread {
 	/**
 	 * @param token
 	 * @throws InvalidApiKeyException
-	 * @throws UnirestException 
+	 * @throws UnirestException
 	 * @since 0.0.1
 	 */
 	public TeleBot(String token) throws InvalidApiKeyException, UnirestException {
@@ -163,7 +166,7 @@ public class TeleBot extends Thread {
 	 *            The handler to register
 	 * @since 0.0.5
 	 */
-	public void registerControllerAction(TelegramActionHandler handler) {
+	public void registerControllerAction(TelegramResponseHandler handler) {
 
 		controllerAction = handler;
 	}
@@ -737,13 +740,13 @@ public class TeleBot extends Thread {
 						// Iterate over the messages in the last update
 						JSONObject responseObject = jsonResponse.getJSONObject(i);
 						if (controllerAction != null) {
-							controllerAction.onCommandReceive(-1, responseObject);
+							controllerAction.onReceive(responseObject);
 						}
-						if (responseObject.has("message")) {
-							TelegramMessage message = new TelegramMessage(responseObject.getJSONObject("message"));
-							int chatId = message.getChat().getId();
 
-							if (message.has("text")) {
+						if (responseObject.has("message")) {
+							TelegramMessage message = TelegramMessage.create(responseObject.getJSONObject("message"));
+
+							if (message.hasText()) {
 
 								String command[] = message.toCommandArray();
 								String cmd = "";
@@ -764,9 +767,9 @@ public class TeleBot extends Thread {
 
 								if (actionConnector.containsKey(cmd)) {
 									TelegramActionHandler action = actionConnector.get(cmd);
-									action.onCommandReceive(chatId, message);
+									action.onMessageReceive(message);
 								} else if (defaultAction != null && executeCommand) {
-									defaultAction.onCommandReceive(chatId, message);
+									defaultAction.onMessageReceive(message);
 								}
 							}
 						} else {
@@ -787,6 +790,18 @@ public class TeleBot extends Thread {
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
