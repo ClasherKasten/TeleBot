@@ -16,7 +16,8 @@ import exh3y.telebot.testutil.StringGenerator;
 
 public class TelegramMessageTest {
 
-	private TelegramMessage createTestMessage(JSONObject json) throws JsonParseException, JsonMappingException, JSONException, IOException {
+	private TelegramMessage createTestMessage(JSONObject json)
+			throws JsonParseException, JsonMappingException, JSONException, IOException {
 
 		if (json == null) {
 			json = new JSONObject(

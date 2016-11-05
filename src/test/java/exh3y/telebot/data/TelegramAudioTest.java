@@ -9,13 +9,14 @@ import org.junit.Test;
 
 public class TelegramAudioTest {
 
-	private String[] testValues = {"{\"file_id\":\"2af164d8783f\",\"duration\":2}","{\"file_id\":\"a2faaa5461b21\",\"duration\":8,\"title\":\"My audio message\"}"};
-	
+	private String[] testValues = { "{\"file_id\":\"2af164d8783f\",\"duration\":2}",
+			"{\"file_id\":\"a2faaa5461b21\",\"duration\":8,\"title\":\"My audio message\"}" };
+
 	@Test
 	public void testAudioCreation() {
-		
+
 		for (String string : testValues) {
-			
+
 			JSONObject json = new JSONObject(string);
 			TelegramAudio audio;
 			try {
@@ -24,14 +25,14 @@ public class TelegramAudioTest {
 				assertTrue("JSON parsing is working like expected", false);
 				return;
 			}
-			
+
 			assertEquals(audio.getFile_id(), json.getString("file_id"));
 			assertEquals((int) audio.getDuration(), json.getInt("duration"));
-			
+
 			if (audio.hasTitle()) {
 				assertEquals(audio.getTitle(), json.getString("title"));
 			}
 		}
 	}
-	
+
 }

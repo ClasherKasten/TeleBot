@@ -48,7 +48,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 		TeleBot bot;
 		try {
 			bot = new TeleBot(apiKey);
-			
+
 			bot.registerCommandAction("/test", this);
 			bot.unregisterCommandAction("/test");
 			bot.unregisterCommandAction("/anothercommand");
@@ -57,7 +57,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 			bot.unregisterResponseHandler(this);
 			bot.registerControllerAction(this);
 		} catch (InvalidApiKeyException | UnirestException e) {
-			
+
 		} catch (InvalidAttributesException e) {
 			assertFalse(true);
 		}
@@ -74,7 +74,7 @@ public class TeleBotTest implements TelegramActionHandler, TelegramResponseHandl
 		TeleBot bot;
 		try {
 			bot = new TeleBot(apiKey);
-			
+
 			bot.registerCommandAction("/test", this);
 			bot.registerCommandAction("/test", this);
 		} catch (InvalidApiKeyException | UnirestException e) {

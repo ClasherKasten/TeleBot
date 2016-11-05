@@ -13,8 +13,9 @@ public class TelegramUserTest {
 
 	@Test
 	public void testUserCreation() {
+
 		JSONObject user = new JSONObject("{\"id\":1, \"first_name\":\"test\",\"username\":\"another test\"}");
-		
+
 		TelegramUser tUser;
 		try {
 			tUser = TelegramUser.create(user);
@@ -23,12 +24,12 @@ public class TelegramUserTest {
 			assertTrue(false);
 			return;
 		}
-		
+
 		assertEquals(tUser.getId(), 1);
 		assertEquals(tUser.getFirst_name(), "test");
 		assertEquals(tUser.getUsername(), "another test");
-		
+
 		assertFalse(tUser.hasLast_name());
 	}
-	
+
 }

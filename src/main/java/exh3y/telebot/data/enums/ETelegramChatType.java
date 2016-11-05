@@ -32,7 +32,9 @@ public enum ETelegramChatType {
 
 		for (ETelegramChatType singleEnum : ETelegramChatType.values()) {
 
-			if (singleEnum.getChatTypeString().equals(name)) { return singleEnum; }
+			if (singleEnum.getChatTypeString().equals(name)) {
+				return singleEnum;
+			}
 		}
 
 		return null;

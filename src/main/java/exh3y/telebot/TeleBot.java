@@ -98,8 +98,9 @@ public class TeleBot extends Thread {
 	 */
 	public void registerCommandAction(String command, TelegramActionHandler action) throws InvalidAttributesException {
 
-		if (actionConnector
-				.containsKey(command)) { throw new InvalidAttributesException("Command already registered!"); }
+		if (actionConnector.containsKey(command)) {
+			throw new InvalidAttributesException("Command already registered!");
+		}
 
 		actionConnector.put(command, action);
 	}
@@ -175,8 +176,9 @@ public class TeleBot extends Thread {
 
 		HttpResponse<JsonNode> response = Unirest.post(endpoint + token + "/" + method).fields(parameters).asJson();
 		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
-		if (!jsonResponse
-				.getBoolean("ok")) { throw new InvalidRequestException(jsonResponse.optString("description")); }
+		if (!jsonResponse.getBoolean("ok")) {
+			throw new InvalidRequestException(jsonResponse.optString("description"));
+		}
 		return response;
 	}
 
@@ -740,7 +742,7 @@ public class TeleBot extends Thread {
 						if (controllerAction != null) {
 							controllerAction.onReceive(responseObject);
 						}
-						
+
 						if (responseObject.has("message")) {
 							TelegramMessage message = TelegramMessage.create(responseObject.getJSONObject("message"));
 
