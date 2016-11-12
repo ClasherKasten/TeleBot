@@ -3,6 +3,7 @@ package exh3y.telebot.data;
 import java.io.IOException;
 
 import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
@@ -169,6 +170,7 @@ public class TelegramChat {
 	 * @param type
 	 *            the type to set
 	 */
+	@JsonIgnore
 	public void setType(ETelegramChatType type) {
 
 		this.type = type;
