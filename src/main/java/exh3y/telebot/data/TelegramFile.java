@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,10 +9,10 @@ import org.json.JSONObject;
 
 public class TelegramFile {
 
-	private String				file_id;
+	private String	file_id;
 
-	private Optional<Integer>	file_size	= Optional.empty();
-	private Optional<String>	file_path	= Optional.empty();
+	private Integer	file_size	= null;
+	private String	file_path	= "";
 
 	public static TelegramFile create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -34,32 +32,46 @@ public class TelegramFile {
 
 	public boolean hasFile_size() {
 
-		return this.file_size.isPresent();
+		return file_size != null;
 	}
 
-	public Integer getFile_size() throws NoSuchElementException {
+	/**
+	 * @return the file_size
+	 */
+	public Integer getFile_size() {
 
-		return file_size.get();
+		return file_size;
 	}
 
+	/**
+	 * @param file_size
+	 *            the file_size to set
+	 */
 	public void setFile_size(Integer file_size) {
 
-		this.file_size = Optional.of(file_size);
+		this.file_size = file_size;
 	}
 
 	public boolean hasFile_path() {
 
-		return this.file_path.isPresent();
+		return file_path != null;
 	}
 
-	public String getFile_path() throws NoSuchElementException {
+	/**
+	 * @return the file_path
+	 */
+	public String getFile_path() {
 
-		return file_path.get();
+		return file_path;
 	}
 
+	/**
+	 * @param file_path
+	 *            the file_path to set
+	 */
 	public void setFile_path(String file_path) {
 
-		this.file_path = Optional.of(file_path);
+		this.file_path = file_path;
 	}
 
 }

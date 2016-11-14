@@ -1,8 +1,6 @@
 package exh3y.telebot.data.games;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -14,13 +12,13 @@ import exh3y.telebot.data.TelegramPhotoSize;
 
 public class TelegramGame {
 
-	private String								title;
-	private String								description;
-	private TelegramPhotoSize[]					photo;
+	private String					title;
+	private String					description;
+	private TelegramPhotoSize[]		photo;
 
-	private Optional<String>					text			= Optional.empty();
-	private Optional<TelegramMessageEntity[]>	text_entities	= Optional.empty();
-	private Optional<TelegramAnimation>			animation		= Optional.empty();
+	private String					text			= null;
+	private TelegramMessageEntity[]	text_entities	= null;
+	private TelegramAnimation		animation		= null;
 
 	public static TelegramGame create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -60,47 +58,47 @@ public class TelegramGame {
 
 	public boolean hasText() {
 
-		return this.text.isPresent();
+		return text != null;
 	}
 
-	public String getText() throws NoSuchElementException {
+	public String getText() {
 
-		return text.get();
+		return text;
 	}
 
 	public void setText(String text) {
 
-		this.text = Optional.of(text);
+		this.text = text;
 	}
 
 	public boolean hasText_entities() {
 
-		return this.text_entities.isPresent();
+		return text_entities != null;
 	}
 
-	public TelegramMessageEntity[] getText_entities() throws NoSuchElementException {
+	public TelegramMessageEntity[] getText_entities() {
 
-		return text_entities.get();
+		return text_entities;
 	}
 
 	public void setText_entities(TelegramMessageEntity[] text_entities) {
 
-		this.text_entities = Optional.of(text_entities);
+		this.text_entities = text_entities;
 	}
 
 	public boolean hasAnimation() {
 
-		return this.animation.isPresent();
+		return animation != null;
 	}
 
-	public TelegramAnimation getAnimation() throws NoSuchElementException {
+	public TelegramAnimation getAnimation() {
 
-		return animation.get();
+		return animation;
 	}
 
 	public void setAnimation(TelegramAnimation animation) {
 
-		this.animation = Optional.of(animation);
+		this.animation = animation;
 	}
 
 }

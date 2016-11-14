@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,13 +9,13 @@ import org.json.JSONObject;
 
 public class TelegramAudio {
 
-	private String				file_id;
-	private Integer				duration;
+	private String	file_id;
+	private Integer	duration;
 
-	private Optional<String>	performer	= Optional.empty();
-	private Optional<String>	title		= Optional.empty();
-	private Optional<String>	mime_type	= Optional.empty();
-	private Optional<Integer>	file_size	= Optional.empty();
+	private String	performer	= null;
+	private String	title		= null;
+	private String	mime_type	= null;
+	private Integer	file_size	= null;
 
 	public static TelegramAudio create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -61,15 +59,15 @@ public class TelegramAudio {
 
 	public boolean hasPerformer() {
 
-		return this.performer.isPresent();
+		return performer != null;
 	}
 
 	/**
 	 * @return the performer
 	 */
-	public String getPerformer() throws NoSuchElementException {
+	public String getPerformer() {
 
-		return performer.get();
+		return performer;
 	}
 
 	/**
@@ -78,20 +76,20 @@ public class TelegramAudio {
 	 */
 	public void setPerformer(String performer) {
 
-		this.performer = Optional.of(performer);
+		this.performer = performer;
 	}
 
 	public boolean hasTitle() {
 
-		return this.title.isPresent();
+		return title != null;
 	}
 
 	/**
 	 * @return the title
 	 */
-	public String getTitle() throws NoSuchElementException {
+	public String getTitle() {
 
-		return title.get();
+		return title;
 	}
 
 	/**
@@ -100,20 +98,20 @@ public class TelegramAudio {
 	 */
 	public void setTitle(String title) {
 
-		this.title = Optional.of(title);
+		this.title = title;
 	}
 
 	public boolean hasMime_type() {
 
-		return this.mime_type.isPresent();
+		return mime_type != null;
 	}
 
 	/**
 	 * @return the mime_type
 	 */
-	public String getMime_type() throws NoSuchElementException {
+	public String getMime_type() {
 
-		return mime_type.get();
+		return mime_type;
 	}
 
 	/**
@@ -122,20 +120,20 @@ public class TelegramAudio {
 	 */
 	public void setMime_type(String mime_type) {
 
-		this.mime_type = Optional.of(mime_type);
+		this.mime_type = mime_type;
 	}
 
 	public boolean hasFile_size() {
 
-		return this.file_size.isPresent();
+		return file_size != null;
 	}
 
 	/**
 	 * @return the file_size
 	 */
-	public Integer getFile_size() throws NoSuchElementException {
+	public Integer getFile_size() {
 
-		return file_size.get();
+		return file_size;
 	}
 
 	/**
@@ -144,7 +142,7 @@ public class TelegramAudio {
 	 */
 	public void setFile_size(Integer file_size) {
 
-		this.file_size = Optional.of(file_size);
+		this.file_size = file_size;
 	}
 
 }

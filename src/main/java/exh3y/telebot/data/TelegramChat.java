@@ -3,7 +3,7 @@ package exh3y.telebot.data;
 import java.io.IOException;
 
 import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
@@ -15,10 +15,10 @@ public class TelegramChat {
 	private int					id;
 	private ETelegramChatType	type;
 
-	private String				title							= "";
-	private String				username						= "";
-	private String				first_name						= "";
-	private String				last_name						= "";
+	private String				title							= null;
+	private String				username						= null;
+	private String				first_name						= null;
+	private String				last_name						= null;
 	private Boolean				all_members_are_administrators	= false;
 
 	public static TelegramChat create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
@@ -76,9 +76,15 @@ public class TelegramChat {
 	 * @param type
 	 *            the type to set
 	 */
+	@JsonProperty
 	public void setType(String type) {
 
 		this.type = ETelegramChatType.getEnumByName(type);
+	}
+
+	public boolean hasTitle() {
+
+		return title != null;
 	}
 
 	/**
@@ -98,6 +104,11 @@ public class TelegramChat {
 		this.title = title;
 	}
 
+	public boolean hasUsername() {
+
+		return username != null;
+	}
+
 	/**
 	 * @return the username
 	 */
@@ -115,6 +126,11 @@ public class TelegramChat {
 		this.username = username;
 	}
 
+	public boolean hasFirst_name() {
+
+		return first_name != null;
+	}
+
 	/**
 	 * @return the first_name
 	 */
@@ -130,6 +146,11 @@ public class TelegramChat {
 	public void setFirst_name(String first_name) {
 
 		this.first_name = first_name;
+	}
+
+	public boolean hasLast_name() {
+
+		return last_name != null;
 	}
 
 	/**
@@ -170,7 +191,6 @@ public class TelegramChat {
 	 * @param type
 	 *            the type to set
 	 */
-	@JsonIgnore
 	public void setType(ETelegramChatType type) {
 
 		this.type = type;

@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,11 +9,11 @@ import org.json.JSONObject;
 
 public class TelegramContact {
 
-	private String				phone_number;
-	private String				first_name;
+	private String	phone_number;
+	private String	first_name;
 
-	private Optional<String>	last_name	= Optional.empty();
-	private Optional<Integer>	user_id		= Optional.empty();
+	private String	last_name	= null;
+	private Integer	user_id		= null;
 
 	public static TelegramContact create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -45,32 +43,46 @@ public class TelegramContact {
 
 	public boolean hasLast_name() {
 
-		return this.last_name.isPresent();
+		return last_name != null;
 	}
 
-	public String getLast_name() throws NoSuchElementException {
+	/**
+	 * @return the last_name
+	 */
+	public String getLast_name() {
 
-		return last_name.get();
+		return last_name;
 	}
 
+	/**
+	 * @param last_name
+	 *            the last_name to set
+	 */
 	public void setLast_name(String last_name) {
 
-		this.last_name = Optional.of(last_name);
+		this.last_name = last_name;
 	}
 
 	public boolean hasUser_id() {
 
-		return this.user_id.isPresent();
+		return user_id != null;
 	}
 
-	public Integer getUser_id() throws NoSuchElementException {
+	/**
+	 * @return the user_id
+	 */
+	public Integer getUser_id() {
 
-		return user_id.get();
+		return user_id;
 	}
 
+	/**
+	 * @param user_id
+	 *            the user_id to set
+	 */
 	public void setUser_id(Integer user_id) {
 
-		this.user_id = Optional.of(user_id);
+		this.user_id = user_id;
 	}
 
 }

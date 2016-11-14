@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,11 +9,11 @@ import org.json.JSONObject;
 
 public class TelegramPhotoSize {
 
-	private String				file_id;
-	private Integer				width;
-	private Integer				height;
+	private String	file_id;
+	private Integer	width;
+	private Integer	height;
 
-	private Optional<Integer>	file_size	= Optional.empty();
+	private Integer	file_size	= null;
 
 	public static TelegramPhotoSize create(JSONObject json)
 			throws JsonParseException, JsonMappingException, IOException {
@@ -77,15 +75,15 @@ public class TelegramPhotoSize {
 
 	public boolean hasFile_size() {
 
-		return this.file_size.isPresent();
+		return file_size != null;
 	}
 
 	/**
 	 * @return the file_size
 	 */
-	public Integer getFile_size() throws NoSuchElementException {
+	public Integer getFile_size() {
 
-		return file_size.get();
+		return file_size;
 	}
 
 	/**
@@ -94,7 +92,7 @@ public class TelegramPhotoSize {
 	 */
 	public void setFile_size(Integer file_size) {
 
-		this.file_size = Optional.of(file_size);
+		this.file_size = file_size;
 	}
 
 }

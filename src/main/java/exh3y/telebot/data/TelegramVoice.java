@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,11 +9,11 @@ import org.json.JSONObject;
 
 public class TelegramVoice {
 
-	private String				file_id;
-	private Integer				duration;
+	private String	file_id;
+	private Integer	duration;
 
-	private Optional<String>	mime_type	= Optional.empty();
-	private Optional<Integer>	file_size	= Optional.empty();
+	private String	mime_type	= null;
+	private Integer	file_size	= null;
 
 	public static TelegramVoice create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -45,32 +43,46 @@ public class TelegramVoice {
 
 	public boolean hasMime_type() {
 
-		return this.mime_type.isPresent();
+		return mime_type != null;
 	}
 
-	public String getMime_type() throws NoSuchElementException {
+	/**
+	 * @return the mime_type
+	 */
+	public String getMime_type() {
 
-		return mime_type.get();
+		return mime_type;
 	}
 
+	/**
+	 * @param mime_type
+	 *            the mime_type to set
+	 */
 	public void setMime_type(String mime_type) {
 
-		this.mime_type = Optional.of(mime_type);
+		this.mime_type = mime_type;
 	}
 
 	public boolean hasFile_size() {
 
-		return this.file_size.isPresent();
+		return file_size != null;
 	}
 
-	public Integer getFile_size() throws NoSuchElementException {
+	/**
+	 * @return the file_size
+	 */
+	public Integer getFile_size() {
 
-		return file_size.get();
+		return file_size;
 	}
 
+	/**
+	 * @param file_size
+	 *            the file_size to set
+	 */
 	public void setFile_size(Integer file_size) {
 
-		this.file_size = Optional.of(file_size);
+		this.file_size = file_size;
 	}
 
 }
