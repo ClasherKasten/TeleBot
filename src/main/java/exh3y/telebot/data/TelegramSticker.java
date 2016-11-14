@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,13 +9,13 @@ import org.json.JSONObject;
 
 public class TelegramSticker {
 
-	private String						file_id;
-	private Integer						width;
-	private Integer						height;
+	private String				file_id;
+	private Integer				width;
+	private Integer				height;
 
-	private Optional<TelegramPhotoSize>	thumb		= Optional.empty();
-	private Optional<String>			emoji		= Optional.empty();
-	private Optional<Integer>			file_size	= Optional.empty();
+	private TelegramPhotoSize	thumb		= null;
+	private String				emoji		= null;
+	private Integer				file_size	= null;
 
 	public static TelegramSticker create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -78,15 +76,15 @@ public class TelegramSticker {
 
 	public boolean hasThumb() {
 
-		return this.thumb.isPresent();
+		return thumb != null;
 	}
 
 	/**
 	 * @return the thumb
 	 */
-	public TelegramPhotoSize getThumb() throws NoSuchElementException {
+	public TelegramPhotoSize getThumb() {
 
-		return thumb.get();
+		return thumb;
 	}
 
 	/**
@@ -95,20 +93,20 @@ public class TelegramSticker {
 	 */
 	public void setThumb(TelegramPhotoSize thumb) {
 
-		this.thumb = Optional.of(thumb);
+		this.thumb = thumb;
 	}
 
 	public boolean hasEmoji() {
 
-		return this.emoji.isPresent();
+		return emoji != null;
 	}
 
 	/**
 	 * @return the emoji
 	 */
-	public String getEmoji() throws NoSuchElementException {
+	public String getEmoji() {
 
-		return emoji.get();
+		return emoji;
 	}
 
 	/**
@@ -117,20 +115,20 @@ public class TelegramSticker {
 	 */
 	public void setEmoji(String emoji) {
 
-		this.emoji = Optional.of(emoji);
+		this.emoji = emoji;
 	}
 
 	public boolean hasFile_size() {
 
-		return this.file_size.isPresent();
+		return file_size != null;
 	}
 
 	/**
 	 * @return the file_size
 	 */
-	public Integer getFile_size() throws NoSuchElementException {
+	public Integer getFile_size() {
 
-		return file_size.get();
+		return file_size;
 	}
 
 	/**
@@ -139,7 +137,7 @@ public class TelegramSticker {
 	 */
 	public void setFile_size(Integer file_size) {
 
-		this.file_size = Optional.of(file_size);
+		this.file_size = file_size;
 	}
 
 }

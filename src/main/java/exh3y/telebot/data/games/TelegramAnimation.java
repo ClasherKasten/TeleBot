@@ -2,7 +2,6 @@ package exh3y.telebot.data.games;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -13,12 +12,12 @@ import exh3y.telebot.data.TelegramPhotoSize;
 
 public class TelegramAnimation {
 
-	private String						file_id;
+	private String				file_id;
 
-	private Optional<TelegramPhotoSize>	thumb		= Optional.empty();
-	private Optional<String>			file_name	= Optional.empty();
-	private Optional<String>			mime_type	= Optional.empty();
-	private Optional<Integer>			file_size	= Optional.empty();
+	private TelegramPhotoSize	thumb		= null;
+	private String				file_name	= null;
+	private String				mime_type	= null;
+	private Integer				file_size	= null;
 
 	public static TelegramAnimation create(JSONObject json)
 			throws JsonParseException, JsonMappingException, IOException {
@@ -39,62 +38,62 @@ public class TelegramAnimation {
 
 	public boolean hasThumb() {
 
-		return this.thumb.isPresent();
+		return thumb != null;
 	}
 
-	public TelegramPhotoSize getThumb() throws NoSuchElementException {
+	public TelegramPhotoSize getThumb() {
 
-		return thumb.get();
+		return thumb;
 	}
 
 	public void setThumb(TelegramPhotoSize thumb) {
 
-		this.thumb = Optional.of(thumb);
+		this.thumb = thumb;
 	}
 
 	public boolean hasFile_name() {
 
-		return this.file_name.isPresent();
+		return file_name != null;
 	}
 
-	public String getFile_name() throws NoSuchElementException {
+	public String getFile_name() {
 
-		return file_name.get();
+		return file_name;
 	}
 
 	public void setFile_name(String file_name) {
 
-		this.file_name = Optional.of(file_name);
+		this.file_name = file_name;
 	}
 
 	public boolean hasMime_type() {
 
-		return this.mime_type.isPresent();
+		return mime_type != null;
 	}
 
-	public String getMime_type() throws NoSuchElementException {
+	public String getMime_type() {
 
-		return mime_type.get();
+		return mime_type;
 	}
 
 	public void setMime_type(String mime_type) {
 
-		this.mime_type = Optional.of(mime_type);
+		this.mime_type = mime_type;
 	}
 
 	public boolean hasFile_size() {
 
-		return this.file_size.isPresent();
+		return file_size != null;
 	}
 
 	public Integer getFile_size() throws NoSuchElementException {
 
-		return file_size.get();
+		return file_size;
 	}
 
 	public void setFile_size(Integer file_size) {
 
-		this.file_size = Optional.of(file_size);
+		this.file_size = file_size;
 	}
 
 }

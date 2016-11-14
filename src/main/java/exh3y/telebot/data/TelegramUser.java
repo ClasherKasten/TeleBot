@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,10 +9,11 @@ import org.json.JSONObject;
 
 public class TelegramUser {
 
-	private int					id;
-	private String				first_name;
-	private Optional<String>	last_name	= Optional.empty();
-	private Optional<String>	username	= Optional.empty();
+	private int		id;
+	private String	first_name;
+
+	private String	last_name	= null;
+	private String	username	= null;
 
 	public static TelegramUser create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -42,34 +41,48 @@ public class TelegramUser {
 		this.first_name = first_name;
 	}
 
-	public String getLast_name() throws NoSuchElementException {
-
-		return last_name.get();
-	}
-
-	public void setLast_name(String last_name) {
-
-		this.last_name = Optional.of(last_name);
-	}
-
 	public boolean hasLast_name() {
 
-		return this.last_name.isPresent();
+		return last_name != null;
 	}
 
-	public String getUsername() throws NoSuchElementException {
+	/**
+	 * @return the last_name
+	 */
+	public String getLast_name() {
 
-		return username.get();
+		return last_name;
 	}
 
-	public void setUsername(String username) {
+	/**
+	 * @param last_name
+	 *            the last_name to set
+	 */
+	public void setLast_name(String last_name) {
 
-		this.username = Optional.of(username);
+		this.last_name = last_name;
 	}
 
 	public boolean hasUsername() {
 
-		return this.username.isPresent();
+		return username != null;
+	}
+
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+
+		return username;
+	}
+
+	/**
+	 * @param username
+	 *            the username to set
+	 */
+	public void setUsername(String username) {
+
+		this.username = username;
 	}
 
 }

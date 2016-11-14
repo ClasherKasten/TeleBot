@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -15,7 +13,7 @@ public class TelegramVenue {
 	private String				title;
 	private String				address;
 
-	private Optional<String>	foursquare_id	= Optional.empty();
+	private String				foursquare_id	= null;
 
 	public static TelegramVenue create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -55,17 +53,24 @@ public class TelegramVenue {
 
 	public boolean hasFoursquare_id() {
 
-		return this.foursquare_id.isPresent();
+		return foursquare_id != null;
 	}
 
-	public String getFoursquare_id() throws NoSuchElementException {
+	/**
+	 * @return the foursquare_id
+	 */
+	public String getFoursquare_id() {
 
-		return foursquare_id.get();
+		return foursquare_id;
 	}
 
+	/**
+	 * @param foursquare_id
+	 *            the foursquare_id to set
+	 */
 	public void setFoursquare_id(String foursquare_id) {
 
-		this.foursquare_id = Optional.of(foursquare_id);
+		this.foursquare_id = foursquare_id;
 	}
 
 }

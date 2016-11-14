@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,12 +9,12 @@ import org.json.JSONObject;
 
 public class TelegramMessageEntity {
 
-	private String					type;
-	private int						offset;
-	private int						length;
+	private String			type;
+	private int				offset;
+	private int				length;
 
-	private Optional<String>		url		= Optional.empty();
-	private Optional<TelegramUser>	user	= Optional.empty();
+	private String			url		= null;
+	private TelegramUser	user	= null;
 
 	public static TelegramMessageEntity create(JSONObject json)
 			throws JsonParseException, JsonMappingException, IOException {
@@ -78,15 +76,15 @@ public class TelegramMessageEntity {
 
 	public boolean hasUrl() {
 
-		return this.url.isPresent();
+		return url != null;
 	}
 
 	/**
 	 * @return the url
 	 */
-	public String getUrl() throws NoSuchElementException {
+	public String getUrl() {
 
-		return url.get();
+		return url;
 	}
 
 	/**
@@ -95,20 +93,20 @@ public class TelegramMessageEntity {
 	 */
 	public void setUrl(String url) {
 
-		this.url = Optional.of(url);
+		this.url = url;
 	}
 
 	public boolean hasUser() {
 
-		return this.user.isPresent();
+		return user != null;
 	}
 
 	/**
 	 * @return the user
 	 */
-	public TelegramUser getUser() throws NoSuchElementException {
+	public TelegramUser getUser() {
 
-		return user.get();
+		return user;
 	}
 
 	/**
@@ -117,7 +115,7 @@ public class TelegramMessageEntity {
 	 */
 	public void setUser(TelegramUser user) {
 
-		this.user = Optional.of(user);
+		this.user = user;
 	}
 
 }

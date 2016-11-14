@@ -1,8 +1,6 @@
 package exh3y.telebot.data;
 
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,14 +9,14 @@ import org.json.JSONObject;
 
 public class TelegramVideo {
 
-	private String						file_id;
-	private Integer						width;
-	private Integer						height;
-	private Integer						duration;
+	private String				file_id;
+	private Integer				width;
+	private Integer				height;
+	private Integer				duration;
 
-	private Optional<TelegramPhotoSize>	thumb		= Optional.empty();
-	private Optional<String>			mime_type	= Optional.empty();
-	private Optional<Integer>			file_size	= Optional.empty();
+	private TelegramPhotoSize	thumb		= null;
+	private String				mime_type	= null;
+	private Integer				file_size	= null;
 
 	public static TelegramVideo create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
 
@@ -96,15 +94,15 @@ public class TelegramVideo {
 
 	public boolean hasThumb() {
 
-		return this.thumb.isPresent();
+		return thumb != null;
 	}
 
 	/**
 	 * @return the thumb
 	 */
-	public TelegramPhotoSize getThumb() throws NoSuchElementException {
+	public TelegramPhotoSize getThumb() {
 
-		return thumb.get();
+		return thumb;
 	}
 
 	/**
@@ -113,20 +111,20 @@ public class TelegramVideo {
 	 */
 	public void setThumb(TelegramPhotoSize thumb) {
 
-		this.thumb = Optional.of(thumb);
+		this.thumb = thumb;
 	}
 
 	public boolean hasMime_type() {
 
-		return this.mime_type.isPresent();
+		return mime_type != null;
 	}
 
 	/**
 	 * @return the mime_type
 	 */
-	public String getMime_type() throws NoSuchElementException {
+	public String getMime_type() {
 
-		return mime_type.get();
+		return mime_type;
 	}
 
 	/**
@@ -135,20 +133,20 @@ public class TelegramVideo {
 	 */
 	public void setMime_type(String mime_type) {
 
-		this.mime_type = Optional.of(mime_type);
+		this.mime_type = mime_type;
 	}
 
 	public boolean hasFile_size() {
 
-		return this.file_size.isPresent();
+		return file_size != null;
 	}
 
 	/**
 	 * @return the file_size
 	 */
-	public Integer getFile_size() throws NoSuchElementException {
+	public Integer getFile_size() {
 
-		return file_size.get();
+		return file_size;
 	}
 
 	/**
@@ -157,7 +155,7 @@ public class TelegramVideo {
 	 */
 	public void setFile_size(Integer file_size) {
 
-		this.file_size = Optional.of(file_size);
+		this.file_size = file_size;
 	}
 
 }
