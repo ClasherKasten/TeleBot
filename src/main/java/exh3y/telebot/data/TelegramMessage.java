@@ -2,8 +2,6 @@ package exh3y.telebot.data;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
@@ -18,6 +16,7 @@ public class TelegramMessage {
 	private TelegramUser			from					= null;
 	private TelegramUser			forward_from			= null;
 	private TelegramChat			forward_from_chat		= null;
+	private Integer					forward_from_message_id	= null;
 	private Integer					forward_date			= null;
 	private TelegramMessage			reply_to_message		= null;
 	private Integer					edit_date				= null;
@@ -46,7 +45,7 @@ public class TelegramMessage {
 	private Integer					migrate_from_chat_id	= null;
 	private TelegramMessage			pinned_message			= null;
 
-	public static TelegramMessage create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
+	public static TelegramMessage create(JSONObject json) throws IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), TelegramMessage.class);
@@ -56,7 +55,7 @@ public class TelegramMessage {
 	 * <p>
 	 * Returns the command as array.
 	 * </p>
-	 * 
+	 *
 	 * @return The command as array
 	 * @since 0.0.3
 	 */
@@ -180,6 +179,16 @@ public class TelegramMessage {
 	public void setForward_from_chat(TelegramChat forward_from_chat) {
 
 		this.forward_from_chat = forward_from_chat;
+	}
+
+	public Integer getForward_from_message_id() {
+
+		return forward_from_message_id;
+	}
+
+	public void setForward_from_message_id(Integer forward_from_message_id) {
+
+		this.forward_from_message_id = forward_from_message_id;
 	}
 
 	public boolean hasForward_date() {

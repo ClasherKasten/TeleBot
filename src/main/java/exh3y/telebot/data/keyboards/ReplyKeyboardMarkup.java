@@ -3,7 +3,7 @@ package exh3y.telebot.data.keyboards;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ReplyKeyboardMarkup extends ReplyMarkup {
+public class ReplyKeyboardMarkup implements ReplyMarkup {
 
 	public String[][]	keyboard;
 	public boolean		resizeKeyboard;

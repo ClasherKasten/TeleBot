@@ -3,8 +3,6 @@ package exh3y.telebot.data.games;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
@@ -20,7 +18,7 @@ public class TelegramAnimation {
 	private Integer				file_size	= null;
 
 	public static TelegramAnimation create(JSONObject json)
-			throws JsonParseException, JsonMappingException, IOException {
+			throws IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), TelegramAnimation.class);

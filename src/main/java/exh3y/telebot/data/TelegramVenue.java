@@ -2,8 +2,6 @@ package exh3y.telebot.data;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
@@ -15,7 +13,7 @@ public class TelegramVenue {
 
 	private String				foursquare_id	= null;
 
-	public static TelegramVenue create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
+	public static TelegramVenue create(JSONObject json) throws IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), TelegramVenue.class);

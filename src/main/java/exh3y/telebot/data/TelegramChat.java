@@ -2,9 +2,7 @@ package exh3y.telebot.data;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
@@ -21,7 +19,7 @@ public class TelegramChat {
 	private String				last_name						= null;
 	private Boolean				all_members_are_administrators	= false;
 
-	public static TelegramChat create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
+	public static TelegramChat create(JSONObject json) throws IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), TelegramChat.class);

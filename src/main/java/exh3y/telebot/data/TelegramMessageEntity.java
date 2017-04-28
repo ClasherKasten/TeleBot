@@ -2,8 +2,6 @@ package exh3y.telebot.data;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
@@ -17,7 +15,7 @@ public class TelegramMessageEntity {
 	private TelegramUser	user	= null;
 
 	public static TelegramMessageEntity create(JSONObject json)
-			throws JsonParseException, JsonMappingException, IOException {
+			throws IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), TelegramMessageEntity.class);

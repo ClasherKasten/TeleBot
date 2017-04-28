@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +68,7 @@ public class TeleBot extends Thread {
 
 		this.botName = botName;
 
-		actionConnector = new HashMap<String, TelegramActionHandler>();
+		actionConnector = new HashMap<>();
 		responseHandlers = new ArrayList<>();
 	}
 
@@ -749,7 +747,7 @@ public class TeleBot extends Thread {
 
 							if (message.hasText()) {
 
-								String command[] = message.toCommandArray();
+								String[] command = message.toCommandArray();
 								String cmd = "";
 								boolean executeCommand = true;
 
@@ -789,19 +787,9 @@ public class TeleBot extends Thread {
 				try {
 					sleep(this.pollingIntervall);
 				} catch (InterruptedException e1) {
-					e1.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (JSONException | IOException e) {
 				e.printStackTrace();
 			}
 		}

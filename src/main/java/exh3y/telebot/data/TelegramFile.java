@@ -2,8 +2,6 @@ package exh3y.telebot.data;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
@@ -14,7 +12,7 @@ public class TelegramFile {
 	private Integer	file_size	= null;
 	private String	file_path	= "";
 
-	public static TelegramFile create(JSONObject json) throws JsonParseException, JsonMappingException, IOException {
+	public static TelegramFile create(JSONObject json) throws IOException {
 
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(json.toString(), TelegramFile.class);

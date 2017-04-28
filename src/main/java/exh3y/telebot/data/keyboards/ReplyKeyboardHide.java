@@ -2,7 +2,7 @@ package exh3y.telebot.data.keyboards;
 
 import org.json.JSONObject;
 
-public class ReplyKeyboardHide extends ReplyMarkup {
+public class ReplyKeyboardHide implements ReplyMarkup {
 
 	public boolean selective;
 
@@ -23,7 +23,7 @@ public class ReplyKeyboardHide extends ReplyMarkup {
 	public String toJSONString() {
 
 		JSONObject object = new JSONObject();
-		object.put("hide_keyboard", true);
+		object.put("remove_keyboard", true);
 
 		if (selective) {
 			object.put("selective", true);
