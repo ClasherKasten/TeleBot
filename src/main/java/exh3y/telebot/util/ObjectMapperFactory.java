@@ -7,6 +7,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class ObjectMapperFactory
 {
 	
+	private ObjectMapperFactory()
+	{
+		
+	}
+	
+	
 	/**
 	 * Returns the default object mapper (used by all classes for deserialization)
 	 * 
