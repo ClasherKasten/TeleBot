@@ -49,6 +49,13 @@ public class TelegramChat
 	}
 	
 	
+	@Override
+	public int hashCode()
+	{
+		return getId();
+	}
+	
+	
 	/**
 	 * Returns the chat's type
 	 * 
