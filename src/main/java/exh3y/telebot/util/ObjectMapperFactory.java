@@ -4,9 +4,6 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
 
-/**
- * @author Sebastian Stein <sebastian-stein@gmx.de>
- */
 public class ObjectMapperFactory
 {
 	
