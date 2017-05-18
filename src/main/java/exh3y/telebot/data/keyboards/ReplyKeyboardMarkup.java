@@ -3,18 +3,21 @@ package exh3y.telebot.data.keyboards;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ReplyKeyboardMarkup implements ReplyMarkup {
 
-	public String[][]	keyboard;
-	public boolean		resizeKeyboard;
-	public boolean		oneTimeKeyboard;
-	public boolean		selective;
-
+public class ReplyKeyboardMarkup implements ReplyMarkup
+{
+	
+	public String[][] keyboard;
+	public boolean resizeKeyboard;
+	public boolean oneTimeKeyboard;
+	public boolean selective;
+	
+	
 	/**
 	 * Creates a new ReplyKeyboardMarkup
 	 * 
 	 * @param keyboard
-	 *            The buttons to show (in table format)
+	 *           The buttons to show (in table format)
 	 * @param resizeKeyboard
 	 * @param oneTimeKeyboard
 	 * @param selective
@@ -23,47 +26,55 @@ public class ReplyKeyboardMarkup implements ReplyMarkup {
 	 * @since 0.0.4
 	 */
 	public ReplyKeyboardMarkup(String[][] keyboard, boolean resizeKeyboard, boolean oneTimeKeyboard,
-			boolean selective) {
-
+			boolean selective)
+	{
+		
 		this.keyboard = keyboard;
 		this.resizeKeyboard = resizeKeyboard;
 		this.oneTimeKeyboard = oneTimeKeyboard;
 		this.selective = selective;
 	}
-
+	
+	
 	/**
 	 * Creates a new ReplyKeyboardMarkup with default settings.
 	 * 
 	 * @param keyboard
-	 *            The buttons to show (in table format)
+	 *           The buttons to show (in table format)
 	 * @since 0.0.4
 	 */
-	public ReplyKeyboardMarkup(String[][] keyboard) {
-
+	public ReplyKeyboardMarkup(String[][] keyboard)
+	{
+		
 		this(keyboard, false, false, false);
 	}
-
+	
+	
 	@Override
-	public String toJSONString() {
-
+	public String toJSONString()
+	{
+		
 		JSONArray keyboard = new JSONArray(this.keyboard);
 		JSONObject object = new JSONObject();
-
+		
 		object.put("keyboard", keyboard);
-
-		if (resizeKeyboard) {
+		
+		if (resizeKeyboard)
+		{
 			object.put("resize_keyboard", true);
 		}
-
-		if (oneTimeKeyboard) {
+		
+		if (oneTimeKeyboard)
+		{
 			object.put("one_time_keyboard", true);
 		}
-
-		if (selective) {
+		
+		if (selective)
+		{
 			object.put("selective", true);
 		}
-
+		
 		return object.toString();
 	}
-
+	
 }

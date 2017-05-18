@@ -5,115 +5,145 @@ import java.io.IOException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
-public class TelegramMessageEntity {
+import exh3y.telebot.util.ObjectMapperFactory;
 
-	private String			type;
-	private int				offset;
-	private int				length;
 
-	private String			url		= null;
-	private TelegramUser	user	= null;
-
+public class TelegramMessageEntity
+{
+	
+	private String type;
+	private int offset;
+	private int length;
+	
+	private String url = null;
+	private TelegramUser user = null;
+	
+	
 	public static TelegramMessageEntity create(JSONObject json)
-			throws IOException {
-
-		ObjectMapper mapper = new ObjectMapper();
+			throws IOException
+	{
+		
+		ObjectMapper mapper = ObjectMapperFactory.createObjectMapper();
 		return mapper.readValue(json.toString(), TelegramMessageEntity.class);
 	}
-
+	
+	
 	/**
 	 * @return the type
 	 */
-	public String getType() {
-
+	public String getType()
+	{
+		
 		return type;
 	}
-
+	
+	
 	/**
 	 * @param type
-	 *            the type to set
+	 *           the type to set
 	 */
-	public void setType(String type) {
-
+	public void setType(String type)
+	{
+		
 		this.type = type;
 	}
-
+	
+	
 	/**
 	 * @return the offset
 	 */
-	public int getOffset() {
-
+	public int getOffset()
+	{
+		
 		return offset;
 	}
-
+	
+	
 	/**
 	 * @param offset
-	 *            the offset to set
+	 *           the offset to set
 	 */
-	public void setOffset(int offset) {
-
+	public void setOffset(int offset)
+	{
+		
 		this.offset = offset;
 	}
-
+	
+	
 	/**
 	 * @return the length
 	 */
-	public int getLength() {
-
+	public int getLength()
+	{
+		
 		return length;
 	}
-
+	
+	
 	/**
 	 * @param length
-	 *            the length to set
+	 *           the length to set
 	 */
-	public void setLength(int length) {
-
+	public void setLength(int length)
+	{
+		
 		this.length = length;
 	}
-
-	public boolean hasUrl() {
-
+	
+	
+	public boolean hasUrl()
+	{
+		
 		return url != null;
 	}
-
+	
+	
 	/**
 	 * @return the url
 	 */
-	public String getUrl() {
-
+	public String getUrl()
+	{
+		
 		return url;
 	}
-
+	
+	
 	/**
 	 * @param url
-	 *            the url to set
+	 *           the url to set
 	 */
-	public void setUrl(String url) {
-
+	public void setUrl(String url)
+	{
+		
 		this.url = url;
 	}
-
-	public boolean hasUser() {
-
+	
+	
+	public boolean hasUser()
+	{
+		
 		return user != null;
 	}
-
+	
+	
 	/**
 	 * @return the user
 	 */
-	public TelegramUser getUser() {
-
+	public TelegramUser getUser()
+	{
+		
 		return user;
 	}
-
+	
+	
 	/**
 	 * @param user
-	 *            the user to set
+	 *           the user to set
 	 */
-	public void setUser(TelegramUser user) {
-
+	public void setUser(TelegramUser user)
+	{
+		
 		this.user = user;
 	}
-
+	
 }

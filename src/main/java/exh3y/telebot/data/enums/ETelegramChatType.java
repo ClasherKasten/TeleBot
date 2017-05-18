@@ -5,21 +5,30 @@ package exh3y.telebot.data.enums;
  * 
  * @since 0.0.6
  */
-public enum ETelegramChatType {
-
-	PRIVATE("private"), GROUP("group"), SUPERGROUP("supergroup"), CHANNEL("channel");
-
+public enum ETelegramChatType
+{
+	
+	PRIVATE("private"),
+	GROUP("group"),
+	SUPERGROUP("supergroup"),
+	CHANNEL("channel");
+	
 	private String chatTypeString;
-
-	ETelegramChatType(String chatTypeString) {
+	
+	
+	ETelegramChatType(String chatTypeString)
+	{
 		this.chatTypeString = chatTypeString;
 	}
-
-	public String getChatTypeString() {
-
+	
+	
+	public String getChatTypeString()
+	{
+		
 		return chatTypeString;
 	}
-
+	
+	
 	/**
 	 * Returns the ETelegramChatType (determined by the content of the type
 	 * field)
@@ -28,17 +37,20 @@ public enum ETelegramChatType {
 	 * @return The ETelegramChatType
 	 * @since 0.0.6
 	 */
-	public static ETelegramChatType getEnumByName(String name) {
-
-		for (ETelegramChatType singleEnum : ETelegramChatType.values()) {
-
-			if (singleEnum.getChatTypeString().equals(name)) {
+	public static ETelegramChatType getEnumByName(String name)
+	{
+		
+		for (ETelegramChatType singleEnum : ETelegramChatType.values())
+		{
+			
+			if (singleEnum.getChatTypeString().equals(name))
+			{
 				return singleEnum;
 			}
 		}
-
+		
 		return null;
-
+		
 	}
-
+	
 }

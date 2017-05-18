@@ -5,36 +5,50 @@ import java.io.IOException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
-public class TelegramLocation {
+import exh3y.telebot.util.ObjectMapperFactory;
 
-	private Float	longitude;
-	private Float	latitude;
 
+public class TelegramLocation
+{
+	
+	private Float longitude;
+	private Float latitude;
+	
+	
 	public static TelegramLocation create(JSONObject json)
-			throws IOException {
-
-		ObjectMapper mapper = new ObjectMapper();
+			throws IOException
+	{
+		
+		ObjectMapper mapper = ObjectMapperFactory.createObjectMapper();
 		return mapper.readValue(json.toString(), TelegramLocation.class);
 	}
-
-	public Float getLongitude() {
-
+	
+	
+	public Float getLongitude()
+	{
+		
 		return longitude;
 	}
-
-	public void setLongitude(Float longitude) {
-
+	
+	
+	public void setLongitude(Float longitude)
+	{
+		
 		this.longitude = longitude;
 	}
-
-	public Float getLatitude() {
-
+	
+	
+	public Float getLatitude()
+	{
+		
 		return latitude;
 	}
-
-	public void setLatitude(Float latitude) {
-
+	
+	
+	public void setLatitude(Float latitude)
+	{
+		
 		this.latitude = latitude;
 	}
-
+	
 }
