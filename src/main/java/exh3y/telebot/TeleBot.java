@@ -233,7 +233,7 @@ public class TeleBot extends Thread
 	 *            Thrown if the request was not successful
 	 * @since 0.0.4
 	 */
-	public HttpResponse<JsonNode> sendMessage(int chatId, String text, ETelegramParseMode parseMode,
+	public HttpResponse<JsonNode> sendMessage(long chatId, String text, ETelegramParseMode parseMode,
 			boolean disableWebPagePreview, boolean disableNotification, int replyToMessageID, ReplyMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException
 	{
@@ -286,7 +286,7 @@ public class TeleBot extends Thread
 	 *            Thrown if the request was not successful
 	 * @since 0.0.1
 	 */
-	public HttpResponse<JsonNode> sendMessage(int chatId, String text)
+	public HttpResponse<JsonNode> sendMessage(long chatId, String text)
 			throws UnirestException, InvalidRequestException
 	{
 		
@@ -312,7 +312,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#forwardmessage">https://
 	 *      core.telegram.org/bots/api#forwardmessage</a>
 	 */
-	public HttpResponse<JsonNode> forwardMessage(int chatId, int fromChatId, boolean disableNotification, int messageId)
+	public HttpResponse<JsonNode> forwardMessage(long chatId, int fromChatId, boolean disableNotification, int messageId)
 			throws UnirestException, InvalidRequestException
 	{
 		
@@ -348,7 +348,7 @@ public class TeleBot extends Thread
 	 * @throws InvalidRequestException
 	 *            Thrown if the request was not successful
 	 */
-	public HttpResponse<JsonNode> editMessageText(int chatId, int messageId, String text, String parseMode,
+	public HttpResponse<JsonNode> editMessageText(long chatId, int messageId, String text, String parseMode,
 			boolean disableWebPagePreview, InlineKeyboardMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException
 	{
@@ -394,7 +394,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#editmessagecaption">
 	 *      https://core.telegram.org/bots/api#editmessagecaption</a>
 	 */
-	public HttpResponse<JsonNode> editMessageCaption(int chatId, int messageId, String caption,
+	public HttpResponse<JsonNode> editMessageCaption(long chatId, int messageId, String caption,
 			InlineKeyboardMarkup replyMarkup) throws UnirestException, InvalidRequestException
 	{
 		
@@ -432,7 +432,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#editmessagereplymarkup">
 	 *      https://core.telegram.org/bots/api#editmessagereplymarkup</a>
 	 */
-	public HttpResponse<JsonNode> editMessageReplyMarkup(int chatId, int messageId, InlineKeyboardMarkup replyMarkup)
+	public HttpResponse<JsonNode> editMessageReplyMarkup(long chatId, int messageId, InlineKeyboardMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException
 	{
 		
@@ -467,7 +467,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#sendlocation">https://
 	 *      core.telegram.org/bots/api#sendlocation</a>
 	 */
-	public HttpResponse<JsonNode> sendLocation(int chatId, float latitude, float longitude, boolean disableNotification,
+	public HttpResponse<JsonNode> sendLocation(long chatId, float latitude, float longitude, boolean disableNotification,
 			int replyToMessageId, ReplyMarkup replyMarkup) throws UnirestException, InvalidRequestException
 	{
 		
@@ -511,7 +511,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#sendchataction">https://
 	 *      core.telegram.org/bots/api#sendchataction</a>
 	 */
-	public HttpResponse<JsonNode> sendChatAction(int chatId, String action)
+	public HttpResponse<JsonNode> sendChatAction(long chatId, String action)
 			throws UnirestException, InvalidRequestException
 	{
 		
@@ -543,7 +543,7 @@ public class TeleBot extends Thread
 	 * @throws InvalidRequestException
 	 * @since 0.0.5
 	 */
-	public HttpResponse<JsonNode> sendSontact(int chatId, String phoneNumber, String firstName, String lastName,
+	public HttpResponse<JsonNode> sendSontact(long chatId, String phoneNumber, String firstName, String lastName,
 			boolean disableNotification, int replyToMessageId, ReplyMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException
 	{
@@ -603,7 +603,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#sendvenue">https://core.
 	 *      telegram.org/bots/api#sendvenue</a>
 	 */
-	public HttpResponse<JsonNode> sendVenue(int chatId, float latitude, float longitude, String title, String address,
+	public HttpResponse<JsonNode> sendVenue(long chatId, float latitude, float longitude, String title, String address,
 			String foursquareId, boolean disableNotification, int replyToMessageId, ReplyMarkup replyMarkup)
 			throws UnirestException, InvalidRequestException
 	{
@@ -653,7 +653,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#kickchatmember">https://
 	 *      core.telegram.org/bots/api#kickchatmember</a>
 	 */
-	public HttpResponse<JsonNode> kickChatMember(int chatId, int userId)
+	public HttpResponse<JsonNode> kickChatMember(long chatId, int userId)
 			throws UnirestException, InvalidRequestException
 	{
 		
@@ -679,7 +679,7 @@ public class TeleBot extends Thread
 	 * @see <a href="https://core.telegram.org/bots/api#unbanchatmember">https:/
 	 *      /core.telegram.org/bots/api#unbanchatmember</a>
 	 */
-	public HttpResponse<JsonNode> unbanChatMember(int chatId, int userId)
+	public HttpResponse<JsonNode> unbanChatMember(long chatId, int userId)
 			throws UnirestException, InvalidRequestException
 	{
 		
