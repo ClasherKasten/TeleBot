@@ -1,6 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'maven'
- 
+
 group = 'com.github.exh3y'
 
 version = '0.0.5'
@@ -10,9 +9,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.mashape.unirest:unirest-java:1.4.7'
-    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.mashape.unirest:unirest-java:1.4.7'
+    implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+    testImplementation 'junit:junit:4.12'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
