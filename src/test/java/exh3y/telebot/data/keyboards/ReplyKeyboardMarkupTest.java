@@ -2,76 +2,72 @@ package exh3y.telebot.data.keyboards;
 
 import static org.junit.Assert.*;
 
-import java.util.Random;
+import exh3y.telebot.testutil.StringGenerator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import exh3y.telebot.testutil.StringGenerator;
+import java.util.Random;
 
 public class ReplyKeyboardMarkupTest {
 
-	@Test
-	public void testKeyboardCreation() {
+    @Test
+    public void testKeyboardCreation() {
 
-		StringGenerator gen = new StringGenerator();
-		Random rand = new Random();
+        StringGenerator gen = new StringGenerator();
+        Random rand = new Random();
 
-		String[][] keyboard = new String[rand.nextInt(10) + 1][rand.nextInt(10) + 1];
+        String[][] keyboard = new String[rand.nextInt(10) + 1][rand.nextInt(10) + 1];
 
-		for (int i = 0; i < keyboard.length; i++) {
+        for (int i = 0; i < keyboard.length; i++) {
 
-			for (int j = 0; j < keyboard[i].length; j++) {
+            for (int j = 0; j < keyboard[i].length; j++) {
 
-				keyboard[i][j] = gen.randomString(rand.nextInt(20) + 1, true);
+                keyboard[i][j] = gen.randomString(rand.nextInt(20) + 1, true);
+            }
+        }
 
-			}
+        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup(keyboard);
 
-		}
+        assertTrue(markup.keyboard.equals(keyboard));
+        assertTrue(markup.oneTimeKeyboard == false);
+    }
 
-		ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup(keyboard);
+    @Test
+    public void testToJSONString() {
 
-		assertTrue(markup.keyboard.equals(keyboard));
-		assertTrue(markup.oneTimeKeyboard == false);
+        for (int count = 0; count < 10; count++) {
 
-	}
+            StringGenerator gen = new StringGenerator();
+            Random rand = new Random();
 
-	@Test
-	public void testToJSONString() {
+            String[][] keyboard = new String[rand.nextInt(10) + 1][rand.nextInt(10) + 1];
 
-		for (int count = 0; count < 10; count++) {
+            for (int i = 0; i < keyboard.length; i++) {
 
-			StringGenerator gen = new StringGenerator();
-			Random rand = new Random();
+                for (int j = 0; j < keyboard[i].length; j++) {
 
-			String[][] keyboard = new String[rand.nextInt(10) + 1][rand.nextInt(10) + 1];
+                    keyboard[i][j] = gen.randomString(rand.nextInt(20) + 1, true);
+                }
+            }
 
-			for (int i = 0; i < keyboard.length; i++) {
+            boolean[][] testValues = {
+                {true, false, false}, {false, true, false}, {false, false, true}
+            };
 
-				for (int j = 0; j < keyboard[i].length; j++) {
+            for (int i = 0; i < testValues.length; i++) {
+                ReplyKeyboardMarkup markup =
+                        new ReplyKeyboardMarkup(
+                                keyboard, testValues[i][0], testValues[i][1], testValues[i][2]);
 
-					keyboard[i][j] = gen.randomString(rand.nextInt(20) + 1, true);
+                JSONObject object = new JSONObject(markup.toJSONString());
 
-				}
+                JSONArray objectArray = object.getJSONArray("keyboard");
+                JSONArray actualArray = new JSONArray(keyboard);
 
-			}
-
-			boolean[][] testValues = { { true, false, false }, { false, true, false }, { false, false, true } };
-
-			for (int i = 0; i < testValues.length; i++) {
-				ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup(keyboard, testValues[i][0], testValues[i][1],
-						testValues[i][2]);
-
-				JSONObject object = new JSONObject(markup.toJSONString());
-
-				JSONArray objectArray = object.getJSONArray("keyboard");
-				JSONArray actualArray = new JSONArray(keyboard);
-
-				assertTrue(objectArray.toString().equals(actualArray.toString()));
-			}
-
-		}
-	}
-
+                assertTrue(objectArray.toString().equals(actualArray.toString()));
+            }
+        }
+    }
 }
