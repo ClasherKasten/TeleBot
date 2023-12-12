@@ -1,8 +1,8 @@
-# TeleBot [![Build Status](https://travis-ci.org/EXH3Y/TeleBot.svg?branch=master)](https://travis-ci.org/EXH3Y/TeleBot) [![Release](https://jitpack.io/v/EXH3Y/TeleBot.svg)](https://jitpack.io/#EXH3Y/TeleBot)
+# TeleBot [![TeleBot Tests](https://circleci.com/gh/ClasherKasten/TeleBot/tree/master.svg?style=svg)](https://circleci.com/gh/ClasherKasten/TeleBot/?branch=master)[![Release](https://jitpack.io/v/ClasherKasten/TeleBot.svg)](https://jitpack.io/#ClasherKasten/TeleBot)
 A simple java library to create telegram bots. Work in progress.
 
 # Get it
-Just add TeleBot to your dependencies using [jitpack](https://jitpack.io/#EXH3Y/TeleBot):
+Just add TeleBot to your dependencies using [jitpack](https://jitpack.io/#ClasherKasten/TeleBot):
 
 **Maven:**
 ```
@@ -16,9 +16,9 @@ Just add TeleBot to your dependencies using [jitpack](https://jitpack.io/#EXH3Y/
 
 ```
 <dependency>
-    <groupId>com.github.EXH3Y</groupId>
+    <groupId>com.github.ClasherKasten</groupId>
     <artifactId>TeleBot</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ public TestAction(TeleBot bot) {
 
 @Override
 public void onMessageReceive(TelegramMessage message) {
-  
+
   try {
     bot.sendMessage(message.getChat().getId(), "Responding to 'test'");
   } catch (JSONException | UnirestException e) {
@@ -73,7 +73,7 @@ public TestAction(TeleBot bot) {
 
 @Override
 public void onCommandReceive(int chatId, JSONObject responseObject) {
-  
+
   try {
     bot.sendMessage(chatId, "Responding to 'test'");
   } catch (JSONException | UnirestException e) {
