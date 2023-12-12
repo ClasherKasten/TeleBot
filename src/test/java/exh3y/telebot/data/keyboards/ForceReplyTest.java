@@ -7,24 +7,23 @@ import org.junit.Test;
 
 public class ForceReplyTest {
 
-	@Test
-	public void testKeyboardCreation() {
+    @Test
+    public void testKeyboardCreation() {
 
-		new ForceReply(false);
-	}
+        new ForceReply(false);
+    }
 
-	@Test
-	public void testToJSONString() {
+    @Test
+    public void testToJSONString() {
 
-		ForceReply selectiveKeyboard = new ForceReply(true);
+        ForceReply selectiveKeyboard = new ForceReply(true);
 
-		JSONObject json = new JSONObject(selectiveKeyboard.toJSONString());
-		assertTrue(json.getBoolean("selective"));
+        JSONObject json = new JSONObject(selectiveKeyboard.toJSONString());
+        assertTrue(json.getBoolean("selective"));
 
-		ForceReply nonSelectiveKeyboard = new ForceReply(false);
+        ForceReply nonSelectiveKeyboard = new ForceReply(false);
 
-		json = new JSONObject(nonSelectiveKeyboard.toJSONString());
-		assertFalse(json.optBoolean("selective", false));
-	}
-
+        json = new JSONObject(nonSelectiveKeyboard.toJSONString());
+        assertFalse(json.optBoolean("selective", false));
+    }
 }

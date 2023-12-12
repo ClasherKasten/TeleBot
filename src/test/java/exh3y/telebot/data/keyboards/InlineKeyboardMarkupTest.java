@@ -2,73 +2,68 @@ package exh3y.telebot.data.keyboards;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
+import exh3y.telebot.testutil.StringGenerator;
 
 import org.json.JSONObject;
 import org.junit.Test;
 
-import exh3y.telebot.testutil.StringGenerator;
+import java.util.Random;
 
 public class InlineKeyboardMarkupTest {
 
-	@Test
-	public void testInlineKeyboardMarkupCreation() {
+    @Test
+    public void testInlineKeyboardMarkupCreation() {
 
-		StringGenerator gen = new StringGenerator();
-		Random rand = new Random();
+        StringGenerator gen = new StringGenerator();
+        Random rand = new Random();
 
-		int lenght1 = rand.nextInt(10) + 1;
-		int lenght2 = rand.nextInt(10) + 1;
+        int lenght1 = rand.nextInt(10) + 1;
+        int lenght2 = rand.nextInt(10) + 1;
 
-		String[][] keyboard = new String[lenght1][lenght2];
-		InlineKeyboardButton[][] buttons = new InlineKeyboardButton[lenght1][lenght2];
+        String[][] keyboard = new String[lenght1][lenght2];
+        InlineKeyboardButton[][] buttons = new InlineKeyboardButton[lenght1][lenght2];
 
-		for (int i = 0; i < keyboard.length; i++) {
+        for (int i = 0; i < keyboard.length; i++) {
 
-			for (int j = 0; j < keyboard[i].length; j++) {
+            for (int j = 0; j < keyboard[i].length; j++) {
 
-				String text = gen.randomString(rand.nextInt(20) + 1, true);
-				keyboard[i][j] = text;
-				buttons[i][j] = new InlineKeyboardButton(text);
+                String text = gen.randomString(rand.nextInt(20) + 1, true);
+                keyboard[i][j] = text;
+                buttons[i][j] = new InlineKeyboardButton(text);
+            }
+        }
 
-			}
+        InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(keyboard);
+        // TODO: Check if generated markup contains all buttons
 
-		}
+        InlineKeyboardMarkup buttonMarkup = new InlineKeyboardMarkup(buttons);
+        assertTrue(buttonMarkup.keyboard.equals(buttons));
+    }
 
-		InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(keyboard);
-		// TODO: Check if generated markup contains all buttons
+    @Test
+    public void testToJsonString() {
 
-		InlineKeyboardMarkup buttonMarkup = new InlineKeyboardMarkup(buttons);
-		assertTrue(buttonMarkup.keyboard.equals(buttons));
-	}
+        StringGenerator gen = new StringGenerator();
+        Random rand = new Random();
 
-	@Test
-	public void testToJsonString() {
+        int lenght1 = rand.nextInt(10) + 1;
+        int lenght2 = rand.nextInt(10) + 1;
 
-		StringGenerator gen = new StringGenerator();
-		Random rand = new Random();
+        InlineKeyboardButton[][] buttons = new InlineKeyboardButton[lenght1][lenght2];
 
-		int lenght1 = rand.nextInt(10) + 1;
-		int lenght2 = rand.nextInt(10) + 1;
+        for (int i = 0; i < buttons.length; i++) {
 
-		InlineKeyboardButton[][] buttons = new InlineKeyboardButton[lenght1][lenght2];
+            for (int j = 0; j < buttons[i].length; j++) {
 
-		for (int i = 0; i < buttons.length; i++) {
+                String text = gen.randomString(rand.nextInt(20) + 1, true);
+                buttons[i][j] = new InlineKeyboardButton(text);
+            }
+        }
 
-			for (int j = 0; j < buttons[i].length; j++) {
+        InlineKeyboardMarkup buttonMarkup = new InlineKeyboardMarkup(buttons);
+        JSONObject json = new JSONObject(buttonMarkup.toJSONString());
 
-				String text = gen.randomString(rand.nextInt(20) + 1, true);
-				buttons[i][j] = new InlineKeyboardButton(text);
+        // TODO: Check if json object holds the correct information
 
-			}
-
-		}
-
-		InlineKeyboardMarkup buttonMarkup = new InlineKeyboardMarkup(buttons);
-		JSONObject json = new JSONObject(buttonMarkup.toJSONString());
-
-		// TODO: Check if json object holds the correct information
-
-	}
-
+    }
 }

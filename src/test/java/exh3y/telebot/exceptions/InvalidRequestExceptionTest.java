@@ -6,27 +6,25 @@ import org.junit.Test;
 
 public class InvalidRequestExceptionTest {
 
-	@Test
-	public void testInvalidRequestException() {
+    @Test
+    public void testInvalidRequestException() {
 
-		try {
+        try {
 
-			throw new InvalidRequestException();
-		} catch (InvalidRequestException e) {
+            throw new InvalidRequestException();
+        } catch (InvalidRequestException e) {
 
-			assertTrue(true);
-		}
+            assertTrue(true);
+        }
 
-		String message = "This is a message!";
+        String message = "This is a message!";
 
-		try {
+        try {
 
-			throw new InvalidRequestException(message);
-		} catch (InvalidRequestException e) {
+            throw new InvalidRequestException(message);
+        } catch (InvalidRequestException e) {
 
-			assertTrue(e.getMessage().equals(message));
-		}
-
-	}
-
+            assertTrue(e.getMessage().equals(message));
+        }
+    }
 }

@@ -7,19 +7,18 @@ import org.junit.Test;
 
 public class ReplyKeyboardHideTest {
 
-	@Test
-	public void testKeyboardCreation() {
+    @Test
+    public void testKeyboardCreation() {
 
-		new ReplyKeyboardHide(false);
-	}
+        new ReplyKeyboardHide(false);
+    }
 
-	@Test
-	public void testToJSONString() {
+    @Test
+    public void testToJSONString() {
 
-		ReplyKeyboardHide keyboard = new ReplyKeyboardHide(true);
+        ReplyKeyboardHide keyboard = new ReplyKeyboardHide(true);
 
-		JSONObject json = new JSONObject(keyboard.toJSONString());
-		assertTrue(json.getBoolean("selective"));
-	}
-
+        JSONObject json = new JSONObject(keyboard.toJSONString());
+        assertTrue(json.getBoolean("selective"));
+    }
 }
