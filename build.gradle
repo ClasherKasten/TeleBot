@@ -28,7 +28,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 test {
-    println testClassesDirs.getAsPath()
 	testLogging {
         events "passed", "skipped", "failed", "standardOut", "standardError"
     }
