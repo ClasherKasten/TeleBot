@@ -5,7 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import exh3y.telebot.data.enums.ETelegramChatType;
 
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
+
 import org.junit.Test;
 
 import java.io.IOException;

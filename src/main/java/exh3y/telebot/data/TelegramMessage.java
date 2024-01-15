@@ -1,10 +1,11 @@
 package exh3y.telebot.data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import exh3y.telebot.data.games.TelegramGame;
 import exh3y.telebot.util.ObjectMapperFactory;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
 
 import java.io.IOException;
 

@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import exh3y.telebot.data.keyboards.InlineKeyboardButton;
 
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
+
 import org.junit.Test;
 
 public class InlineKeyboardButtonTest {

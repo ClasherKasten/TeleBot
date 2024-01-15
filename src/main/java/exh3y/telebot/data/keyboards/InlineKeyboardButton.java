@@ -1,7 +1,7 @@
 package exh3y.telebot.data.keyboards;
 
-import org.json.JSONObject;
-import org.json.JSONString;
+import kong.unirest.json.JSONObject;
+import kong.unirest.json.JSONString;
 
 public class InlineKeyboardButton implements JSONString {
 

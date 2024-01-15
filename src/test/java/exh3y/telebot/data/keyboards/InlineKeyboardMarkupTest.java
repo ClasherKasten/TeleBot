@@ -4,7 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import exh3y.telebot.testutil.StringGenerator;
 
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
+
 import org.junit.Test;
 
 import java.util.Random;

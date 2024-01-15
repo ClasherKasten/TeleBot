@@ -1,6 +1,6 @@
 package exh3y.telebot.actions;
 
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
 
 /**
  * Handles responses sent to the bot not containing a message (i.e. inline keyboard actions).

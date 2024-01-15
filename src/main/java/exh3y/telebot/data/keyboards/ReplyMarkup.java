@@ -1,5 +1,5 @@
 package exh3y.telebot.data.keyboards;
 
-import org.json.JSONString;
+import kong.unirest.json.JSONString;
 
 public interface ReplyMarkup extends JSONString {}

@@ -4,8 +4,9 @@ import static org.junit.Assert.*;
 
 import exh3y.telebot.testutil.StringGenerator;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
+
 import org.junit.Test;
 
 import java.util.Random;

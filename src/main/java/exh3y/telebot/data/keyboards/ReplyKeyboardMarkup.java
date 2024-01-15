@@ -1,7 +1,7 @@
 package exh3y.telebot.data.keyboards;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 
 public class ReplyKeyboardMarkup implements ReplyMarkup {
 

@@ -1,6 +1,6 @@
 package exh3y.telebot.testutil;
 
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
 
 import java.util.Random;
 
