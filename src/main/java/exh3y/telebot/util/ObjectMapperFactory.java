@@ -1,9 +1,10 @@
 package exh3y.telebot.util;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ObjectMapperFactory {
+
+    private static ObjectMapper mapper = null;
 
     private ObjectMapperFactory() {}
 
@@ -13,10 +14,9 @@ public class ObjectMapperFactory {
      * @return The pre-configured mapper
      */
     public static ObjectMapper createObjectMapper() {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+        if (mapper == null) {
+            mapper = new ObjectMapper();
+        }
         return mapper;
     }
 }

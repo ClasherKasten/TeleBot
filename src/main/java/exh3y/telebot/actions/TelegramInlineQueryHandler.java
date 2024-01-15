@@ -1,6 +1,6 @@
 package exh3y.telebot.actions;
 
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
 
 public interface TelegramInlineQueryHandler {
 

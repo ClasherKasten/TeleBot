@@ -1,11 +1,11 @@
 package exh3y.telebot.data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import exh3y.telebot.data.enums.ETelegramChatType;
 import exh3y.telebot.util.ObjectMapperFactory;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
 
 import java.io.IOException;
 
@@ -78,7 +78,6 @@ public class TelegramChat {
     /**
      * @param type the type to set
      */
-    @JsonProperty
     public void setType(String type) {
 
         this.type = ETelegramChatType.getEnumByName(type);

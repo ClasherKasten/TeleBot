@@ -9,9 +9,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.mashape.unirest:unirest-java:1.4.7'
-    implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.konghq:unirest-java:3.14.5'
+    implementation 'com.konghq:unirest-objectmapper-jackson:4.2.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.16.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.16.0'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -25,6 +28,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 test {
+    println testClassesDirs.getAsPath()
 	testLogging {
         events "passed", "skipped", "failed", "standardOut", "standardError"
     }

@@ -1,10 +1,5 @@
 package exh3y.telebot;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
@@ -14,9 +9,13 @@ import exh3y.telebot.data.keyboards.ReplyMarkup;
 import exh3y.telebot.exceptions.InvalidApiKeyException;
 import exh3y.telebot.exceptions.InvalidRequestException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONException;
+import kong.unirest.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;

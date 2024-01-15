@@ -3,14 +3,14 @@ package exh3y.telebot;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
-
 import exh3y.telebot.actions.TelegramActionHandler;
 import exh3y.telebot.actions.TelegramResponseHandler;
 import exh3y.telebot.data.TelegramMessage;
 import exh3y.telebot.exceptions.InvalidApiKeyException;
 
-import org.json.JSONObject;
+import kong.unirest.UnirestException;
+import kong.unirest.json.JSONObject;
+
 import org.junit.Test;
 
 import javax.naming.directory.InvalidAttributesException;

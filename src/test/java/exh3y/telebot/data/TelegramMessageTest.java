@@ -5,10 +5,9 @@ import static org.junit.Assert.*;
 import exh3y.telebot.data.enums.ETelegramChatType;
 import exh3y.telebot.testutil.StringGenerator;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.json.JSONException;
-import org.json.JSONObject;
+import kong.unirest.json.JSONException;
+import kong.unirest.json.JSONObject;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,8 +15,7 @@ import java.util.Random;
 
 public class TelegramMessageTest {
 
-    private TelegramMessage createTestMessage(JSONObject json)
-            throws JsonParseException, JsonMappingException, JSONException, IOException {
+    private TelegramMessage createTestMessage(JSONObject json) throws JSONException, IOException {
 
         if (json == null) {
             json =
